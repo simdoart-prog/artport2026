@@ -1,0 +1,2744 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>예술무역항 2026 · 유통 라벨 / 가격 관제</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermilion:#F5391A;
+    --cobalt:#3A40DD;
+    --green:#1FC73A;
+    --ink:#141414;
+    --paper:#ffffff;
+    --card:#ffffff;
+    --gray-cell:#e9e6df;
+    --gray-text:#6f6b63;
+    --gray-light:#d9d5cd;
+    --brand:var(--vermilion);            /* 적색 ↔ 청색 토글 */
+    --stencil:"Saira Stencil One","Black Han Sans",sans-serif;
+    --korhead:"Black Han Sans","Malgun Gothic",sans-serif;
+    --kor:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+    --mono:ui-monospace,"Consolas","D2Coding",monospace;
+  }
+  [data-theme="blue"]{--brand:var(--cobalt);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--kor);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 20px 80px;}
+
+  /* ---------- signature tricolor bands (from poster) ---------- */
+  .bands{display:block;}
+  .band{height:15px;width:100%;}
+  .band.bars{background:repeating-linear-gradient(90deg,var(--cobalt) 0 5px,#fff 5px 10px);}
+  .band.hazard{background:repeating-linear-gradient(118deg,var(--vermilion) 0 16px,#fff 16px 32px);}
+  .band.check{
+    background-color:#fff;
+    background-image:
+      linear-gradient(45deg,var(--green) 25%,transparent 25%,transparent 75%,var(--green) 75%),
+      linear-gradient(45deg,var(--green) 25%,transparent 25%,transparent 75%,var(--green) 75%);
+    background-size:14px 14px;background-position:0 0,7px 7px;
+  }
+  .band.slim{height:9px;}
+
+  /* ---------- masthead ---------- */
+  header.top{background:var(--brand);color:#fff;margin:0 -20px 0;padding:0;}
+  .top-inner{max-width:1160px;margin:0 auto;padding:26px 20px 22px;position:relative;}
+  .eyebrow{font-family:var(--stencil);font-size:14px;letter-spacing:.18em;opacity:.92;}
+  .masthead{font-family:var(--stencil);font-size:clamp(34px,6vw,60px);line-height:.96;letter-spacing:.04em;margin:8px 0 2px;}
+  .mast-kr{font-family:var(--korhead);font-size:clamp(18px,3vw,26px);letter-spacing:.02em;margin-top:6px;}
+  .mast-meta{font-family:var(--stencil);font-size:15px;letter-spacing:.12em;margin-top:10px;opacity:.95;}
+  .theme-toggle{position:absolute;top:26px;right:20px;display:flex;border:2px solid #fff;}
+  .theme-toggle button{font-family:var(--stencil);font-size:14px;letter-spacing:.1em;background:transparent;color:#fff;border:none;padding:6px 12px;cursor:pointer;}
+  .theme-toggle button.on{background:#fff;color:var(--brand);}
+
+  .tabs{display:flex;margin:22px 0;border:2px solid var(--ink);width:fit-content;}
+  .tabs button{font-family:var(--stencil);font-size:15px;letter-spacing:.08em;background:var(--card);border:none;padding:10px 22px;cursor:pointer;border-right:2px solid var(--ink);}
+  .tabs button:last-child{border-right:none;}
+  .tabs button.on{background:var(--ink);color:#fff;}
+
+  /* ---------- dashboard ---------- */
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);margin-bottom:18px;}
+  .stat{padding:13px 15px;border-right:1px solid var(--gray-light);border-bottom:1px solid var(--gray-light);}
+  .stat:nth-child(4n){border-right:none;}
+  .stat:nth-child(n+5){border-bottom:none;}
+  .stat .k{font-family:var(--stencil);font-size:12px;letter-spacing:.06em;color:var(--gray-text);}
+  .stat .v{font-size:24px;font-weight:900;margin-top:3px;font-family:var(--mono);}
+  .stat .v small{font-size:14px;font-weight:600;color:var(--gray-text);}
+  .stat.accent .v{color:var(--vermilion);}
+
+  .tier-row{display:flex;gap:14px;margin-bottom:20px;flex-wrap:wrap;}
+  .tier{flex:1;min-width:200px;border:2px solid var(--ink);padding:11px 14px;background:var(--card);}
+  .tier .label{font-size:14px;font-weight:700;display:flex;justify-content:space-between;}
+  .tier .label span:last-child{font-family:var(--mono);}
+  .tier .bar{height:8px;background:var(--gray-cell);margin-top:8px;}
+  .tier .bar i{display:block;height:100%;background:var(--brand);}
+  .tier .note{font-family:var(--mono);font-size:11.5px;color:var(--gray-text);margin-top:6px;}
+
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+  .filters select,.filters input,.label-toolbar select,.label-toolbar input{font-family:var(--kor);font-size:15px;padding:8px 10px;border:2px solid var(--ink);background:var(--card);}
+  .filters .spacer{flex:1;}
+  .filters .count,.label-toolbar .count{font-family:var(--mono);font-size:14px;color:var(--gray-text);}
+
+  table.grid{width:100%;border-collapse:collapse;background:var(--card);font-size:15px;border:2px solid var(--ink);}
+  table.grid th{background:var(--ink);color:#fff;text-align:left;padding:9px 10px;font-size:14px;white-space:nowrap;font-family:var(--stencil);letter-spacing:.04em;}
+  table.grid td{padding:8px 10px;border-bottom:1px solid var(--gray-light);vertical-align:middle;}
+  table.grid tr:last-child td{border-bottom:none;}
+  table.grid tr:hover td{background:#faf6f0;}
+  table.grid .num{font-family:var(--stencil);font-size:14px;letter-spacing:.03em;}
+  table.grid .price{font-family:var(--mono);text-align:right;white-space:nowrap;}
+  table.grid .price.red{color:var(--vermilion);font-weight:700;}
+  .pill{display:inline-block;font-size:12.5px;font-weight:700;padding:2px 8px;border:1.5px solid var(--ink);font-family:var(--mono);}
+  .pill.entry{border-color:var(--gray-text);color:var(--gray-text);}
+  .pill.high{background:var(--ink);color:#fff;}
+  td .row-sel,td .row-asg{font-family:var(--kor);font-size:14px;padding:4px 5px;border:1px solid var(--gray-light);background:#fff;width:100%;}
+  .open-label{font-family:var(--stencil);font-size:12.5px;letter-spacing:.04em;border:1.5px solid var(--ink);background:#fff;padding:3px 8px;cursor:pointer;}
+  .open-label:hover{background:var(--ink);color:#fff;}
+
+  /* ---------- labels ---------- */
+  .label-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+  .label-toolbar input{min-width:240px;}
+  .btn{font-family:var(--stencil);font-size:15px;letter-spacing:.06em;border:2px solid var(--ink);background:var(--card);padding:9px 16px;cursor:pointer;}
+  .btn.solid{background:var(--brand);color:#fff;border-color:var(--brand);}
+  .btn:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+  .label-sheet{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .label{background:var(--card);border:2px solid var(--ink);overflow:hidden;}
+  .label .lhead{display:flex;justify-content:space-between;align-items:stretch;background:var(--ink);color:#fff;}
+  .label .lid{font-family:var(--stencil);font-size:15px;letter-spacing:.05em;padding:7px 12px;display:flex;flex-direction:column;justify-content:center;}
+  .label .lid b{font-size:10px;letter-spacing:.16em;opacity:.85;font-weight:400;}
+  .label .lid em{font-style:normal;font-size:10.5px;opacity:.85;}
+  .label .stamp{width:104px;border-left:2px solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff;}
+  .label .stamp .st-kr{font-family:var(--korhead);font-size:19.5px;letter-spacing:.06em;}
+  .label .stamp .st-en{font-family:var(--stencil);font-size:9px;letter-spacing:.12em;margin-top:1px;}
+  .label .stamp.s-jeongbak{background:#fff;color:var(--ink);}
+  .label .stamp.s-tonggwan{background:#cfcabf;color:var(--ink);}
+  .label .stamp.s-chulhang{background:var(--ink);color:#fff;}
+
+  .label .photo{height:150px;background:#f0ede6;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--gray-light);overflow:hidden;}
+  .label .photo img{max-width:100%;max-height:100%;object-fit:contain;display:block;}
+  .label .photo.empty{font-family:var(--stencil);font-size:10px;letter-spacing:.12em;color:#c3bfb6;}
+  .label .lbody{padding:12px 14px 0;}
+  .label .artist{font-size:20.5px;font-weight:900;line-height:1.15;}
+  .label .title{font-size:16px;margin-top:2px;}
+  .label .title em{font-style:italic;}
+  .label .meta{font-family:var(--mono);font-size:12.5px;color:var(--gray-text);margin-top:5px;}
+
+  .label .price-block{margin:11px 14px 0;border-top:1px solid var(--gray-light);padding-top:9px;display:flex;align-items:baseline;justify-content:space-between;}
+  .label .price-block .pk{font-size:12.5px;font-weight:700;color:var(--gray-text);}
+  .label .price-block .pv{font-family:var(--mono);font-size:26.5px;font-weight:900;color:var(--ink);}
+  .label .price-sub{margin:3px 14px 0;font-family:var(--mono);font-size:11.5px;color:var(--gray-text);display:flex;justify-content:space-between;}
+
+  .label .settle{margin:10px 14px 0;}
+  .label .settle .stitle{font-family:var(--stencil);font-size:11px;letter-spacing:.06em;color:var(--ink);}
+  .label .settle .sbar{display:flex;height:22px;margin-top:5px;border:1.5px solid var(--ink);}
+  .label .settle .sbar div{display:flex;align-items:center;padding:0 8px;font-family:var(--mono);font-size:11.5px;font-weight:700;white-space:nowrap;}
+  .label .settle .sbar .sa{background:var(--ink);color:#fff;}
+  .label .settle .sbar .so{background:var(--gray-cell);color:var(--ink);}
+  .label .settle .samt{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;margin-top:4px;}
+  .label .settle .sfee{font-family:var(--kor);font-size:9.5px;color:var(--gray-text);margin-top:5px;line-height:1.4;}
+  .label .settle .samt b{color:var(--ink);}
+
+  .label .ledger{margin-top:11px;border-top:2px dashed var(--ink);padding:8px 14px;background:#faf8f3;}
+  .label .ledger .lg-title{font-family:var(--stencil);font-size:10px;letter-spacing:.12em;color:var(--gray-text);margin-bottom:5px;}
+  .label .ledger .lg-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;font-size:12.5px;}
+  .label .ledger .lc{display:flex;justify-content:space-between;border-bottom:1px dotted var(--gray-light);padding-bottom:2px;}
+  .label .ledger .lc span:first-child{color:var(--gray-text);}
+  .label .ledger .lc span:last-child{font-family:var(--mono);font-weight:700;}
+  .label .lfoot{font-size:10.5px;color:var(--gray-text);padding:7px 14px;line-height:1.45;}
+  .label .lfoot .org{color:var(--ink);font-weight:700;}
+  .label .lfoot-row{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;}
+  .label .lfoot-row .lfoot{flex:1;}
+  .label .qr{flex:0 0 auto;text-align:center;padding:7px 14px 2px 0;}
+  .label .qr img{width:76px;height:76px;display:block;image-rendering:pixelated;border:1px solid var(--gray-light);}
+  .label .qr small{display:block;font-family:var(--stencil);font-size:8px;letter-spacing:.1em;color:var(--gray-text);margin-top:3px;}
+  body.kiosk .tabs,body.kiosk .label-toolbar,body.kiosk .qr,body.kiosk .theme-toggle{display:none!important;}
+  body.kiosk .label-sheet{grid-template-columns:1fr;max-width:440px;margin:0 auto;}
+  body.kiosk .legend{max-width:440px;margin:18px auto 0;}
+  .label .lbands{display:flex;}
+  .label .lbands .band{height:8px;}
+  .label .lbands .band.bars{background:repeating-linear-gradient(90deg,var(--ink) 0 4px,#fff 4px 8px);}
+  .label .lbands .band.hazard{background:repeating-linear-gradient(118deg,var(--ink) 0 12px,#fff 12px 24px);}
+  .label .lbands .band.check{background-color:#fff;background-image:linear-gradient(45deg,var(--ink) 25%,transparent 25%,transparent 75%,var(--ink) 75%),linear-gradient(45deg,var(--ink) 25%,transparent 25%,transparent 75%,var(--ink) 75%);background-size:12px 12px;background-position:0 0,6px 6px;}
+  .label .lbands .band:first-child{flex:1;} .label .lbands .band:nth-child(2){flex:1;} .label .lbands .band:nth-child(3){flex:1;}
+
+  /* ---------- legend ---------- */
+  .legend{border:2px solid var(--ink);background:var(--card);padding:14px 16px;margin-top:24px;font-size:14.5px;}
+  .legend h3{margin:0 0 8px;font-size:15px;font-family:var(--stencil);letter-spacing:.04em;}
+  .legend .stamps{display:flex;gap:18px;margin:10px 0;flex-wrap:wrap;}
+  .legend .sm{display:flex;align-items:center;gap:7px;}
+  .legend .chip{font-family:var(--korhead);font-size:15px;padding:3px 10px;border:2px solid var(--ink);}
+  .legend .chip.c2{background:#cfcabf;color:var(--ink);border-color:var(--ink);}
+  .legend .chip.c3{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .legend ul{margin:6px 0 0;padding-left:18px;color:var(--gray-text);}
+  .credit{font-size:12.5px;color:var(--gray-text);margin-top:14px;line-height:1.7;}
+  .credit b{color:var(--ink);font-family:var(--stencil);font-size:11.5px;letter-spacing:.08em;}
+
+  .hide{display:none;}
+
+  @media (max-width:720px){
+    .stat-grid{grid-template-columns:repeat(2,1fr);}
+    .stat:nth-child(4n){border-right:1px solid var(--gray-light);}
+    .stat:nth-child(2n){border-right:none;}
+    .label-sheet{grid-template-columns:1fr;}
+    .theme-toggle{position:static;margin-top:14px;width:fit-content;}
+  }
+  @media print{
+    body{background:#fff;}
+    .wrap{max-width:none;padding:0;}
+    header.top,.tabs,.legend,#view-dash,.label-toolbar,.bands.head{display:none !important;}
+    #view-label{display:block !important;}
+    .label-sheet{grid-template-columns:repeat(2,1fr);gap:6mm;}
+    .label{break-inside:avoid;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="bands head"><div class="band bars"></div><div class="band hazard"></div><div class="band check"></div></div>
+
+  <header class="top">
+    <div class="top-inner">
+      <div class="theme-toggle">
+        <button id="th-red" class="on" onclick="setTheme('red')">적색</button>
+        <button id="th-blue" onclick="setTheme('blue')">청색</button>
+      </div>
+      <div class="eyebrow">ART TRADE PORT 2026 · DISTRIBUTION MANIFEST</div>
+      <div class="masthead">ART TRADE&nbsp;PORT</div>
+      <div class="mast-kr">아트페어 예술무역항 — 유통 라벨 · 가격 관제</div>
+      <div class="mast-meta">6.25 — 28 · BLUEPORT 2021 · YEONGDO BUSAN</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="tabs">
+      <button id="tab-dash" class="on" onclick="switchView('dash')">PRICE CONTROL · 가격 관제</button>
+      <button id="tab-label" onclick="switchView('label')">DISTRIBUTION LABEL · 유통 라벨</button>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section id="view-dash">
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="tier-row" id="tierRow"></div>
+      <div class="filters">
+        <select id="fArtist" onchange="render()"></select>
+        <select id="fTier" onchange="render()">
+          <option value="">가격대 전체</option>
+          <option value="entry">엔트리 (≤50만)</option>
+          <option value="mid">중가 (50–150만)</option>
+          <option value="high">고가 (150–300만)</option>
+        </select>
+        <select id="fStatus" onchange="render()">
+          <option value="">상태 전체</option><option>정박</option><option>통관</option><option>출항</option>
+        </select>
+        <input id="fSearch" placeholder="작품명 · 작가 검색" oninput="render()">
+        <span class="spacer"></span><span class="count" id="rowCount"></span>
+      </div>
+      <table class="grid">
+        <thead><tr>
+          <th>부스 · 작품 위치</th><th>작가</th><th>작품명</th><th>재료 · 크기</th>
+          <th>판매가</th><th>작가 70%</th><th>운영 30%</th><th>상태</th><th>라벨</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- LABELS -->
+    <section id="view-label" class="hide">
+      <div class="label-toolbar">
+        <button class="btn solid" onclick="window.print()">전체 라벨 인쇄</button>
+        <input id="labelSearch" placeholder="작가 · 작품명 · 관리번호 검색" oninput="renderLabels()">
+        <select id="labelStatus" onchange="renderLabels()">
+          <option value="">상태 전체</option><option>정박</option><option>통관</option><option>출항</option>
+        </select>
+        <span class="count" id="labelCount"></span>
+        <span style="flex:1"></span>
+        <label style="font-size:13px;color:var(--gray-text);display:flex;align-items:center;gap:6px;white-space:nowrap;">QR 배포 주소
+          <input id="pubBase" value="https://artport2026-label.netlify.app/" oninput="renderLabels()" style="min-width:230px;">
+        </label>
+      </div>
+      <div class="label-sheet" id="labelSheet"></div>
+
+      <div class="legend">
+        <h3>라벨 읽는 법</h3>
+        <div class="stamps">
+          <div class="sm"><span class="chip">정박</span> 전시 중 · 구매 가능</div>
+          <div class="sm"><span class="chip c2">통관</span> 상담·브리핑 진행 중 · 매칭 단계</div>
+          <div class="sm"><span class="chip c3">출항</span> 판매 완료 · 정산 대기</div>
+        </div>
+        <ul>
+          <li>가운데 막대는 판매가 분배 구조입니다. 검정이 작가 수령액, 회색이 운영 수수료입니다.</li>
+          <li>아래 점선 칸은 운영 기록란입니다. 판매 담당·판매일·결제·정산 상태를 현장에서 기입합니다.</li>
+          <li>정산은 판매일로부터 14일 이내 완료합니다. 결제는 카드만 가능합니다. 부가세는 별도 표기합니다.</li>
+        </ul>
+        <div class="credit">
+          <b>주최</b> ㈜리멘 &nbsp; <b>주관</b> ㈜리멘 · 심도시각 &nbsp; <b>총괄기획</b> 심도시각 최민영<br>
+          <b>후원</b> 문화체육관광부 · 예술경영지원센터 &nbsp; <b>협력</b> 원도심창작공간 또따또가 운영지원센터 · 징조프로젝트 · re:project
+        </div>
+      </div>
+    </section>
+  </div>
+
+<script>
+/* qrcode-generator 1.4.4 (MIT, Kazuhiko Arase) — embedded for offline use */
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(row * cellSize, col * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+
+</script>
+<script>
+const ASSIGNEES=["미배정","도슨트·박","도슨트·이","A섹션 큐레이터","B섹션 큐레이터","C섹션 큐레이터"];
+let works=[{"id": "ATP26-001", "artist": "강은경", "title": "<손맛> son-mat : hand taste", "medium": "종이에 리소 프린트", "size": "297x420mm", "year": "2025", "price": 30000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-001.jpg"}, {"id": "ATP26-002", "artist": "강은경", "title": "이만큼", "medium": "종이에 리소 프린트", "size": "297x420mm", "year": "2025", "price": 30000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-002.jpg"}, {"id": "ATP26-003", "artist": "강은경", "title": "T for 2", "medium": "흑토에 백유", "size": "85x80x70mm", "year": "2021", "price": 100000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-003.jpg"}, {"id": "ATP26-004", "artist": "강은경", "title": "T for 2", "medium": "흑토에 백유", "size": "75x70x60mm", "year": "2021", "price": 100000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-004.jpg"}, {"id": "ATP26-005", "artist": "구헌주", "title": "<휴먼>Human", "medium": "Acrylic on Canvas", "size": "45.5x37.9cm", "year": "2024", "price": 1200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-005.jpg"}, {"id": "ATP26-006", "artist": "구헌주", "title": "<라이프> Life", "medium": "Acrylic on Canvas", "size": "45.5X37.9cm", "year": "2024", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-006.jpg"}, {"id": "ATP26-007", "artist": "구헌주", "title": "Make Some Nois", "medium": "", "size": "", "year": "", "price": 85000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-007.jpg"}, {"id": "ATP26-008", "artist": "구헌주", "title": "<화환>", "medium": "포맥스 위 스프레이(Stencil)", "size": "", "year": "2025", "price": 2700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-008.jpg"}, {"id": "ATP26-009", "artist": "구헌주", "title": "<경고> CREATED_ 2024", "medium": "silk screen on losaspina 285g", "size": "", "year": "2024", "price": 800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-009.jpg"}, {"id": "ATP26-010", "artist": "구헌주", "title": "<퇴장> CREATED_ 2024", "medium": "silk screen on losaspina 285g", "size": "", "year": "2024", "price": 800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-010.jpg"}, {"id": "ATP26-011", "artist": "구헌주", "title": "<기울어진 운동장>", "medium": "Acrylic on wood panel", "size": "105x74cm", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-011.jpg"}, {"id": "ATP26-012", "artist": "김경화", "title": "밭대신 화분", "medium": "혼합재료(mixed media)", "size": "20×30×5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-012.jpg"}, {"id": "ATP26-013", "artist": "김경화", "title": "밭대신 화분", "medium": "혼합재료(mixed media)", "size": "20×30×5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-013.jpg"}, {"id": "ATP26-014", "artist": "김경화", "title": "도끼", "medium": "혼합재료(mixed media)", "size": "19×40cm", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-014.jpg"}, {"id": "ATP26-015", "artist": "김경화", "title": "낫", "medium": "혼합재료(mixed media)", "size": "25×44cm", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-015.jpg"}, {"id": "ATP26-016", "artist": "김경화", "title": "바이스", "medium": "혼합재료(mixed media)", "size": "37×29cm", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-016.jpg"}, {"id": "ATP26-017", "artist": "김경화", "title": "스패너", "medium": "혼합재료(mixed media)", "size": "29×37cm", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-017.jpg"}, {"id": "ATP26-018", "artist": "김경화", "title": "칼", "medium": "혼합재료(mixed media)", "size": "37×31cm", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-018.jpg"}, {"id": "ATP26-019", "artist": "김근예", "title": "마음의 모양_01", "medium": "종이 위 혼합재료", "size": "25x20cm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-019.jpg"}, {"id": "ATP26-020", "artist": "김근예", "title": "모양의 모양_02", "medium": "종이 위 혼합재료", "size": "25x20cm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-020.jpg"}, {"id": "ATP26-021", "artist": "김근예", "title": "Which One Do You Like?", "medium": "캔버스에 아크릴", "size": "90.9x65.1cm", "year": "2025", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-021.jpg"}, {"id": "ATP26-022", "artist": "김근예", "title": "Shining", "medium": "캔버스에 아크릴", "size": "90.9x65.1cm", "year": "2025", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-022.jpg"}, {"id": "ATP26-023", "artist": "김근예", "title": "가벼운 발걸음", "medium": "캔버스에 아크릴", "size": "29.7x42cm", "year": "2025", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-023.jpg"}, {"id": "ATP26-024", "artist": "김근예", "title": "비워진 자리", "medium": "캔버스에 아크릴", "size": "29.7x42cm", "year": "2025", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-024.jpg"}, {"id": "ATP26-025", "artist": "김근예", "title": "일정은 없고 기분은 좋음", "medium": "캔버스에 아크릴", "size": "29.7x42cm", "year": "2025", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-025.jpg"}, {"id": "ATP26-026", "artist": "김대홍", "title": "무서웠던 밤 Scary night_종이 위에 실크스크린+펜 드로잉_2025_N/30 ED", "medium": "무서웠던 밤 Scary night_종이 위에 실크스크린+펜 드로잉_2025_N", "size": "", "year": "2025", "price": 180000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-026.jpg"}, {"id": "ATP26-027", "artist": "김대홍", "title": "도망 Running away_31x25cm_종이 위에 실크스크린+펜_2025", "medium": "도망 Running away_31x25cm_종이 위에 실크스크린+펜_2025", "size": "31x25cm", "year": "2025", "price": 180000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-027.jpg"}, {"id": "ATP26-028", "artist": "김대홍", "title": "작은 오두막의 아침 Mornign in a little cabin__24.5x31.5cm_종이 위에 실크스크린+펜 드로잉_2025", "medium": "작은 오두막의 아침 Mornign in a little cabin__24.5x31.5cm_종이 위에 실크스크린+펜 드로잉_2025", "size": "24.5x31.5cm", "year": "2025", "price": 180000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-028.jpg"}, {"id": "ATP26-029", "artist": "김대홍", "title": "아무도 들어주지 않는 노래를 부르는 사람 4", "medium": "종이 위에 0.1-0.5mm 펜", "size": "23x30.5cm", "year": "2022", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-029.jpg"}, {"id": "ATP26-030", "artist": "김대홍", "title": "아무도 들어주지 않는 노래를 부르는 사람 14", "medium": "종이 위에 0.1-0.5mm 펜", "size": "23x30.5cm", "year": "2022", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-030.jpg"}, {"id": "ATP26-031", "artist": "김미래", "title": "따뜻한 그늘 _2023_종이에 흑연_1x2cm", "medium": "따뜻한 그늘 _2023_종이에 흑연_1x2cm", "size": "1x2cm", "year": "2023", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-031.jpg"}, {"id": "ATP26-032", "artist": "김미래", "title": "안녕", "medium": "잘 가 _2023_종이에 흑연_3x2cm", "size": "3x2cm", "year": "2023", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-032.jpg"}, {"id": "ATP26-033", "artist": "김미래", "title": "반가운 사건 _2023_종이에 흑연_4.5x3.5cm", "medium": "반가운 사건 _2023_종이에 흑연_4.5x3.5cm", "size": "4.5x3.5cm", "year": "2023", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-033.jpg"}, {"id": "ATP26-034", "artist": "김미래", "title": "구슬처럼 반짝이며 우리가 _2025_종이에 흑연", "medium": "구슬처럼 반짝이며 우리가 _2025_종이에 흑연", "size": "5x30x2.5cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-034.jpg"}, {"id": "ATP26-035", "artist": "김미래", "title": "너와 함께 이 모험을 시작하려해 _2024_종이에 흑연", "medium": "너와 함께 이 모험을 시작하려해 _2024_종이에 흑연", "size": "14x25x2.2cm", "year": "2024", "price": 400000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-035.jpg"}, {"id": "ATP26-036", "artist": "김민정", "title": "<아파트 풀꽃 그림자> Sang-lee Village", "medium": "종이에 수채", "size": "15x20cm", "year": "2026", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-036.jpg"}, {"id": "ATP26-037", "artist": "김민정", "title": "<조마이 섬으로 부터 > Sandbank", "medium": "종이에 수채", "size": "16.4x15cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-037.jpg"}, {"id": "ATP26-038", "artist": "김민정", "title": "<이어진 풍경> Continuous Scenery", "medium": "종이에 수채", "size": "34.5x24.8cm", "year": "2023", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-038.jpg"}, {"id": "ATP26-039", "artist": "김민정", "title": "<이어진 풍경> Continuous Scenery", "medium": "종이에 수채", "size": "34.5x24.8cm", "year": "2023", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-039.jpg"}, {"id": "ATP26-040", "artist": "김민정", "title": "<이어진 풍경> Continuous Scenery", "medium": "종이에 수채", "size": "34.5x24.8cm", "year": "2023", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-040.jpg"}, {"id": "ATP26-041", "artist": "김민정", "title": "<초량산책> Stroll", "medium": "종이에 수채", "size": "25x33cm", "year": "2022", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-041.jpg"}, {"id": "ATP26-042", "artist": "김민정", "title": "<초량산책> Stroll", "medium": "종이에 수채", "size": "25x33cm", "year": "2022", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-042.jpg"}, {"id": "ATP26-043", "artist": "김성진", "title": "비둘기", "medium": "장지 위에 수채", "size": "", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-043.jpg"}, {"id": "ATP26-044", "artist": "김성진", "title": "소리나는 귀", "medium": "장지 위에 수채", "size": "", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-044.jpg"}, {"id": "ATP26-045", "artist": "김성진", "title": "겨울경주", "medium": "종이 위에 목탄", "size": "", "year": "2018", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-045.jpg"}, {"id": "ATP26-046", "artist": "김성진", "title": "겨울경주", "medium": "종이 위에 목탄", "size": "", "year": "2018", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-046.jpg"}, {"id": "ATP26-047", "artist": "김성진", "title": "겨울경주", "medium": "종이 위에 목탄", "size": "", "year": "2018", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-047.jpg"}, {"id": "ATP26-048", "artist": "김성진", "title": "빛 한 모금", "medium": "종이 위에 콩테", "size": "", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-048.jpg"}, {"id": "ATP26-049", "artist": "김성진", "title": "빛 한 모금", "medium": "종이 위에 콩테", "size": "", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-049.jpg"}, {"id": "ATP26-050", "artist": "김유경", "title": "오래된 진지", "medium": "천에 혼합재료", "size": "33.4×24.2cm", "year": "2025", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-050.jpg"}, {"id": "ATP26-051", "artist": "김유경", "title": "오래된 진지", "medium": "천에 혼합재료", "size": "33.4×24.2cm", "year": "2025", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-051.jpg"}, {"id": "ATP26-052", "artist": "김유경", "title": "저마다 알고 있는 것들을 서로서로에게", "medium": "2025 천에 혼합재료", "size": "80.3×100cm", "year": "2025", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-052.jpg"}, {"id": "ATP26-053", "artist": "김유경", "title": "숲속 물냉이와 이끼", "medium": "천에 혼합재료", "size": "31.8×40.9cm", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-053.jpg"}, {"id": "ATP26-054", "artist": "김유경", "title": "피곤한 야자", "medium": "천에 혼합재료", "size": "31.8×40.9cm", "year": "2026", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-054.jpg"}, {"id": "ATP26-055", "artist": "김유경", "title": "피곤한 야자", "medium": "천에 혼합재료", "size": "31.8×40.9cm", "year": "2026", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-055.jpg"}, {"id": "ATP26-056", "artist": "김유경", "title": "피곤한 야자", "medium": "천에 혼합재료", "size": "31.8×40.9cm", "year": "2026", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-056.jpg"}, {"id": "ATP26-057", "artist": "김재민이", "title": "대한소인협회 -조언-", "medium": "조각", "size": "20x15cm", "year": "2024", "price": 1430000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-057.jpg"}, {"id": "ATP26-058", "artist": "김재민이", "title": "대한소인협회 -자리잡기-", "medium": "조각", "size": "20x15cm", "year": "2024", "price": 1430000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-058.jpg"}, {"id": "ATP26-059", "artist": "김진주", "title": "<구상나무의 수꽃> male cone of the Korean fir", "medium": "종이에 라이너펜", "size": "23x30.5cm", "year": "2023", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-059.jpg"}, {"id": "ATP26-060", "artist": "김진주", "title": "<구상나무의 암꽃> female cone of the Korean fir", "medium": "종이에 라이너펜", "size": "23x30.5cm", "year": "2023", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-060.jpg"}, {"id": "ATP26-061", "artist": "김진주", "title": "<백목련> Yulan magnolia", "medium": "종이에 라이너펜", "size": "30.5x23cm", "year": "2023", "price": 400000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-061.jpg"}, {"id": "ATP26-062", "artist": "김진주", "title": "<은행나무의 숨겨진 침엽수 잎> the hidden conifer-like leaves of the ginkgo tree", "medium": "<은행나무의 숨겨진 침엽수 잎> the hidden conifer-like leaves of the ginkgo tree", "size": "30.5x45cm", "year": "2023", "price": 1600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-062.jpg"}, {"id": "ATP26-063", "artist": "김진주", "title": "<2월에 본 은행나무의 겨울눈> the winter buds of the ginkgo tree seen in February", "medium": "<2월에 본 은행나무의 겨울눈> the winter buds of the ginkgo tree seen in February", "size": "35.5x51cm", "year": "2023", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-063.jpg"}, {"id": "ATP26-064", "artist": "김진주", "title": "<백목련", "medium": "종이에 라이너펜", "size": "30.5x23cm", "year": "2023", "price": 400000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-064.jpg"}, {"id": "ATP26-065", "artist": "김학수", "title": "<돌아오는 소리 악보> Returnning Sound 2026", "medium": "천연왁스 한지", "size": "22x1.5x1.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-065.jpg"}, {"id": "ATP26-066", "artist": "김학수", "title": "돌아오는 소리 음원 5점 출품", "medium": "", "size": "", "year": "", "price": 100000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-066.jpg"}, {"id": "ATP26-067", "artist": "김혜림", "title": "〈Concentration 3〉", "medium": "oil on canvas", "size": "", "year": "2023", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-067.jpg"}, {"id": "ATP26-068", "artist": "김혜림", "title": "〈Extension ４〉", "medium": "oil on canvas", "size": "", "year": "2025", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-068.jpg"}, {"id": "ATP26-069", "artist": "김혜림", "title": "〈응시의 시간들 2〉 Layers of Gaze", "medium": "oil on canvas", "size": "", "year": "2025", "price": 240000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-069.jpg"}, {"id": "ATP26-070", "artist": "김혜림", "title": "〈응시의 시간들 3〉 Layers of Gaze", "medium": "oil on canvas", "size": "", "year": "2025", "price": 100000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-070.jpg"}, {"id": "ATP26-071", "artist": "문지영", "title": "사탕이 녹는 동안 Sticky Wishes 2019 Gouache on paper 23×17.6㎝", "medium": "", "size": "23×17.6㎝", "year": "2019", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-071.jpg"}, {"id": "ATP26-072", "artist": "문지영", "title": "성찬식 Communion 2019 Gouache on paper 12.7×15.3㎝", "medium": "", "size": "12.7×15.3㎝", "year": "2019", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-072.jpg"}, {"id": "ATP26-073", "artist": "문지영", "title": "Light of St.Lucy 2025 Oil on canvas 지름 20㎝", "medium": "Light of St.Lucy 2025 Oil on canvas 지름 20㎝", "size": "", "year": "2025", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-073.jpg"}, {"id": "ATP26-074", "artist": "문지영", "title": "( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝", "medium": "( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝", "size": "53×80.3㎝", "year": "2025", "price": 2500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-074.jpg"}, {"id": "ATP26-075", "artist": "문지영", "title": "( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝", "medium": "( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝", "size": "53×80.3㎝", "year": "2025", "price": 2500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-075.jpg"}, {"id": "ATP26-076", "artist": "문지영", "title": "너와 나의 사랑 The way making ♡ 2025 Oil on canvas 33.4×24.2㎝", "medium": "너와 나의 사랑 The way making ♡ 2025 Oil on canvas 33.4×24.2㎝", "size": "33.4×24.2㎝", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-076.jpg"}, {"id": "ATP26-077", "artist": "문지영", "title": "보고싶었어 Miss you 2025 Oil on canvas 33.4×24.2㎝", "medium": "보고싶었어 Miss you 2025 Oil on canvas 33.4×24.2㎝", "size": "33.4×24.2㎝", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-077.jpg"}, {"id": "ATP26-078", "artist": "문지현", "title": "<다섯꼭지예언> Five-point prophecy", "medium": "캔버스에 아크릴", "size": "72.7x90.9cm", "year": "2024", "price": 2400000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-078.jpg"}, {"id": "ATP26-079", "artist": "문지현", "title": "<박새리본> Ribbon for the Little Bird", "medium": "캔버스에 아크릴", "size": "27.4x21.8cm", "year": "2024", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-079.jpg"}, {"id": "ATP26-080", "artist": "문지현", "title": "<새와 십자가> Flight and the Cross", "medium": "나무 위에 수채색연필", "size": "10x10cm", "year": "2025", "price": 150000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-080.jpg"}, {"id": "ATP26-081", "artist": "문지현", "title": "<새심장> A Bird’s Heart", "medium": "캔버스에 수채와 아크릴", "size": "40.9x31.8cm", "year": "2025", "price": 480000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-081.jpg"}, {"id": "ATP26-082", "artist": "문지현", "title": "<화살표돌> Arrow Stone", "medium": "판넬 위에 수채와 과슈", "size": "27.3x22cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-082.jpg"}, {"id": "ATP26-083", "artist": "문지현", "title": "<물고기> Swimming Woman-Fish", "medium": "나무판 위에 수채물감", "size": "10.7x12.5cm", "year": "2026", "price": 150000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-083.jpg"}, {"id": "ATP26-084", "artist": "박주호", "title": "그날의 눈물", "medium": "종이에 연필", "size": "30x40cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-084.jpg"}, {"id": "ATP26-085", "artist": "박주호", "title": "무제", "medium": "종이에 연필", "size": "30x40cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-085.jpg"}, {"id": "ATP26-086", "artist": "박주호", "title": "그 집/ 2026 / oil on canvas / 40.0x30.0cm", "medium": "oil on canvas", "size": "40.0x30.0cm", "year": "2026", "price": 1200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-086.jpg"}, {"id": "ATP26-087", "artist": "박주호", "title": "그 집/ 2026 / oil on canvas / 40.0x30.0cm", "medium": "oil on canvas", "size": "40.0x30.0cm", "year": "2026", "price": 1200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-087.jpg"}, {"id": "ATP26-088", "artist": "방정아", "title": "복숭아꽃", "medium": "acrylic on canvas 30x30cm", "size": "30x30cm", "year": "2026", "price": 1200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-088.jpg"}, {"id": "ATP26-089", "artist": "심성아", "title": "<여행하고 싶어서 사는 곳 1> Staying with traveling 1", "medium": "digital print", "size": "29.7×21cm", "year": "2017", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-089.jpg"}, {"id": "ATP26-090", "artist": "심성아", "title": "<여행하고 싶어서 사는 곳 2> Staying with traveling 2", "medium": "digital print", "size": "29.7×21cm", "year": "2018", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-090.jpg"}, {"id": "ATP26-091", "artist": "심성아", "title": "<여행하고 싶어서 사는 곳 3> Staying with traveling 3", "medium": "digital print", "size": "29.7×21cm", "year": "2019", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-091.jpg"}, {"id": "ATP26-092", "artist": "심성아", "title": "<여행하고 싶어서 사는 곳 4> Staying with traveling 4", "medium": "digital print", "size": "29.7×21cm", "year": "2019", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-092.jpg"}, {"id": "ATP26-093", "artist": "심성아", "title": "<사회의 풍경과 초상 2025> The landscape and portrait of the world 2025", "medium": "digital print", "size": "42×42cm", "year": "2025", "price": 400000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-093.jpg"}, {"id": "ATP26-094", "artist": "심성아", "title": "<사회의 풍경과 초상 2022> The landscape and portrait of the world 2022", "medium": "digital print", "size": "59.4×42cm", "year": "2022", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-094.jpg"}, {"id": "ATP26-095", "artist": "심성아", "title": "<사회의 풍경과 초상 2017> The landscape and portrait of the world 2017", "medium": "used paper on panel", "size": "90.9×65.1cm", "year": "2017", "price": 2300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-095.jpg"}, {"id": "ATP26-096", "artist": "유명희", "title": "새", "medium": "종이위에 수채물감", "size": "12×17cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-096.jpg"}, {"id": "ATP26-097", "artist": "유명희", "title": "새", "medium": "종이위에 수채물감", "size": "12×17cm", "year": "2026", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-097.jpg"}, {"id": "ATP26-098", "artist": "유명희", "title": "꽃 별", "medium": "종이위에 수채물감", "size": "17×12cm", "year": "2026", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-098.jpg"}, {"id": "ATP26-099", "artist": "유명희", "title": "꽃 별", "medium": "종이위에 수채물감", "size": "17×12cm", "year": "2026", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-099.jpg"}, {"id": "ATP26-100", "artist": "유명희", "title": "삼랑진 고양이", "medium": "종이위에 수채물감", "size": "20.2×25.2cm", "year": "2026", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-100.jpg"}, {"id": "ATP26-101", "artist": "이가영", "title": "2025", "medium": "", "size": "33x29x4cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-101.jpg"}, {"id": "ATP26-102", "artist": "이가영", "title": "없음", "medium": "2026 종이 위 펜 21x29.6cm", "size": "21x29.6cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-102.jpg"}, {"id": "ATP26-103", "artist": "이가영", "title": "2020", "medium": "종이 위에 먹", "size": "20x29cm", "year": "2020", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-103.jpg"}, {"id": "ATP26-104", "artist": "이가영", "title": "고양이", "medium": "2026 종이 위 먹 29x20cm", "size": "29x20cm", "year": "2026", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-104.jpg"}, {"id": "ATP26-105", "artist": "이가영", "title": "2010", "medium": "캔버스 위 유화", "size": "80x70cm", "year": "2010", "price": 2500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-105.jpg"}, {"id": "ATP26-106", "artist": "이수영", "title": "<샘물을 찾아서> In Search of the Wellspring2026", "medium": "한지에 채색", "size": "14.3x9.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-106.jpg"}, {"id": "ATP26-107", "artist": "이수영", "title": "<사다리 없이> Without the Ladder2026", "medium": "한지에 채색", "size": "14.3x9.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-107.jpg"}, {"id": "ATP26-108", "artist": "이수영", "title": "<리틀 심플우먼> Little Simple Women2026", "medium": "한지에 채색", "size": "14.3x9.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-108.jpg"}, {"id": "ATP26-109", "artist": "이수영", "title": "<숨> Breath2026", "medium": "한지에 채색", "size": "14.3x9.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-109.jpg"}, {"id": "ATP26-110", "artist": "이수영", "title": "<빛> A Light in the Deep2026", "medium": "한지에 채색", "size": "14.3x9.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-110.jpg"}, {"id": "ATP26-111", "artist": "임소영", "title": "<Untitled (Sea #1)>", "medium": "Pigment Print", "size": "148x210mm", "year": "2025", "price": 120000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-111.jpg"}, {"id": "ATP26-112", "artist": "임소영", "title": "<Untitled (Sea #2)>", "medium": "Pigment Print", "size": "148x210mm", "year": "2021", "price": 120000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-112.jpg"}, {"id": "ATP26-113", "artist": "임소영", "title": "<Untitled (Sea #3)>", "medium": "Pigment Print", "size": "148x210mm", "year": "2022", "price": 120000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-113.jpg"}, {"id": "ATP26-114", "artist": "임소영", "title": "<Untitled (horse)>", "medium": "Pigment Print", "size": "148x210mm", "year": "2023", "price": 150000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-114.jpg"}, {"id": "ATP26-115", "artist": "임소영", "title": "<거칠고 평온한#1 창밖풍경>", "medium": "PigmentPrint", "size": "353x233mm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-115.jpg"}, {"id": "ATP26-116", "artist": "임소영", "title": "<거칠고 평온한#2 창밖풍경", "medium": "Pigment Print", "size": "353x233mm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-116.jpg"}, {"id": "ATP26-117", "artist": "임소영", "title": "<거칠고평온한 #3 오늘>", "medium": "Pigment Print", "size": "132x174mm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-117.jpg"}, {"id": "ATP26-118", "artist": "임소영", "title": "<거칠고평온한 #4 얼굴>", "medium": "Pigment Print", "size": "132x174mm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-118.jpg"}, {"id": "ATP26-119", "artist": "전지", "title": "최소한의 새_초록 / minimal bird_ green bird / 2025 /나무 위에 석분점토 /12 x 11x 24 cm", "medium": "", "size": "12x11x24cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-119.jpg"}, {"id": "ATP26-120", "artist": "전지", "title": "최소한의 새_박새 / minimal bird_brown great tit /2026 / 15 x 11 x 25 cm", "medium": "", "size": "15x11x25cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-120.jpg"}, {"id": "ATP26-121", "artist": "전지", "title": "왜가리처럼 캄(calm)해지고 싶어 (2) / I want to look calm like a heron(2) / 2026 / 봉제인형 오토마타 /47 x 47 x 87 cm", "medium": "", "size": "47x47x87cm", "year": "2026", "price": 850000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-121.jpg"}, {"id": "ATP26-122", "artist": "전지", "title": "기댈자리 / a place to rely on /2025/나무위에 석분점토/ 27x35x6cm", "medium": "", "size": "27x35x6cm", "year": "2025", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-122.jpg"}, {"id": "ATP26-123", "artist": "전지", "title": "멀리까마귀(1) far away crow/ 2025/ 봉제인형 오토마타/ 73x40x150cm", "medium": "", "size": "73x40x150cm", "year": "2025", "price": 800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-123.jpg"}, {"id": "ATP26-124", "artist": "전지", "title": "최소한의 새_부조 드로잉/ minimal bird_high relief drawing/ 2025/ 나무위에 석분점토/ 38x47x6cm", "medium": "", "size": "38x47x6cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-124.jpg"}, {"id": "ATP26-125", "artist": "전지", "title": "새끼 왜가리입니다/i am a baby heron/2025/ 봉제인형 오토마타/ 28 x 19 x 50 cm", "medium": "", "size": "28x19x50cm", "year": "2025", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-125.jpg"}, {"id": "ATP26-126", "artist": "정시네", "title": "원도심의 기억#2 Memories of the Old Town#2 2025 백토에도자안료", "medium": "원도심의 기억#2 Memories of the Old Town#2 2025 백토에도자안료", "size": "39.5x40cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-126.jpg"}, {"id": "ATP26-127", "artist": "정시네", "title": "원도심의 기억#3 Memories of the Old Town#3 2025 백토에도자안료", "medium": "원도심의 기억#3 Memories of the Old Town#3 2025 백토에도자안료", "size": "32.2x36.5cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-127.jpg"}, {"id": "ATP26-128", "artist": "정시네", "title": "원도심의 기억#6 Memories of the Old Town#6 2025 백토에도자안료", "medium": "원도심의 기억#6 Memories of the Old Town#6 2025 백토에도자안료", "size": "33.5x38.2cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-128.jpg"}, {"id": "ATP26-129", "artist": "정시네", "title": "원도심의 기억#7 Memories of the Old Town#7 2025 백토에 도자안료", "medium": "원도심의 기억#7 Memories of the Old Town#7 2025 백토에 도자안료", "size": "29.5x36.3cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-129.jpg"}, {"id": "ATP26-130", "artist": "정시네", "title": "원도심의파편들8 Fragments of the Old Town8 2023 백토", "medium": "도자안료 31.7x28.8cm", "size": "31.7x28.8cm", "year": "2023", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-130.jpg"}, {"id": "ATP26-131", "artist": "정시네", "title": "원도심의파편들11 Fragments of the Old Town14 2023 백토", "medium": "도자안료31.7x28.8cm", "size": "31.7x28.8cm", "year": "2023", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-131.jpg"}, {"id": "ATP26-132", "artist": "정시네", "title": "원도심의파편들14 Fragments of the Old Town11 2023 백토", "medium": "도자안료 31.7x28.8cm", "size": "31.7x28.8cm", "year": "2023", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-132.jpg"}, {"id": "ATP26-133", "artist": "조정환", "title": "Waterfront", "medium": "", "size": "25.5×25㎝", "year": "2017", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-133.jpg"}, {"id": "ATP26-134", "artist": "조정환", "title": "Waterfront", "medium": "", "size": "36×27㎝", "year": "2017", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-134.jpg"}, {"id": "ATP26-135", "artist": "조정환", "title": "<콘크리트-연기>Concrete-Smoke", "medium": "캔버스에 유채", "size": "33.4×24.2㎝", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-135.jpg"}, {"id": "ATP26-136", "artist": "조정환", "title": "<유리-연기>Glass-Smoke", "medium": "캔버스에 유채", "size": "33.4×24.2㎝", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-136.jpg"}, {"id": "ATP26-137", "artist": "조정환", "title": "<자루>Hanging-Units", "medium": "오일파스텔 53×45.5㎝", "size": "53×45.5㎝", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-137.jpg"}, {"id": "ATP26-138", "artist": "조정환", "title": "<거주기계>Architectural Machine", "medium": "캔버스에 목탄", "size": "53×40.9㎝", "year": "2018", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-138.jpg"}, {"id": "ATP26-139", "artist": "조정환", "title": "<집단서식> Microhabitat", "medium": "캔버스에 유채", "size": "65×53㎝", "year": "2016", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-139.jpg"}, {"id": "ATP26-140", "artist": "최민경", "title": "수집된 광물 001~010 collected mineral 001~010", "medium": "", "size": "", "year": "2026", "price": 20000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-140.jpg"}, {"id": "ATP26-141", "artist": "최민경", "title": "수집된 광물 011~020 collected mineral 011~020", "medium": "", "size": "", "year": "2026", "price": 30000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-141.jpg"}, {"id": "ATP26-142", "artist": "최민경", "title": "수집된 광물 021~028", "medium": "", "size": "", "year": "2026", "price": 100000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-142.jpg"}, {"id": "ATP26-143", "artist": "최민경", "title": "수집된 광물 029~030", "medium": "", "size": "", "year": "2026", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-143.jpg"}, {"id": "ATP26-144", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-144.jpg"}, {"id": "ATP26-145", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-145.jpg"}, {"id": "ATP26-146", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-146.jpg"}, {"id": "ATP26-147", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-147.jpg"}, {"id": "ATP26-148", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-148.jpg"}, {"id": "ATP26-149", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-149.jpg"}, {"id": "ATP26-150", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-150.jpg"}, {"id": "ATP26-151", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-151.jpg"}, {"id": "ATP26-152", "artist": "심승보", "title": "생각에 잠긴 가마우지 영문 : :a thoughtful cormorant) mixed media 73cm x 64cm 2024", "medium": "생각에 잠긴 가마우지 영문 : :a thoughtful cormorant) mixed media 73cm x 64cm 2024", "size": "", "year": "2024", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-152.jpg"}, {"id": "ATP26-153", "artist": "심승보", "title": "자연으로 돌아가고 싶어요1 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "medium": "자연으로 돌아가고 싶어요1 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "size": "", "year": "2022", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-153.jpg"}, {"id": "ATP26-154", "artist": "심승보", "title": "자연으로 돌아가고 싶어요2 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "medium": "자연으로 돌아가고 싶어요2 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "size": "", "year": "2022", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-154.jpg"}, {"id": "ATP26-155", "artist": "심승보", "title": "자연으로 돌아가고 싶어요3 (영문 : I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "medium": "자연으로 돌아가고 싶어요3 (영문 : I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "size": "", "year": "2022", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-155.jpg"}, {"id": "ATP26-156", "artist": "심승보", "title": "자연으로 돌아가고 싶어요4 영문; I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "medium": "자연으로 돌아가고 싶어요4 영문; I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "size": "", "year": "2022", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-156.jpg"}, {"id": "ATP26-157", "artist": "심승보", "title": "펭귄 연인 영문:Penguin lovers acrylic on canvas 45cm x 54cm 2024", "medium": "펭귄 연인 영문:Penguin lovers acrylic on canvas 45cm x 54cm 2024", "size": "", "year": "2024", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-157.jpg"}, {"id": "ATP26-158", "artist": "신수빈", "title": "Soft gravityⅡ", "medium": "한지에 수간채색", "size": "60.7×72.5cm", "year": "2025", "price": 2500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-158.jpg"}, {"id": "ATP26-159", "artist": "신수빈", "title": "Soft gravityⅢ", "medium": "한지에 수간채색", "size": "60.7×72.5cm", "year": "2025", "price": 2500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-159.jpg"}, {"id": "ATP26-160", "artist": "신수빈", "title": "love-blending-into-faith", "medium": "한지에 수간채색", "size": "12×22.8cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-160.jpg"}, {"id": "ATP26-161", "artist": "신수빈", "title": "뼈다귀지키기", "medium": "한지에 수간채색", "size": "27.5×22.2cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-161.jpg"}, {"id": "ATP26-162", "artist": "신수빈", "title": "영원한 지속Ⅰ", "medium": "한지에 수간채색", "size": "25.3×18cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-162.jpg"}, {"id": "ATP26-163", "artist": "신수빈", "title": "영원한 지속Ⅱ", "medium": "한지에 수간채색", "size": "34.8×27.4cm", "year": "2025", "price": 750000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-163.jpg"}, {"id": "ATP26-164", "artist": "신수빈", "title": "영원한 지속Ⅲ", "medium": "한지에 수간채색", "size": "27.5×22.2cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-164.jpg"}, {"id": "ATP26-165", "artist": "안소영", "title": "<산맥> Mountain ranges", "medium": "", "size": "60.6×72.7cm", "year": "2025", "price": 3000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-165.jpg"}, {"id": "ATP26-166", "artist": "안소영", "title": "<산맥> Mountain ranges", "medium": "", "size": "45.5×53cm", "year": "2025", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-166.jpg"}, {"id": "ATP26-167", "artist": "안소영", "title": "<마음에 산맥을 일으켜> Raising mountain ranges in the heart 2022", "medium": "", "size": "58×20cm", "year": "2022", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-167.jpg"}, {"id": "ATP26-168", "artist": "안소영", "title": "<산맥> Mountain ranges", "medium": "", "size": "25×25cm", "year": "2026", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-168.jpg"}, {"id": "ATP26-169", "artist": "안소영", "title": "<산맥> Mountain ranges", "medium": "", "size": "14×22.5cm", "year": "2026", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-169.jpg"}, {"id": "ATP26-170", "artist": "조재임", "title": "<바람숲> Windforest", "medium": "장지", "size": "", "year": "2016", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-170.jpg"}, {"id": "ATP26-171", "artist": "조재임", "title": "<바람의 창> The Breath's Way", "medium": "장지", "size": "20.5x29cm", "year": "2025", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-171.jpg"}, {"id": "ATP26-172", "artist": "조재임", "title": "<바람의 창> The Breath's Way", "medium": "장지", "size": "20.5x29cm", "year": "2025", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-172.jpg"}, {"id": "ATP26-173", "artist": "조재임", "title": "<바람숲> Windforest", "medium": "장지에 채색한지", "size": "25x25cm", "year": "2020", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-173.jpg"}, {"id": "ATP26-174", "artist": "조재임", "title": "<바람숲> Windforest", "medium": "장지에 채색한지", "size": "26x34cm", "year": "2023", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-174.jpg"}, {"id": "ATP26-175", "artist": "황인지", "title": "<혼자가 되면 보이는 것들> 2020", "medium": "이태리타월에 채색", "size": "16x14cm", "year": "2020", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-175.jpg"}, {"id": "ATP26-176", "artist": "황인지", "title": "<따뜻한 환대> 2023", "medium": "한지에 채색", "size": "20x53cm", "year": "2023", "price": 1200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-176.jpg"}, {"id": "ATP26-177", "artist": "황인지", "title": "<여기서는 울어도 돼> 2023", "medium": "한지에 채색", "size": "27.5x22cm", "year": "2023", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-177.jpg"}, {"id": "ATP26-178", "artist": "황인지", "title": "<작지만 위대한 것들> 2023", "medium": "한지에 채색", "size": "25x64cm", "year": "2023", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-178.jpg"}, {"id": "ATP26-179", "artist": "황인지", "title": "<Love and Illness> 2025", "medium": "한지에 채색", "size": "25x65cm", "year": "2025", "price": 2200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-179.jpg"}, {"id": "ATP26-180", "artist": "이다슬", "title": "<종달새 날아오르면 나를 꼬옥 안아주세요", "medium": "Gelatin Silver Print", "size": "46x41cm", "year": "2022", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-180.jpg"}, {"id": "ATP26-181", "artist": "이다슬", "title": "<종달새 날아오르면 나를 꼬옥 안아주세요", "medium": "Archival Pigment Print", "size": "63x63cm", "year": "2021", "price": 650000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-181.jpg"}, {"id": "ATP26-182", "artist": "이다슬", "title": "<수리수리마하수리 수수리사바하> 2023", "medium": "종이에 격면주사와 기름을 혼합한 글씨", "size": "14.5x16.5cm", "year": "2023", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-182.jpg"}, {"id": "ATP26-183", "artist": "이다슬", "title": "<30여년만에 화분으로서 역할을 부여 받아 환삼덩굴을 키워냈던 화분이지만", "medium": "캔버스에 크레파스", "size": "25.5x18cm", "year": "2017", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-183.jpg"}, {"id": "ATP26-184", "artist": "이다슬", "title": "<완벽한 잡초 재배를 위한 토분>", "medium": "", "size": "12x12x25cm", "year": "2023", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-184.jpg"}, {"id": "ATP26-185", "artist": "이다슬", "title": "<127개의 잘린 아로니아 나무 밑동 중 하나>", "medium": "석고", "size": "30x40x20cm", "year": "2024", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-185.jpg"}, {"id": "ATP26-186", "artist": "서찬석", "title": "<영도구 신선동 2가> Sinseon-dong 2ga", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-186.jpg"}, {"id": "ATP26-187", "artist": "서찬석", "title": "<중구 광복동 1가> Gwangbok-dong 1ga", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-187.jpg"}, {"id": "ATP26-188", "artist": "서찬석", "title": "<중구 중앙동 4가> Jungang-dong 4ga", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-188.jpg"}, {"id": "ATP26-189", "artist": "서찬석", "title": "<중구 보수동 1가> Bosu-dong 1ga", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-189.jpg"}, {"id": "ATP26-190", "artist": "서찬석", "title": "<중구 대청동 2가> Daecheong-dong 2ga", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-190.jpg"}, {"id": "ATP26-191", "artist": "서찬석", "title": "<동구 좌천동> Jwacheon-dong", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-191.jpg"}, {"id": "ATP26-192", "artist": "황현덕", "title": "<고양이 인간>", "medium": "acrylic on canvas", "size": "40x20cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-192.jpg"}, {"id": "ATP26-193", "artist": "황현덕", "title": "<구조와 사람>", "medium": "mix paiting on canvas", "size": "30x30cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-193.jpg"}, {"id": "ATP26-194", "artist": "황현덕", "title": "<문어와 점>", "medium": "acrylic on canvas", "size": "40x20cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-194.jpg"}, {"id": "ATP26-195", "artist": "황현덕", "title": "<손과 지구>", "medium": "acrylic on canvas", "size": "40x20cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-195.jpg"}, {"id": "ATP26-196", "artist": "황현덕", "title": "<음악과 노동자> 2025", "medium": "acrylic on canvas", "size": "40x20cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-196.jpg"}, {"id": "ATP26-197", "artist": "방화선", "title": "태극선", "medium": "", "size": "", "year": "", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-197.jpg"}, {"id": "ATP26-198", "artist": "방화선", "title": "삼배원선", "medium": "", "size": "", "year": "", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-198.jpg"}, {"id": "ATP26-199", "artist": "방화선", "title": "연화선(흰색 대)", "medium": "", "size": "", "year": "", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-199.jpg"}, {"id": "ATP26-200", "artist": "방화선", "title": "연화선", "medium": "", "size": "", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-200.jpg"}, {"id": "ATP26-201", "artist": "방화선", "title": "연화선(중)", "medium": "", "size": "", "year": "", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-201.jpg"}, {"id": "ATP26-202", "artist": "방화선", "title": "연화선(검은색)", "medium": "", "size": "", "year": "", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-202.jpg"}, {"id": "ATP26-203", "artist": "방화선", "title": "연화선(흰색 중)", "medium": "", "size": "", "year": "", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-203.jpg"}, {"id": "ATP26-204", "artist": "방화선", "title": "연화선(초록잎)", "medium": "", "size": "", "year": "", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-204.jpg"}, {"id": "ATP26-205", "artist": "방화선", "title": "분홍연화선", "medium": "", "size": "", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-205.jpg"}, {"id": "ATP26-206", "artist": "방화선", "title": "화폭선", "medium": "", "size": "", "year": "", "price": 800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-206.jpg"}, {"id": "ATP26-207", "artist": "방화선", "title": "파초선", "medium": "", "size": "", "year": "", "price": 800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-207.jpg"}, {"id": "ATP26-208", "artist": "방화선", "title": "옻칠 연엽선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-208.jpg"}, {"id": "ATP26-209", "artist": "방화선", "title": "옻칠 연엽선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-209.jpg"}, {"id": "ATP26-210", "artist": "방화선", "title": "옻칠 선녀선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-210.jpg"}, {"id": "ATP26-211", "artist": "방화선", "title": "옻칠 선녀선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-211.jpg"}, {"id": "ATP26-212", "artist": "방화선", "title": "비녀 곡두선(검은색)", "medium": "", "size": "", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-212.jpg"}, {"id": "ATP26-213", "artist": "방화선", "title": "비녀 곡두선(붉은색)", "medium": "", "size": "", "year": "", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-213.jpg"}, {"id": "ATP26-214", "artist": "방화선", "title": "거북단선", "medium": "", "size": "", "year": "", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-214.jpg"}, {"id": "ATP26-215", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-215.jpg"}, {"id": "ATP26-216", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-216.jpg"}, {"id": "ATP26-217", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-217.jpg"}, {"id": "ATP26-218", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-218.jpg"}, {"id": "ATP26-219", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-219.jpg"}, {"id": "ATP26-220", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-220.jpg"}, {"id": "ATP26-221", "artist": "방화선", "title": "큰 미선(붉은색)", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-221.jpg"}, {"id": "ATP26-222", "artist": "방화선", "title": "큰 미선((갈색)", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-222.jpg"}, {"id": "ATP26-223", "artist": "방화선", "title": "큰 미선(푸른색)", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-223.jpg"}, {"id": "ATP26-224", "artist": "방화선", "title": "큰 미선(미색)", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-224.jpg"}, {"id": "ATP26-225", "artist": "방화선", "title": "반구선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-225.jpg"}, {"id": "ATP26-226", "artist": "방화선", "title": "반구선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-226.jpg"}, {"id": "ATP26-227", "artist": "방화선", "title": "연월선", "medium": "", "size": "", "year": "", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-227.jpg"}, {"id": "ATP26-228", "artist": "방화선", "title": "연월선", "medium": "", "size": "", "year": "", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-228.jpg"}, {"id": "ATP26-229", "artist": "방화선", "title": "옻칠 듸림선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-229.jpg"}, {"id": "ATP26-230", "artist": "방화선", "title": "옻칠 태극선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-230.jpg"}, {"id": "ATP26-231", "artist": "방화선", "title": "옻칠 태극선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-231.jpg"}, {"id": "ATP26-232", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-232.jpg"}, {"id": "ATP26-233", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-233.jpg"}, {"id": "ATP26-234", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-234.jpg"}, {"id": "ATP26-235", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-235.jpg"}, {"id": "ATP26-236", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-236.jpg"}, {"id": "ATP26-237", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-237.jpg"}, {"id": "ATP26-238", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-238.jpg"}, {"id": "ATP26-239", "artist": "배무삼", "title": "기바리 눈쟁이연(액자) 45 X 65cm", "medium": "", "size": "45X65cm", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-239.jpg"}, {"id": "ATP26-240", "artist": "배무삼", "title": "중모리연(액자) 45 X 65cm", "medium": "", "size": "45X65cm", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-240.jpg"}, {"id": "ATP26-241", "artist": "배무삼", "title": "돌쪽바지기 눈쟁이 연(액자) 45 X 65cm", "medium": "", "size": "45X65cm", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-241.jpg"}, {"id": "ATP26-242", "artist": "배무삼", "title": "귀머리 홍치마 연(액자) 45 X 65cm", "medium": "", "size": "45X65cm", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-242.jpg"}, {"id": "ATP26-243", "artist": "배무삼", "title": "귀머리연(액자) 45 X 65cm", "medium": "", "size": "45X65cm", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-243.jpg"}];
+
+const won=n=>n.toLocaleString("ko-KR");
+const ARTIST_RATE=0.70,VAT=0.10;
+const tierOf=p=>p<=500000?"entry":p<=1500000?"mid":"high";
+const TIER_LABEL={entry:"엔트리",mid:"중가",high:"고가"};
+const NO_FEE_MAX=100000;
+const hasFee=p=>p>NO_FEE_MAX;
+const vat=p=>Math.round(p*VAT);
+const total=p=>p+vat(p);
+const artistCut=p=>hasFee(p)?Math.round(p*ARTIST_RATE):p;
+const orgCut=p=>p-artistCut(p);
+
+let view="dash";
+function setTheme(t){
+  document.documentElement.setAttribute("data-theme",t==="blue"?"blue":"red");
+  document.getElementById("th-red").classList.toggle("on",t!=="blue");
+  document.getElementById("th-blue").classList.toggle("on",t==="blue");
+}
+function switchView(v){
+  view=v;
+  document.getElementById("view-dash").classList.toggle("hide",v!=="dash");
+  document.getElementById("view-label").classList.toggle("hide",v!=="label");
+  document.getElementById("tab-dash").classList.toggle("on",v==="dash");
+  document.getElementById("tab-label").classList.toggle("on",v==="label");
+  render();
+}
+function filtered(){
+  const a=document.getElementById("fArtist").value,t=document.getElementById("fTier").value,
+        s=document.getElementById("fStatus").value,q=document.getElementById("fSearch").value.trim();
+  return works.filter(w=>(!a||w.artist===a)&&(!t||tierOf(w.price)===t)&&(!s||w.status===s)&&(!q||w.artist.includes(q)||w.title.includes(q)));
+}
+function buildArtistFilter(){
+  const names=[...new Set(works.map(w=>w.artist))];
+  document.getElementById("fArtist").innerHTML='<option value="">작가 전체 ('+names.length+'명)</option>'+names.map(n=>`<option>${n}</option>`).join("");
+}
+function renderStats(){
+  const sold=works.filter(w=>w.status==="출항");
+  const soldSum=sold.reduce((s,w)=>s+w.price,0),
+        artistSum=sold.reduce((s,w)=>s+artistCut(w.price),0),
+        orgSum=sold.reduce((s,w)=>s+orgCut(w.price),0),
+        c=st=>works.filter(w=>w.status===st).length;
+  document.getElementById("statGrid").innerHTML=`
+    <div class="stat"><div class="k">출품 작품 / WORKS</div><div class="v">${works.length}<small> 점</small></div></div>
+    <div class="stat"><div class="k">정박 / ANCHORED</div><div class="v">${c("정박")}<small> 점</small></div></div>
+    <div class="stat"><div class="k">통관 / CLEARANCE</div><div class="v">${c("통관")}<small> 점</small></div></div>
+    <div class="stat accent"><div class="k">출항 / DEPARTED</div><div class="v">${c("출항")}<small> 점</small></div></div>
+    <div class="stat accent"><div class="k">총 판매액</div><div class="v">${won(soldSum)}<small> 원</small></div></div>
+    <div class="stat"><div class="k">작가 정산 70%</div><div class="v">${won(artistSum)}<small> 원</small></div></div>
+    <div class="stat"><div class="k">운영 수수료 30%</div><div class="v">${won(orgSum)}<small> 원</small></div></div>
+    <div class="stat"><div class="k">참여 작가</div><div class="v">${new Set(works.map(w=>w.artist)).size}<small> 명</small></div></div>`;
+  const ranges={entry:"50,000–500,000원",mid:"500,000–1,500,000원",high:"1,500,000–3,000,000원"};
+  const total=works.length||1;
+  document.getElementById("tierRow").innerHTML=["entry","mid","high"].map(t=>{
+    const n=works.filter(w=>tierOf(w.price)===t).length,pct=Math.round(n/total*100);
+    return `<div class="tier"><div class="label"><span>${TIER_LABEL[t]} 가격대</span><span>${n}점 · ${pct}%</span></div>
+      <div class="bar"><i style="width:${pct}%"></i></div><div class="note">${ranges[t]}</div></div>`;
+  }).join("");
+}
+function renderTable(){
+  const rows=filtered();
+  document.getElementById("rowCount").textContent=`${rows.length} / ${works.length} 점`;
+  document.getElementById("tbody").innerHTML=rows.map(w=>{
+    const opts=["정박","통관","출항"].map(s=>`<option ${s===w.status?"selected":""}>${s}</option>`).join("");
+    return `<tr>
+      <td class="num">${w.booth||"—"}</td><td><b>${w.artist}</b></td><td>${w.title}</td>
+      <td style="font-size:14px;color:var(--gray-text)">${w.medium} · ${w.size}</td>
+      <td class="price red">${won(w.price)}</td><td class="price">${won(artistCut(w.price))}</td><td class="price">${hasFee(w.price)?won(orgCut(w.price)):"—"}</td>
+      <td><select class="row-sel" onchange="setField('${w.id}','status',this.value)">${opts}</select></td>
+      <td><button class="open-label" onclick="openLabel('${w.id}')">보기</button></td></tr>`;
+  }).join("");
+}
+function setField(id,field,val){
+  const w=works.find(x=>x.id===id); if(!w)return;
+  w[field]=val;
+  if(field==="status"&&val==="출항"&&!w.soldDate)w.soldDate=new Date().toISOString().slice(0,10);
+  if(field==="status"&&val!=="출항")w.soldDate="";
+  render();
+}
+function labelHTML(w){
+  const stMap={정박:"s-jeongbak",통관:"s-tonggwan",출항:"s-chulhang"},
+        stEn={정박:"ANCHORED",통관:"CLEARANCE",출항:"DEPARTED"},t=tierOf(w.price);
+  const qrImg=makeWorkQR(w);
+  const settleHTML = hasFee(w.price)
+    ? `<div class="stitle">SETTLEMENT · 판매가 분배</div>
+      <div class="sbar"><div class="sa" style="width:70%">작가 70%</div><div class="so" style="width:30%">운영 30%</div></div>
+      <div class="samt"><span>작가 수령 <b>${won(artistCut(w.price))}원</b></span><span>운영 수수료 ${won(orgCut(w.price))}원</span></div>
+      <div class="sfee">운영 수수료에는 카드 운영 수수료, 판매자 수수료, 포장 및 운송 수수료가 포함됩니다.</div>`
+    : `<div class="stitle">SETTLEMENT · 수수료 없음</div>
+      <div class="sbar"><div class="sa" style="width:100%">작가 100%</div></div>
+      <div class="samt"><span>작가 수령 <b>${won(w.price)}원</b></span><span>수수료 없음</span></div>
+      <div class="sfee">10만 원 이하 작품에는 수수료를 적용하지 않습니다. 작가가 판매가 전액을 수령합니다.</div>`;
+  return `<div class="label" id="lbl-${w.id}">
+    <div class="lhead">
+      <div class="lid"><b>예술무역항 2026 · 전시 위치</b>${w.booth||"위치 미정"}</div>
+      <div class="stamp ${stMap[w.status]}"><div class="st-kr">${w.status}</div><div class="st-en">${stEn[w.status]}</div></div>
+    </div>
+    ${w.img?`<div class="photo"><img src="${w.img}" alt="${w.title}" loading="lazy" onerror="this.parentNode.classList.add('empty');this.parentNode.textContent='IMAGE';"></div>`:`<div class="photo empty">IMAGE</div>`}
+    <div class="lbody"><div class="artist">${w.artist}</div><div class="title"><em>${w.title}</em></div>
+      <div class="meta">${w.medium} · ${w.size} · ${w.year}</div></div>
+    <div class="price-block"><span class="pk">판매가 (부가세 별도)</span><span class="pv">₩ ${won(w.price)}</span></div>
+    <div class="price-sub"><span>부가세 10% ${won(vat(w.price))}원</span><span>결제 금액 ${won(total(w.price))}원</span></div>
+    <div class="settle">${settleHTML}</div>
+    <div class="ledger"><div class="lg-title">SALES LEDGER · 운영 기록란</div>
+      <div class="lg-grid">
+        <div class="lc"><span>판매 담당</span><span>${w.assignee==="미배정"?"________":w.assignee}</span></div>
+        <div class="lc"><span>판매일</span><span>${w.soldDate||"____ . __ . __"}</span></div>
+        <div class="lc"><span>결제</span><span>카드 / ________</span></div>
+        <div class="lc"><span>정산 상태</span><span>${w.status==="출항"?"정산 대기":"—"}</span></div>
+      </div></div>
+    <div class="lfoot-row">
+      <div class="lfoot">정산은 판매일로부터 14일 이내 완료합니다. 결제는 카드만 가능합니다.</div>
+      ${qrImg?`<div class="qr"><img src="${qrImg}" alt="QR ${w.id}"><small>SCAN</small></div>`:""}
+    </div>
+  </div>`;
+}
+const _params=new URLSearchParams(location.search);
+const LOCK_WORK=_params.get("work"), LOCK_ARTIST=_params.get("artist");
+function makeQR(text){
+  try{
+    if(typeof qrcode==="undefined") return "";
+    const qr=qrcode(0,"M"); qr.addData(text); qr.make();
+    return qr.createDataURL(4,8);
+  }catch(e){ return ""; }
+}
+const _qrCache={};
+function makeWorkQR(w){
+  const el=document.getElementById("pubBase");
+  let base=(el&&el.value.trim())||(location.origin+location.pathname);
+  const url=base+(base.includes("?")?"&":"?")+"work="+encodeURIComponent(w.id);
+  if(_qrCache[url]!==undefined) return _qrCache[url];
+  const d=makeQR(url); _qrCache[url]=d; return d;
+}
+function labelFilter(){
+  if(LOCK_WORK) return works.filter(w=>w.id===LOCK_WORK);
+  if(LOCK_ARTIST) return works.filter(w=>w.artist===LOCK_ARTIST);
+  const q=(document.getElementById("labelSearch").value||"").trim(),s=document.getElementById("labelStatus").value;
+  return works.filter(w=>(!q||w.artist.includes(q)||w.title.includes(q)||w.id.toLowerCase().includes(q.toLowerCase()))&&(!s||w.status===s));
+}
+function renderLabels(){
+  const rows=labelFilter();
+  document.getElementById("labelCount").textContent=`${rows.length} / ${works.length}점 표시`;
+  document.getElementById("labelSheet").innerHTML=rows.map(labelHTML).join("");
+}
+function openLabel(id){
+  document.getElementById("labelSearch").value="";document.getElementById("labelStatus").value="";
+  switchView("label");
+  setTimeout(()=>{const el=document.getElementById("lbl-"+id);
+    if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.style.outline="3px solid var(--brand)";setTimeout(()=>el.style.outline="",1400);}},60);
+}
+function render(){ if(view==="dash"){renderStats();renderTable();}else renderLabels(); }
+buildArtistFilter();
+if(LOCK_WORK||LOCK_ARTIST){ document.body.classList.add("kiosk"); switchView("label"); }
+else render();
+</script>
+</body>
+</html>
