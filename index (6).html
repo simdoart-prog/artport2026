@@ -183,8 +183,26 @@
   .cert .cissuer .ititle{font-family:var(--poster);font-size:23px;color:var(--ink);line-height:1.12;letter-spacing:.01em;}
   .cert .cissuer .iaddr{font-size:12px;font-weight:300;color:var(--gray-text);margin-top:8px;}
 
+  /* ---------- 홈 (메인) ---------- */
+  #view-home{padding:18px 0 60px;}
+  .home-inner{max-width:560px;margin:0 auto;text-align:center;}
+  .home-poster{width:100%;max-width:460px;height:auto;display:block;margin:0 auto 26px;border:1px solid var(--gray-line);}
+  .home-tiles{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .home-tile{text-align:left;border:2.5px solid var(--ink);background:#fff;padding:22px 20px;cursor:pointer;display:flex;flex-direction:column;gap:5px;font-family:var(--font);transition:transform .08s ease,box-shadow .08s ease;}
+  .home-tile:hover{transform:translateY(-3px);box-shadow:6px 6px 0 var(--ink);}
+  .home-tile .ht-en{font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--gray-text);}
+  .home-tile .ht-ko{font-size:26px;font-weight:800;color:var(--ink);}
+  .home-tile .ht-desc{font-size:12.5px;font-weight:300;color:var(--gray-text);}
+  .home-tile .ht-bar{height:8px;margin-top:10px;}
+  .home-tile.t-blue .ht-bar{background:#3D44FF;}
+  .home-tile.t-orange .ht-bar{background:#FF3300;}
+  .home-more{display:flex;gap:10px;justify-content:center;}
+  .home-more button{border:1.5px solid var(--gray-line);background:#fff;padding:9px 16px;font-weight:700;font-size:13px;cursor:pointer;font-family:var(--font);color:var(--ink);}
+  .home-more button:hover{border-color:var(--ink);}
+  @media(max-width:560px){.home-tiles{grid-template-columns:1fr;} .home-h1{font-size:34px;}}
+
   @media print{
-    .tabs,.label-toolbar,.cert-toolbar,.inv-toolbar,.help,header.top,.inv .icollect{display:none!important;}
+    .tabs,.label-toolbar,.cert-toolbar,.inv-toolbar,.help,header.top,.inv .icollect,#view-home{display:none!important;}
     .label{break-inside:avoid;border:2px solid #000;}
     .cert,.inv{break-inside:avoid;page-break-after:always;margin:0 auto;}
     @page{margin:12mm;}
@@ -237,7 +255,7 @@
 <form name="purchase" data-netlify="true" netlify-honeypot="bot-field" hidden>
   <input type="text" name="work"><input type="text" name="artist"><input type="text" name="title">
   <input type="text" name="price"><input type="text" name="total"><input type="text" name="issueDate">
-  <input type="text" name="buyer"><input type="text" name="contact"><input type="text" name="address">
+  <input type="text" name="buyer"><input type="text" name="contact"><input type="text" name="address"><input type="text" name="seller">
   <input type="text" name="bot-field">
 </form>
 <div class="wrap">
@@ -249,11 +267,37 @@
   </header>
 
   <div class="tabs">
+    <button id="tab-home" onclick="switchView('home')">← 홈</button>
     <button id="tab-dash" class="on" onclick="switchView('dash')">가격 관제</button>
     <button id="tab-label" onclick="switchView('label')">유통 라벨</button>
     <button id="tab-cert" onclick="switchView('cert')">작품 보증서</button>
     <button id="tab-inv" onclick="switchView('invoice')">인보이스</button>
   </div>
+
+  <!-- HOME -->
+  <section id="view-home" class="hide">
+    <div class="home-inner">
+      <img class="home-poster" src="img/poster-main.jpg" alt="예술무역항 2026 포스터">
+      <div class="home-tiles">
+        <button class="home-tile t-blue" onclick="switchView('label')">
+          <span class="ht-en">DISTRIBUTION LABEL</span>
+          <span class="ht-ko">유통 라벨</span>
+          <span class="ht-desc">작품별 가격·정산 라벨 보기 · 인쇄 · QR</span>
+          <span class="ht-bar"></span>
+        </button>
+        <button class="home-tile t-orange" onclick="switchView('dash')">
+          <span class="ht-en">PRICE CONTROL</span>
+          <span class="ht-ko">가격 관제</span>
+          <span class="ht-desc">작품 현황 · 판매 상태 · 기록 관리</span>
+          <span class="ht-bar"></span>
+        </button>
+      </div>
+      <div class="home-more">
+        <button onclick="switchView('cert')">작품 보증서</button>
+        <button onclick="switchView('invoice')">인보이스</button>
+      </div>
+    </div>
+  </section>
 
   <!-- DASHBOARD -->
   <section id="view-dash">
@@ -2672,7 +2716,7 @@ function collectBuyer(id){
   const w=works.find(x=>x.id===id); if(!w)return;
   const b=BUYER[id]||{};
   if(!(b.name||b.contact||b.address)){ alert("구매자 성명·연락처·주소 중 하나 이상을 입력해 주세요."); return; }
-  const data={"form-name":"purchase","bot-field":"",work:w.id,artist:w.artist,title:w.title,price:String(w.price),total:String(total(w.price)),issueDate:issueDate(w),buyer:b.name||"",contact:b.contact||"",address:b.address||""};
+  const data={"form-name":"purchase","bot-field":"",work:w.id,artist:w.artist,title:w.title,price:String(w.price),total:String(total(w.price)),issueDate:issueDate(w),buyer:b.name||"",contact:b.contact||"",address:b.address||"",seller:b.seller||""};
   const body=Object.keys(data).map(k=>encodeURIComponent(k)+"="+encodeURIComponent(data[k])).join("&");
   const el=document.getElementById("cmsg-"+id); if(el){el.textContent="전송 중…"; el.className="cmsg";}
   fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body})
@@ -2690,9 +2734,9 @@ function dateSelect(w){
 function saveState(){ try{ const st={}; works.forEach(w=>st[w.id]={status:w.status,soldDate:w.soldDate}); localStorage.setItem("atp26_state",JSON.stringify({works:st,buyers:BUYER,issue:ISSUE,collected:COLLECTED})); }catch(e){} }
 function loadState(){ try{ const raw=localStorage.getItem("atp26_state"); if(!raw)return; const d=JSON.parse(raw); if(d.works)works.forEach(w=>{const r=d.works[w.id]; if(r){w.status=r.status||w.status; w.soldDate=r.soldDate||"";}}); if(d.buyers)Object.assign(BUYER,d.buyers); if(d.issue)Object.assign(ISSUE,d.issue); if(d.collected)Object.assign(COLLECTED,d.collected); }catch(e){} }
 function exportCSV(){
-  const head=["관리번호","위치","작가","작품명","재료","크기","연도","판매가","부가세","합계","작가수령70","운영수수료30","상태","판매일","발행일","구매자","연락처","주소"];
+  const head=["관리번호","위치","작가","작품명","재료","크기","연도","판매가","부가세","합계","작가수령70","운영수수료30","상태","판매일","발행일","구매자","연락처","주소","판매자"];
   const rows=works.map(w=>{const b=BUYER[w.id]||{};
-    return [w.id,boothLabel(w.booth),w.artist,w.title,w.medium,w.size,w.year,w.price,vat(w.price),total(w.price),artistCut(w.price),hasFee(w.price)?orgCut(w.price):0,w.status,w.soldDate||"",issueDate(w),b.name||"",b.contact||"",b.address||""];});
+    return [w.id,boothLabel(w.booth),w.artist,w.title,w.medium,w.size,w.year,w.price,vat(w.price),total(w.price),artistCut(w.price),hasFee(w.price)?orgCut(w.price):0,w.status,w.soldDate||"",issueDate(w),b.name||"",b.contact||"",b.address||"",b.seller||""];});
   const csv=[head,...rows].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n");
   const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="예술무역항_판매기록.csv"; a.click();
@@ -2717,6 +2761,10 @@ function boothLabel(b){ if(!b) return "미정"; if(b==="좌대") return "좌대"
 let view="dash";
 function switchView(v){
   view=v;
+  const home=v==="home";
+  document.getElementById("view-home").classList.toggle("hide",!home);
+  document.querySelector("header.top").classList.toggle("hide",home);
+  document.querySelector(".tabs").classList.toggle("hide",home);
   document.getElementById("view-dash").classList.toggle("hide",v!=="dash");
   document.getElementById("view-label").classList.toggle("hide",v!=="label");
   document.getElementById("view-cert").classList.toggle("hide",v!=="cert");
@@ -2725,7 +2773,8 @@ function switchView(v){
   document.getElementById("tab-label").classList.toggle("on",v==="label");
   document.getElementById("tab-cert").classList.toggle("on",v==="cert");
   document.getElementById("tab-inv").classList.toggle("on",v==="invoice");
-  render();
+  if(!home) render();
+  window.scrollTo(0,0);
 }
 
 function filtered(){
@@ -2896,6 +2945,7 @@ function invoiceHTML(w){
       <div><span class="bk">구매자</span><input class="ibuy-in" value="${esc((BUYER[w.id]||{}).name||'')}" oninput="setBuyer('${w.id}','name',this.value)" placeholder="성명 입력"></div>
       <div><span class="bk">연락처</span><input class="ibuy-in" value="${esc((BUYER[w.id]||{}).contact||'')}" oninput="setBuyer('${w.id}','contact',this.value)" placeholder="연락처 입력"></div>
       <div class="iaddr-row"><span class="bk">주소</span><input class="ibuy-in wide" value="${esc((BUYER[w.id]||{}).address||'')}" oninput="setBuyer('${w.id}','address',this.value)" placeholder="주소 입력"></div>
+      <div class="iaddr-row"><span class="bk">판매자</span><input class="ibuy-in" value="${esc((BUYER[w.id]||{}).seller||'')}" oninput="setBuyer('${w.id}','seller',this.value)" placeholder="셀러 이름 입력"></div>
     </div>
     <div class="icollect"><button class="btn solid" onclick="collectBuyer('${w.id}')">구매자 정보 수집</button><span class="cmsg ${COLLECTED[w.id]?'ok':''}" id="cmsg-${w.id}">${COLLECTED[w.id]?'수집됨 ✓':''}</span></div>
     <table class="iitems">
@@ -2936,7 +2986,7 @@ function render(){ if(view==="dash"){renderStats();renderTable();}else if(view==
 buildArtistFilter();
 loadState();
 if(LOCK_WORK||LOCK_ARTIST){ document.body.classList.add("kiosk"); switchView("label"); }
-else render();
+else switchView("home");
 </script>
 </body>
 </html>
