@@ -4,286 +4,364 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>예술무역항 2026 · 유통 라벨 / 가격 관제</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
 <style>
   :root{
-    --vermilion:#F5391A;
-    --cobalt:#3A40DD;
-    --green:#1FC73A;
+    /* ===== 키컬러 ===== */
+    --orange:#F5391A;          /* 출항 · 판매가 · 가격대 · 탭 강조 */
+    --blue:#3A40DD;            /* 정박 */
+    --main:var(--orange);
     --ink:#141414;
     --paper:#ffffff;
-    --card:#ffffff;
-    --gray-cell:#e9e6df;
-    --gray-text:#6f6b63;
-    --gray-light:#d9d5cd;
-    --brand:var(--vermilion);            /* 적색 ↔ 청색 토글 */
-    --stencil:"Saira Stencil One","Black Han Sans",sans-serif;
-    --korhead:"Black Han Sans","Malgun Gothic",sans-serif;
-    --kor:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
-    --mono:ui-monospace,"Consolas","D2Coding",monospace;
+    --gray-bg:#f4f4f2;
+    --gray-cell:#ececea;
+    --gray-line:#dddbd6;
+    --gray-text:#74726c;
+    --font:"Pretendard","Pretendard Variable",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    --poster:"Black Han Sans","Pretendard",sans-serif;
   }
-  [data-theme="blue"]{--brand:var(--cobalt);}
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--kor);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;}
-  .wrap{max-width:1160px;margin:0 auto;padding:0 20px 80px;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-weight:400;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px 90px;}
+  .tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum";}
 
-  /* ---------- signature tricolor bands (from poster) ---------- */
-  .bands{display:block;}
-  .band{height:15px;width:100%;}
-  .band.bars{background:repeating-linear-gradient(90deg,var(--cobalt) 0 5px,#fff 5px 10px);}
-  .band.hazard{background:repeating-linear-gradient(118deg,var(--vermilion) 0 16px,#fff 16px 32px);}
-  .band.check{
-    background-color:#fff;
-    background-image:
-      linear-gradient(45deg,var(--green) 25%,transparent 25%,transparent 75%,var(--green) 75%),
-      linear-gradient(45deg,var(--green) 25%,transparent 25%,transparent 75%,var(--green) 75%);
-    background-size:14px 14px;background-position:0 0,7px 7px;
-  }
-  .band.slim{height:9px;}
+  /* ---------- header (단색, 컬러 띠 없음) ---------- */
+  header.top{border-bottom:2px solid var(--ink);padding:26px 0 18px;margin-bottom:24px;}
+  header.top .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.16em;color:var(--gray-text);text-transform:uppercase;}
+  header.top h1{margin:7px 0 2px;font-size:30px;font-weight:800;letter-spacing:-.01em;}
+  header.top .meta{font-size:14px;font-weight:300;color:var(--gray-text);}
 
-  /* ---------- masthead ---------- */
-  header.top{background:var(--brand);color:#fff;margin:0 -20px 0;padding:0;}
-  .top-inner{max-width:1160px;margin:0 auto;padding:26px 20px 22px;position:relative;}
-  .eyebrow{font-family:var(--stencil);font-size:14px;letter-spacing:.18em;opacity:.92;}
-  .masthead{font-family:var(--stencil);font-size:clamp(34px,6vw,60px);line-height:.96;letter-spacing:.04em;margin:8px 0 2px;}
-  .mast-kr{font-family:var(--korhead);font-size:clamp(18px,3vw,26px);letter-spacing:.02em;margin-top:6px;}
-  .mast-meta{font-family:var(--stencil);font-size:15px;letter-spacing:.12em;margin-top:10px;opacity:.95;}
-  .theme-toggle{position:absolute;top:26px;right:20px;display:flex;border:2px solid #fff;}
-  .theme-toggle button{font-family:var(--stencil);font-size:14px;letter-spacing:.1em;background:transparent;color:#fff;border:none;padding:6px 12px;cursor:pointer;}
-  .theme-toggle button.on{background:#fff;color:var(--brand);}
-
-  .tabs{display:flex;margin:22px 0;border:2px solid var(--ink);width:fit-content;}
-  .tabs button{font-family:var(--stencil);font-size:15px;letter-spacing:.08em;background:var(--card);border:none;padding:10px 22px;cursor:pointer;border-right:2px solid var(--ink);}
+  .tabs{display:flex;border:2px solid var(--ink);width:fit-content;margin:22px 0;}
+  .tabs button{font-family:var(--font);font-size:15px;font-weight:700;background:var(--paper);border:none;padding:11px 24px;cursor:pointer;border-right:2px solid var(--ink);color:var(--ink);}
   .tabs button:last-child{border-right:none;}
-  .tabs button.on{background:var(--ink);color:#fff;}
+  .tabs button.on{background:var(--main);color:#fff;}
 
   /* ---------- dashboard ---------- */
-  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);margin-bottom:18px;}
-  .stat{padding:13px 15px;border-right:1px solid var(--gray-light);border-bottom:1px solid var(--gray-light);}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);margin-bottom:20px;}
+  .stat{padding:15px 17px;border-right:1px solid var(--gray-line);border-bottom:1px solid var(--gray-line);}
   .stat:nth-child(4n){border-right:none;}
   .stat:nth-child(n+5){border-bottom:none;}
-  .stat .k{font-family:var(--stencil);font-size:12px;letter-spacing:.06em;color:var(--gray-text);}
-  .stat .v{font-size:24px;font-weight:900;margin-top:3px;font-family:var(--mono);}
-  .stat .v small{font-size:14px;font-weight:600;color:var(--gray-text);}
-  .stat.accent .v{color:var(--vermilion);}
+  .stat .k{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--gray-text);}
+  .stat .v{font-size:25px;font-weight:800;margin-top:4px;}
+  .stat .v small{font-size:13px;font-weight:400;color:var(--gray-text);}
+  .stat.accent .v{color:var(--main);}
 
-  .tier-row{display:flex;gap:14px;margin-bottom:20px;flex-wrap:wrap;}
-  .tier{flex:1;min-width:200px;border:2px solid var(--ink);padding:11px 14px;background:var(--card);}
+  .tier-row{display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;}
+  .tier{flex:1;min-width:210px;border:2px solid var(--ink);padding:13px 16px;}
   .tier .label{font-size:14px;font-weight:700;display:flex;justify-content:space-between;}
-  .tier .label span:last-child{font-family:var(--mono);}
-  .tier .bar{height:8px;background:var(--gray-cell);margin-top:8px;}
-  .tier .bar i{display:block;height:100%;background:var(--brand);}
-  .tier .note{font-family:var(--mono);font-size:11.5px;color:var(--gray-text);margin-top:6px;}
+  .tier .bar{height:9px;background:var(--gray-cell);margin-top:9px;}
+  .tier .bar i{display:block;height:100%;background:var(--main);}
+  .tier .note{font-size:12px;font-weight:300;color:var(--gray-text);margin-top:7px;}
 
-  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
-  .filters select,.filters input,.label-toolbar select,.label-toolbar input{font-family:var(--kor);font-size:15px;padding:8px 10px;border:2px solid var(--ink);background:var(--card);}
+  /* 상태 범례 */
+  .status-legend{display:flex;gap:14px;flex-wrap:wrap;border:2px solid var(--ink);padding:14px 16px;margin-bottom:22px;}
+  .status-legend .sl{flex:1;min-width:220px;display:flex;align-items:center;gap:11px;font-size:14px;font-weight:300;}
+  .status-legend .sl b{font-weight:800;margin-right:2px;}
+  .status-legend .sl .en{color:var(--gray-text);font-size:12px;font-weight:700;letter-spacing:.08em;margin-left:auto;}
+  .sdot{width:20px;height:20px;border:2px solid var(--ink);flex:0 0 auto;border-radius:50%;}
+  .sdot.d1{background:var(--blue);border-color:var(--blue);}
+  .sdot.d2{background:var(--ink);border-color:var(--ink);}
+  .sdot.d3{background:var(--orange);border-color:var(--orange);}
+
+  .filters{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin-bottom:15px;}
+  .filters select,.filters input,.label-toolbar select,.label-toolbar input{font-family:var(--font);font-size:14.5px;font-weight:400;padding:9px 11px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);}
   .filters .spacer{flex:1;}
-  .filters .count,.label-toolbar .count{font-family:var(--mono);font-size:14px;color:var(--gray-text);}
+  .filters .count,.label-toolbar .count{font-size:13px;font-weight:700;color:var(--gray-text);}
 
-  table.grid{width:100%;border-collapse:collapse;background:var(--card);font-size:15px;border:2px solid var(--ink);}
-  table.grid th{background:var(--ink);color:#fff;text-align:left;padding:9px 10px;font-size:14px;white-space:nowrap;font-family:var(--stencil);letter-spacing:.04em;}
-  table.grid td{padding:8px 10px;border-bottom:1px solid var(--gray-light);vertical-align:middle;}
+  table.grid{width:100%;border-collapse:collapse;font-size:14.5px;border:2px solid var(--ink);}
+  table.grid th{background:var(--ink);color:#fff;text-align:left;padding:11px 11px;font-size:13px;font-weight:700;white-space:nowrap;}
+  table.grid td{padding:10px 11px;border-bottom:1px solid var(--gray-line);vertical-align:middle;}
   table.grid tr:last-child td{border-bottom:none;}
-  table.grid tr:hover td{background:#faf6f0;}
-  table.grid .num{font-family:var(--stencil);font-size:14px;letter-spacing:.03em;}
-  table.grid .price{font-family:var(--mono);text-align:right;white-space:nowrap;}
-  table.grid .price.red{color:var(--vermilion);font-weight:700;}
-  .pill{display:inline-block;font-size:12.5px;font-weight:700;padding:2px 8px;border:1.5px solid var(--ink);font-family:var(--mono);}
-  .pill.entry{border-color:var(--gray-text);color:var(--gray-text);}
-  .pill.high{background:var(--ink);color:#fff;}
-  td .row-sel,td .row-asg{font-family:var(--kor);font-size:14px;padding:4px 5px;border:1px solid var(--gray-light);background:#fff;width:100%;}
-  .open-label{font-family:var(--stencil);font-size:12.5px;letter-spacing:.04em;border:1.5px solid var(--ink);background:#fff;padding:3px 8px;cursor:pointer;}
+  table.grid tr:hover td{background:var(--gray-bg);}
+  table.grid .seq{font-weight:800;color:var(--gray-text);width:46px;}
+  table.grid .loc{font-weight:700;white-space:nowrap;}
+  table.grid .artist{font-weight:700;white-space:nowrap;}
+  table.grid .msz{font-size:12.5px;color:var(--gray-text);font-weight:300;margin-top:2px;}
+  table.grid .price{text-align:right;white-space:nowrap;font-weight:700;}
+  table.grid .price.red{color:var(--main);}
+  table.grid .price.sub{font-weight:400;color:var(--gray-text);}
+  td .row-sel{font-family:var(--font);font-size:13.5px;padding:6px 7px;border:2px solid var(--gray-line);background:#fff;width:100%;font-weight:700;}
+  .open-label{font-family:var(--font);font-size:12.5px;font-weight:700;border:2px solid var(--ink);background:#fff;padding:5px 11px;cursor:pointer;color:var(--ink);}
   .open-label:hover{background:var(--ink);color:#fff;}
 
   /* ---------- labels ---------- */
-  .label-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+  .label-toolbar{display:flex;gap:11px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
   .label-toolbar input{min-width:240px;}
-  .btn{font-family:var(--stencil);font-size:15px;letter-spacing:.06em;border:2px solid var(--ink);background:var(--card);padding:9px 16px;cursor:pointer;}
-  .btn.solid{background:var(--brand);color:#fff;border-color:var(--brand);}
-  .btn:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .btn{font-family:var(--font);font-size:14px;font-weight:700;border:2px solid var(--ink);background:var(--paper);padding:10px 18px;cursor:pointer;color:var(--ink);}
+  .btn.solid{background:var(--main);color:#fff;border-color:var(--main);}
+  .btn:hover{filter:brightness(.88);}
 
-  .label-sheet{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
-  .label{background:var(--card);border:2px solid var(--ink);overflow:hidden;}
-  .label .lhead{display:flex;justify-content:space-between;align-items:stretch;background:var(--ink);color:#fff;}
-  .label .lid{font-family:var(--stencil);font-size:15px;letter-spacing:.05em;padding:7px 12px;display:flex;flex-direction:column;justify-content:center;}
-  .label .lid b{font-size:10px;letter-spacing:.16em;opacity:.85;font-weight:400;}
-  .label .lid em{font-style:normal;font-size:10.5px;opacity:.85;}
-  .label .stamp{width:104px;border-left:2px solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff;}
-  .label .stamp .st-kr{font-family:var(--korhead);font-size:19.5px;letter-spacing:.06em;}
-  .label .stamp .st-en{font-family:var(--stencil);font-size:9px;letter-spacing:.12em;margin-top:1px;}
-  .label .stamp.s-jeongbak{background:#fff;color:var(--ink);}
-  .label .stamp.s-tonggwan{background:#cfcabf;color:var(--ink);}
-  .label .stamp.s-chulhang{background:var(--ink);color:#fff;}
+  .label-sheet{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  .label{background:var(--paper);border:2px solid var(--ink);overflow:hidden;}
+  .label .lhead{background:var(--ink);color:#fff;padding:9px 15px;display:flex;justify-content:space-between;align-items:baseline;}
+  .label .lhead .loc-k{font-size:10px;font-weight:700;letter-spacing:.14em;color:#c9c7c2;text-transform:uppercase;}
+  .label .lhead .loc-v{font-size:18px;font-weight:800;margin-left:9px;}
+  .label .lhead .ph{font-size:10px;font-weight:700;letter-spacing:.1em;color:#c9c7c2;}
 
-  .label .photo{height:150px;background:#f0ede6;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--gray-light);overflow:hidden;}
+  .label .photo{height:172px;background:var(--gray-bg);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--gray-line);overflow:hidden;}
   .label .photo img{max-width:100%;max-height:100%;object-fit:contain;display:block;}
-  .label .photo.empty{font-family:var(--stencil);font-size:10px;letter-spacing:.12em;color:#c3bfb6;}
-  .label .lbody{padding:12px 14px 0;}
-  .label .artist{font-size:20.5px;font-weight:900;line-height:1.15;}
-  .label .title{font-size:16px;margin-top:2px;}
+  .label .photo.empty{font-size:11px;font-weight:700;letter-spacing:.12em;color:#c3bfb6;}
+
+  .label .lbody{padding:14px 15px 0;}
+  .label .artist{font-size:27px;font-weight:800;line-height:1.1;letter-spacing:-.01em;}
+  .label .title{font-size:15px;font-weight:400;margin-top:4px;}
   .label .title em{font-style:italic;}
-  .label .meta{font-family:var(--mono);font-size:12.5px;color:var(--gray-text);margin-top:5px;}
+  .label .meta{font-size:12.5px;font-weight:300;color:var(--gray-text);margin-top:6px;}
 
-  .label .price-block{margin:11px 14px 0;border-top:1px solid var(--gray-light);padding-top:9px;display:flex;align-items:baseline;justify-content:space-between;}
-  .label .price-block .pk{font-size:12.5px;font-weight:700;color:var(--gray-text);}
-  .label .price-block .pv{font-family:var(--mono);font-size:26.5px;font-weight:900;color:var(--ink);}
-  .label .price-sub{margin:3px 14px 0;font-family:var(--mono);font-size:11.5px;color:var(--gray-text);display:flex;justify-content:space-between;}
+  .label .price-block{margin:13px 15px 0;border-top:1px solid var(--gray-line);padding-top:11px;display:flex;align-items:baseline;justify-content:space-between;}
+  .label .price-block .pk{font-size:12px;font-weight:700;color:var(--gray-text);}
+  .label .price-block .pv{font-size:26px;font-weight:800;color:var(--main);}
+  .label .price-sub{margin:4px 15px 0;font-size:11.5px;font-weight:400;color:var(--gray-text);display:flex;justify-content:space-between;}
 
-  .label .settle{margin:10px 14px 0;}
-  .label .settle .stitle{font-family:var(--stencil);font-size:11px;letter-spacing:.06em;color:var(--ink);}
-  .label .settle .sbar{display:flex;height:22px;margin-top:5px;border:1.5px solid var(--ink);}
-  .label .settle .sbar div{display:flex;align-items:center;padding:0 8px;font-family:var(--mono);font-size:11.5px;font-weight:700;white-space:nowrap;}
+  .label .settle{margin:12px 15px 0;}
+  .label .settle .stitle{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--ink);text-transform:uppercase;}
+  .label .settle .sbar{display:flex;height:24px;margin-top:6px;border:2px solid var(--ink);}
+  .label .settle .sbar div{display:flex;align-items:center;padding:0 9px;font-size:11px;font-weight:700;white-space:nowrap;}
   .label .settle .sbar .sa{background:var(--ink);color:#fff;}
   .label .settle .sbar .so{background:var(--gray-cell);color:var(--ink);}
-  .label .settle .samt{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;margin-top:4px;}
-  .label .settle .sfee{font-family:var(--kor);font-size:9.5px;color:var(--gray-text);margin-top:5px;line-height:1.4;}
-  .label .settle .samt b{color:var(--ink);}
+  .label .settle .samt{display:flex;justify-content:space-between;font-size:12px;font-weight:400;margin-top:5px;}
+  .label .settle .samt b{font-weight:800;color:var(--main);}
+  .label .settle .sfee{font-size:10px;font-weight:300;color:var(--gray-text);margin-top:6px;line-height:1.45;}
+  .label .settle .sacct{font-size:11.5px;font-weight:700;color:var(--ink);margin-top:6px;background:var(--gray-bg);border:1px solid var(--gray-line);padding:5px 8px;}
 
-  .label .ledger{margin-top:11px;border-top:2px dashed var(--ink);padding:8px 14px;background:#faf8f3;}
-  .label .ledger .lg-title{font-family:var(--stencil);font-size:10px;letter-spacing:.12em;color:var(--gray-text);margin-bottom:5px;}
-  .label .ledger .lg-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;font-size:12.5px;}
-  .label .ledger .lc{display:flex;justify-content:space-between;border-bottom:1px dotted var(--gray-light);padding-bottom:2px;}
-  .label .ledger .lc span:first-child{color:var(--gray-text);}
-  .label .ledger .lc span:last-child{font-family:var(--mono);font-weight:700;}
-  .label .lfoot{font-size:10.5px;color:var(--gray-text);padding:7px 14px;line-height:1.45;}
-  .label .lfoot .org{color:var(--ink);font-weight:700;}
-  .label .lfoot-row{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;}
-  .label .lfoot-row .lfoot{flex:1;}
-  .label .qr{flex:0 0 auto;text-align:center;padding:7px 14px 2px 0;}
-  .label .qr img{width:76px;height:76px;display:block;image-rendering:pixelated;border:1px solid var(--gray-light);}
-  .label .qr small{display:block;font-family:var(--stencil);font-size:8px;letter-spacing:.1em;color:var(--gray-text);margin-top:3px;}
-  body.kiosk .tabs,body.kiosk .label-toolbar,body.kiosk .qr,body.kiosk .theme-toggle{display:none!important;}
-  body.kiosk .label-sheet{grid-template-columns:1fr;max-width:440px;margin:0 auto;}
-  body.kiosk .legend{max-width:440px;margin:18px auto 0;}
-  .label .lbands{display:flex;}
-  .label .lbands .band{height:8px;}
-  .label .lbands .band.bars{background:repeating-linear-gradient(90deg,var(--ink) 0 4px,#fff 4px 8px);}
-  .label .lbands .band.hazard{background:repeating-linear-gradient(118deg,var(--ink) 0 12px,#fff 12px 24px);}
-  .label .lbands .band.check{background-color:#fff;background-image:linear-gradient(45deg,var(--ink) 25%,transparent 25%,transparent 75%,var(--ink) 75%),linear-gradient(45deg,var(--ink) 25%,transparent 25%,transparent 75%,var(--ink) 75%);background-size:12px 12px;background-position:0 0,6px 6px;}
-  .label .lbands .band:first-child{flex:1;} .label .lbands .band:nth-child(2){flex:1;} .label .lbands .band:nth-child(3){flex:1;}
+  /* 신호등 상태 */
+  .label .signal{display:flex;gap:8px;margin:14px 15px;}
+  .label .signal .lamp{flex:1;border:2px solid var(--gray-line);background:#fff;padding:9px 6px;text-align:center;color:#bdbab3;}
+  .label .signal .lamp .dot{display:block;width:15px;height:15px;border-radius:50%;background:#dcd9d3;margin:0 auto 5px;}
+  .label .signal .lamp b{display:block;font-size:14px;font-weight:800;letter-spacing:.02em;}
+  .label .signal .lamp em{display:block;font-style:normal;font-size:8.5px;font-weight:700;letter-spacing:.1em;margin-top:1px;}
+  .label .signal .lamp.on .dot{background:#fff;}
+  .label .signal .lamp.on.l-anchor{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .label .signal .lamp.on.l-clear{background:var(--ink);border-color:var(--ink);color:#fff;}
+  .label .signal .lamp.on.l-depart{background:var(--orange);border-color:var(--orange);color:#fff;}
 
-  /* ---------- legend ---------- */
-  .legend{border:2px solid var(--ink);background:var(--card);padding:14px 16px;margin-top:24px;font-size:14.5px;}
-  .legend h3{margin:0 0 8px;font-size:15px;font-family:var(--stencil);letter-spacing:.04em;}
-  .legend .stamps{display:flex;gap:18px;margin:10px 0;flex-wrap:wrap;}
-  .legend .sm{display:flex;align-items:center;gap:7px;}
-  .legend .chip{font-family:var(--korhead);font-size:15px;padding:3px 10px;border:2px solid var(--ink);}
-  .legend .chip.c2{background:#cfcabf;color:var(--ink);border-color:var(--ink);}
-  .legend .chip.c3{background:var(--ink);color:#fff;border-color:var(--ink);}
-  .legend ul{margin:6px 0 0;padding-left:18px;color:var(--gray-text);}
-  .credit{font-size:12.5px;color:var(--gray-text);margin-top:14px;line-height:1.7;}
-  .credit b{color:var(--ink);font-family:var(--stencil);font-size:11.5px;letter-spacing:.08em;}
+  .label .lfoot{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;padding:0 15px 13px;}
+  .label .lfoot .note{font-size:10px;font-weight:300;color:var(--gray-text);line-height:1.45;}
+  .label .qr{flex:0 0 auto;text-align:center;}
+  .label .qr img{width:78px;height:78px;display:block;image-rendering:pixelated;border:1px solid var(--gray-line);}
+  .label .qr small{display:block;font-size:8px;font-weight:700;letter-spacing:.08em;color:var(--gray-text);margin-top:3px;}
+
+  .help{border:2px solid var(--ink);padding:15px 17px;margin-top:26px;font-size:13.5px;font-weight:300;}
+  .help h3{margin:0 0 9px;font-size:14px;font-weight:800;}
+  .help ul{margin:6px 0 0;padding-left:18px;color:var(--gray-text);}
 
   .hide{display:none;}
-
-  @media (max-width:720px){
+  @media (max-width:760px){
     .stat-grid{grid-template-columns:repeat(2,1fr);}
-    .stat:nth-child(4n){border-right:1px solid var(--gray-light);}
+    .stat:nth-child(4n){border-right:1px solid var(--gray-line);}
     .stat:nth-child(2n){border-right:none;}
     .label-sheet{grid-template-columns:1fr;}
-    .theme-toggle{position:static;margin-top:14px;width:fit-content;}
   }
+  body.kiosk .tabs,body.kiosk .label-toolbar,body.kiosk .qr,body.kiosk .help{display:none!important;}
+  body.kiosk .label-sheet{grid-template-columns:1fr;max-width:460px;margin:0 auto;}
+
+  /* ---------- 작품 보증서 ---------- */
+  .cert-toolbar{display:flex;gap:11px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+  .cert-toolbar input{min-width:240px;}
+  .cert-sheet{display:block;}
+  .cert{max-width:720px;margin:0 auto 26px;border:2px solid var(--ink);background:#fff;}
+  .cert .ctop{height:9px;background:var(--main);}
+  .cert .chead{padding:24px 34px 16px;text-align:center;border-bottom:1px solid var(--gray-line);}
+  .cert .chead .brand{font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--gray-text);}
+  .cert .chead h2{font-size:27px;font-weight:800;margin:9px 0 3px;letter-spacing:.02em;}
+  .cert .chead .en{font-size:11.5px;font-weight:700;letter-spacing:.26em;color:var(--gray-text);}
+  .cert .cno{display:flex;justify-content:space-between;padding:11px 34px;font-size:12.5px;font-weight:700;color:var(--gray-text);}
+  .cert .cphoto{height:300px;background:var(--gray-bg);display:flex;align-items:center;justify-content:center;margin:0 34px;border:1px solid var(--gray-line);overflow:hidden;}
+  .cert .cphoto img{max-width:100%;max-height:100%;object-fit:contain;}
+  .cert .cphoto.empty{font-size:11px;font-weight:700;letter-spacing:.12em;color:#c3bfb6;}
+  .cert .cinfo{padding:20px 34px 6px;}
+  .cert .cinfo .row{display:flex;border-bottom:1px solid var(--gray-line);padding:9px 0;font-size:14.5px;}
+  .cert .cinfo .row .k{width:96px;flex:0 0 auto;color:var(--gray-text);font-weight:700;}
+  .cert .cinfo .row .v{font-weight:700;}
+  .cert .cstmt{padding:18px 34px;font-size:13.5px;font-weight:300;line-height:1.75;}
+  .cert .cissue{padding:4px 34px 30px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;}
+  .cert .cissue .org{font-size:12.5px;font-weight:300;line-height:1.85;}
+  .cert .cissue .org b{font-weight:800;}
+  .cert .cissue .sign{text-align:center;font-size:12px;font-weight:700;color:var(--gray-text);}
+  .cert .cissue .sign .line{width:160px;border-bottom:1.5px solid var(--ink);height:46px;}
+  .cert .cissuer .ititle{font-family:var(--poster);font-size:23px;color:var(--ink);line-height:1.12;letter-spacing:.01em;}
+  .cert .cissuer .iaddr{font-size:12px;font-weight:300;color:var(--gray-text);margin-top:8px;}
+
   @media print{
-    body{background:#fff;}
-    .wrap{max-width:none;padding:0;}
-    header.top,.tabs,.legend,#view-dash,.label-toolbar,.bands.head{display:none !important;}
-    #view-label{display:block !important;}
-    .label-sheet{grid-template-columns:repeat(2,1fr);gap:6mm;}
-    .label{break-inside:avoid;}
+    .tabs,.label-toolbar,.cert-toolbar,.inv-toolbar,.help,header.top,.inv .icollect{display:none!important;}
+    .label{break-inside:avoid;border:2px solid #000;}
+    .cert,.inv{break-inside:avoid;page-break-after:always;margin:0 auto;}
+    @page{margin:12mm;}
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
+
+  /* ---------- 인보이스 ---------- */
+  .inv-toolbar{display:flex;gap:11px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+  .inv-toolbar input{min-width:240px;}
+  .inv-sheet{display:block;}
+  .inv{max-width:720px;margin:0 auto 26px;border:2px solid var(--ink);background:#fff;padding:30px 34px;}
+  .inv .ihead{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:16px;}
+  .inv .ihead .from .nm{font-family:var(--poster);font-size:19px;color:var(--ink);line-height:1.1;}
+  .inv .ihead .from .li{font-size:12px;font-weight:300;color:var(--gray-text);margin-top:5px;line-height:1.6;}
+  .inv .ihead .ttl{text-align:right;flex:0 0 auto;}
+  .inv .ihead .ttl h2{margin:0;font-size:26px;font-weight:800;letter-spacing:.02em;}
+  .inv .ihead .ttl .en{font-size:11px;font-weight:700;letter-spacing:.22em;color:var(--gray-text);}
+  .inv .ihead .ttl .no{font-size:12.5px;font-weight:700;color:var(--gray-text);margin-top:8px;line-height:1.7;}
+  .inv .ibuyer{display:flex;gap:30px;font-size:13.5px;margin-bottom:16px;}
+  .inv .ibuyer .bk{font-weight:700;color:var(--gray-text);margin-right:8px;}
+  .inv .ibuyer .bl{display:inline-block;min-width:150px;border-bottom:1px solid var(--gray-line);}
+  .inv .ibuyer .ibuy-in{font-family:var(--font);font-size:13.5px;border:none;border-bottom:1px solid var(--gray-line);padding:2px 4px;min-width:170px;background:transparent;color:var(--ink);}
+  .inv .ibuyer .ibuy-in:focus{outline:none;border-bottom-color:var(--main);}
+  .inv .ibuyer{flex-wrap:wrap;}
+  .inv .ibuyer .iaddr-row{flex-basis:100%;margin-top:6px;}
+  .inv .ibuyer .ibuy-in.wide{min-width:360px;}
+  .date-sel{font-family:var(--font);font-size:12.5px;font-weight:700;color:var(--ink);border:1px solid var(--gray-line);border-radius:3px;padding:2px 6px;background:#fff;cursor:pointer;}
+  .date-sel:focus{outline:none;border-color:var(--main);}
+  .inv .icollect{display:flex;align-items:center;gap:12px;margin:2px 0 16px;}
+  .inv .icollect .cmsg{font-size:12.5px;font-weight:700;color:var(--gray-text);}
+  .inv .icollect .cmsg.ok{color:#1a7f37;}
+  .inv .icollect .cmsg.err{color:var(--main);}
+  table.iitems{width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:14px;}
+  table.iitems th{background:var(--ink);color:#fff;text-align:left;padding:9px 10px;font-weight:700;font-size:12.5px;}
+  table.iitems th.r,table.iitems td.r{text-align:right;}
+  table.iitems td{padding:10px;border-bottom:1px solid var(--gray-line);vertical-align:top;}
+  table.iitems .sub{font-size:11.5px;font-weight:300;color:var(--gray-text);margin-top:2px;}
+  .inv .itotal{margin-left:auto;width:320px;font-size:13.5px;}
+  .inv .itotal .tr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--gray-line);}
+  .inv .itotal .tr.sum{border-bottom:none;border-top:2px solid var(--ink);font-size:16px;font-weight:800;margin-top:2px;padding-top:10px;}
+  .inv .itotal .tr.sum .v{color:var(--main);}
+  .inv .ipay{font-size:12.5px;font-weight:700;margin-top:14px;}
+  .inv .ifoot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:22px;gap:20px;}
+  .inv .ifoot .note{font-size:11px;font-weight:300;color:var(--gray-text);line-height:1.6;}
+  .inv .ifoot .seal{text-align:center;font-size:12px;font-weight:700;color:var(--gray-text);}
+  .inv .ifoot .seal .line{width:150px;border-bottom:1.5px solid var(--ink);height:42px;}
 </style>
 </head>
 <body>
-
-  <div class="bands head"><div class="band bars"></div><div class="band hazard"></div><div class="band check"></div></div>
+<form name="purchase" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="work"><input type="text" name="artist"><input type="text" name="title">
+  <input type="text" name="price"><input type="text" name="total"><input type="text" name="issueDate">
+  <input type="text" name="buyer"><input type="text" name="contact"><input type="text" name="address">
+  <input type="text" name="bot-field">
+</form>
+<div class="wrap">
 
   <header class="top">
-    <div class="top-inner">
-      <div class="theme-toggle">
-        <button id="th-red" class="on" onclick="setTheme('red')">적색</button>
-        <button id="th-blue" onclick="setTheme('blue')">청색</button>
-      </div>
-      <div class="eyebrow">ART TRADE PORT 2026 · DISTRIBUTION MANIFEST</div>
-      <div class="masthead">ART TRADE&nbsp;PORT</div>
-      <div class="mast-kr">아트페어 예술무역항 — 유통 라벨 · 가격 관제</div>
-      <div class="mast-meta">6.25 — 28 · BLUEPORT 2021 · YEONGDO BUSAN</div>
-    </div>
+    <div class="eyebrow">ART TRADE PORT 2026 · DISTRIBUTION MANIFEST</div>
+    <h1>예술무역항 2026 — 유통 라벨 · 가격 관제</h1>
+    <div class="meta">6.25 — 28 · 블루포트2021 영도 · 정박 → 통관 → 출항</div>
   </header>
 
-  <div class="wrap">
-    <div class="tabs">
-      <button id="tab-dash" class="on" onclick="switchView('dash')">PRICE CONTROL · 가격 관제</button>
-      <button id="tab-label" onclick="switchView('label')">DISTRIBUTION LABEL · 유통 라벨</button>
-    </div>
-
-    <!-- DASHBOARD -->
-    <section id="view-dash">
-      <div class="stat-grid" id="statGrid"></div>
-      <div class="tier-row" id="tierRow"></div>
-      <div class="filters">
-        <select id="fArtist" onchange="render()"></select>
-        <select id="fTier" onchange="render()">
-          <option value="">가격대 전체</option>
-          <option value="entry">엔트리 (≤50만)</option>
-          <option value="mid">중가 (50–150만)</option>
-          <option value="high">고가 (150–300만)</option>
-        </select>
-        <select id="fStatus" onchange="render()">
-          <option value="">상태 전체</option><option>정박</option><option>통관</option><option>출항</option>
-        </select>
-        <input id="fSearch" placeholder="작품명 · 작가 검색" oninput="render()">
-        <span class="spacer"></span><span class="count" id="rowCount"></span>
-      </div>
-      <table class="grid">
-        <thead><tr>
-          <th>부스 · 작품 위치</th><th>작가</th><th>작품명</th><th>재료 · 크기</th>
-          <th>판매가</th><th>작가 70%</th><th>운영 30%</th><th>상태</th><th>라벨</th>
-        </tr></thead>
-        <tbody id="tbody"></tbody>
-      </table>
-    </section>
-
-    <!-- LABELS -->
-    <section id="view-label" class="hide">
-      <div class="label-toolbar">
-        <button class="btn solid" onclick="window.print()">전체 라벨 인쇄</button>
-        <input id="labelSearch" placeholder="작가 · 작품명 · 관리번호 검색" oninput="renderLabels()">
-        <select id="labelStatus" onchange="renderLabels()">
-          <option value="">상태 전체</option><option>정박</option><option>통관</option><option>출항</option>
-        </select>
-        <span class="count" id="labelCount"></span>
-        <span style="flex:1"></span>
-        <label style="font-size:13px;color:var(--gray-text);display:flex;align-items:center;gap:6px;white-space:nowrap;">QR 배포 주소
-          <input id="pubBase" value="https://artport2026-label.netlify.app/" oninput="renderLabels()" style="min-width:230px;">
-        </label>
-      </div>
-      <div class="label-sheet" id="labelSheet"></div>
-
-      <div class="legend">
-        <h3>라벨 읽는 법</h3>
-        <div class="stamps">
-          <div class="sm"><span class="chip">정박</span> 전시 중 · 구매 가능</div>
-          <div class="sm"><span class="chip c2">통관</span> 상담·브리핑 진행 중 · 매칭 단계</div>
-          <div class="sm"><span class="chip c3">출항</span> 판매 완료 · 정산 대기</div>
-        </div>
-        <ul>
-          <li>가운데 막대는 판매가 분배 구조입니다. 검정이 작가 수령액, 회색이 운영 수수료입니다.</li>
-          <li>아래 점선 칸은 운영 기록란입니다. 판매 담당·판매일·결제·정산 상태를 현장에서 기입합니다.</li>
-          <li>정산은 판매일로부터 14일 이내 완료합니다. 결제는 카드만 가능합니다. 부가세는 별도 표기합니다.</li>
-        </ul>
-        <div class="credit">
-          <b>주최</b> ㈜리멘 &nbsp; <b>주관</b> ㈜리멘 · 심도시각 &nbsp; <b>총괄기획</b> 심도시각 최민영<br>
-          <b>후원</b> 문화체육관광부 · 예술경영지원센터 &nbsp; <b>협력</b> 원도심창작공간 또따또가 운영지원센터 · 징조프로젝트 · re:project
-        </div>
-      </div>
-    </section>
+  <div class="tabs">
+    <button id="tab-dash" class="on" onclick="switchView('dash')">가격 관제</button>
+    <button id="tab-label" onclick="switchView('label')">유통 라벨</button>
+    <button id="tab-cert" onclick="switchView('cert')">작품 보증서</button>
+    <button id="tab-inv" onclick="switchView('invoice')">인보이스</button>
   </div>
 
+  <!-- DASHBOARD -->
+  <section id="view-dash">
+    <div class="stat-grid" id="statGrid"></div>
+    <div class="tier-row" id="tierRow"></div>
+
+    <div class="status-legend">
+      <div class="sl"><span class="sdot d1"></span><b>정박</b> 전시 중 · 구매 가능<span class="en">ANCHORED</span></div>
+      <div class="sl"><span class="sdot d2"></span><b>통관</b> 구매 상담 진행 중<span class="en">CLEARANCE</span></div>
+      <div class="sl"><span class="sdot d3"></span><b>출항</b> 판매 완료<span class="en">DEPARTED</span></div>
+    </div>
+
+    <div class="filters">
+      <select id="fArtist" onchange="render()"></select>
+      <select id="fTier" onchange="render()">
+        <option value="">가격대 전체</option>
+        <option value="entry">엔트리 (≤50만)</option>
+        <option value="mid">중가 (50–150만)</option>
+        <option value="high">고가 (150–300만)</option>
+      </select>
+      <select id="fStatus" onchange="render()">
+        <option value="">상태 전체</option><option>정박</option><option>통관</option><option>출항</option>
+      </select>
+      <input id="fSearch" placeholder="작품명 · 작가 검색" oninput="render()">
+      <button class="btn" onclick="exportCSV()">판매 기록 CSV</button>
+      <span class="spacer"></span><span class="count" id="rowCount"></span>
+    </div>
+
+    <table class="grid">
+      <thead><tr>
+        <th>연번</th><th>위치</th><th>작가</th><th>작품명</th>
+        <th>판매가</th><th>작가 70%</th><th>운영 30%</th><th>상태</th><th>출력</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </section>
+
+  <!-- LABELS -->
+  <section id="view-label" class="hide">
+    <div class="label-toolbar">
+      <button class="btn solid" onclick="window.print()">전체 라벨 인쇄</button>
+      <input id="labelSearch" placeholder="작가 · 작품명 검색" oninput="renderLabels()">
+      <select id="labelStatus" onchange="renderLabels()">
+        <option value="">상태 전체</option><option>정박</option><option>통관</option><option>출항</option>
+      </select>
+      <span class="count" id="labelCount"></span>
+      <span style="flex:1"></span>
+      <label style="font-size:13px;font-weight:300;color:var(--gray-text);display:flex;align-items:center;gap:6px;white-space:nowrap;">QR 배포 주소
+        <input id="pubBase" value="https://artport2026-label.netlify.app/" oninput="renderLabels()" style="min-width:230px;">
+      </label>
+    </div>
+    <div class="label-sheet" id="labelSheet"></div>
+
+    <div class="help">
+      <h3>QR · 상태 안내</h3>
+      <ul>
+        <li>QR은 <b>작가별 1개</b>입니다. 한 작가의 어느 작품을 찍어도 그 작가의 작품 라벨이 모두 열립니다.</li>
+        <li>아래 신호등은 거래 상태입니다. 정박(전시 중) → 통관(상담 중) → 출항(판매 완료) 순서로, 판매되면 출항에 불이 켜집니다.</li>
+        <li>정산은 판매일로부터 14일 이내 완료합니다. 결제는 카드만 가능합니다. 10만 원 이하 작품은 수수료를 적용하지 않습니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CERTIFICATES -->
+  <section id="view-cert" class="hide">
+    <div class="cert-toolbar">
+      <button class="btn solid" onclick="window.print()">전체 보증서 인쇄</button>
+      <input id="certSearch" placeholder="작가 · 작품명 검색" oninput="renderCerts()">
+      <select id="certStatus" onchange="renderCerts()">
+        <option value="">상태 전체</option><option value="출항">출항(판매)만</option><option>정박</option><option>통관</option>
+      </select>
+      <span class="count" id="certCount"></span>
+    </div>
+    <div class="cert-sheet" id="certSheet"></div>
+    <div class="help">
+      <h3>작품 보증서 안내</h3>
+      <ul>
+        <li>보증서는 작품별로 발급됩니다. 보통 <b>판매된 작품(출항)</b>을 구매자에게 발급합니다. 위 상태 필터에서 '출항(판매)만'을 고르면 판매작만 추려집니다.</li>
+        <li>발행일은 작품을 '출항(판매)'으로 표시하면 그 판매일이 자동으로 들어갑니다. 미판매작은 빈칸으로 두고 발급 시 손으로 적으면 됩니다.</li>
+        <li>인쇄 시 보증서가 한 장에 하나씩(A4) 출력됩니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- INVOICES -->
+  <section id="view-invoice" class="hide">
+    <div class="inv-toolbar">
+      <button class="btn solid" onclick="window.print()">전체 인보이스 인쇄</button>
+      <input id="invSearch" placeholder="작가 · 작품명 검색" oninput="renderInvoices()">
+      <select id="invStatus" onchange="renderInvoices()">
+        <option value="출항">출항(판매)만</option><option value="">상태 전체</option><option>정박</option><option>통관</option>
+      </select>
+      <span class="count" id="invCount"></span>
+    </div>
+    <div class="inv-sheet" id="invSheet"></div>
+    <div class="help">
+      <h3>인보이스 안내</h3>
+      <ul>
+        <li>인보이스는 작품별로 발급됩니다. 기본은 <b>판매된 작품(출항)</b>만 표시됩니다. 구매자에게 드리는 거래명세서입니다.</li>
+        <li>판매가 기준으로 공급가액·부가세(10%)·합계가 자동 계산됩니다. 결제는 카드입니다.</li>
+        <li>구매자 성명·연락처·주소를 입력한 뒤 <b>'구매자 정보 수집'</b>을 누르면, 배포된 사이트에서 그 내역이 Netlify에 모입니다. 어느 기기에서 입력해도 한곳에 쌓입니다.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
 <script>
-/* qrcode-generator 1.4.4 (MIT, Kazuhiko Arase) — embedded for offline use */
+/* qrcode-generator 1.4.4 (MIT) */
 //---------------------------------------------------------------------
 //
 // QR Code Generator for JavaScript
@@ -2584,34 +2662,72 @@ var qrcode = function() {
 
 </script>
 <script>
-const ASSIGNEES=["미배정","도슨트·박","도슨트·이","A섹션 큐레이터","B섹션 큐레이터","C섹션 큐레이터"];
-let works=[{"id": "ATP26-001", "artist": "강은경", "title": "<손맛> son-mat : hand taste", "medium": "종이에 리소 프린트", "size": "297x420mm", "year": "2025", "price": 30000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-001.jpg"}, {"id": "ATP26-002", "artist": "강은경", "title": "이만큼", "medium": "종이에 리소 프린트", "size": "297x420mm", "year": "2025", "price": 30000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-002.jpg"}, {"id": "ATP26-003", "artist": "강은경", "title": "T for 2", "medium": "흑토에 백유", "size": "85x80x70mm", "year": "2021", "price": 100000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-003.jpg"}, {"id": "ATP26-004", "artist": "강은경", "title": "T for 2", "medium": "흑토에 백유", "size": "75x70x60mm", "year": "2021", "price": 100000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-004.jpg"}, {"id": "ATP26-005", "artist": "구헌주", "title": "<휴먼>Human", "medium": "Acrylic on Canvas", "size": "45.5x37.9cm", "year": "2024", "price": 1200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-005.jpg"}, {"id": "ATP26-006", "artist": "구헌주", "title": "<라이프> Life", "medium": "Acrylic on Canvas", "size": "45.5X37.9cm", "year": "2024", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-006.jpg"}, {"id": "ATP26-007", "artist": "구헌주", "title": "Make Some Nois", "medium": "", "size": "", "year": "", "price": 85000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-007.jpg"}, {"id": "ATP26-008", "artist": "구헌주", "title": "<화환>", "medium": "포맥스 위 스프레이(Stencil)", "size": "", "year": "2025", "price": 2700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-008.jpg"}, {"id": "ATP26-009", "artist": "구헌주", "title": "<경고> CREATED_ 2024", "medium": "silk screen on losaspina 285g", "size": "", "year": "2024", "price": 800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-009.jpg"}, {"id": "ATP26-010", "artist": "구헌주", "title": "<퇴장> CREATED_ 2024", "medium": "silk screen on losaspina 285g", "size": "", "year": "2024", "price": 800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-010.jpg"}, {"id": "ATP26-011", "artist": "구헌주", "title": "<기울어진 운동장>", "medium": "Acrylic on wood panel", "size": "105x74cm", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-011.jpg"}, {"id": "ATP26-012", "artist": "김경화", "title": "밭대신 화분", "medium": "혼합재료(mixed media)", "size": "20×30×5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-012.jpg"}, {"id": "ATP26-013", "artist": "김경화", "title": "밭대신 화분", "medium": "혼합재료(mixed media)", "size": "20×30×5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-013.jpg"}, {"id": "ATP26-014", "artist": "김경화", "title": "도끼", "medium": "혼합재료(mixed media)", "size": "19×40cm", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-014.jpg"}, {"id": "ATP26-015", "artist": "김경화", "title": "낫", "medium": "혼합재료(mixed media)", "size": "25×44cm", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-015.jpg"}, {"id": "ATP26-016", "artist": "김경화", "title": "바이스", "medium": "혼합재료(mixed media)", "size": "37×29cm", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-016.jpg"}, {"id": "ATP26-017", "artist": "김경화", "title": "스패너", "medium": "혼합재료(mixed media)", "size": "29×37cm", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-017.jpg"}, {"id": "ATP26-018", "artist": "김경화", "title": "칼", "medium": "혼합재료(mixed media)", "size": "37×31cm", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-018.jpg"}, {"id": "ATP26-019", "artist": "김근예", "title": "마음의 모양_01", "medium": "종이 위 혼합재료", "size": "25x20cm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-019.jpg"}, {"id": "ATP26-020", "artist": "김근예", "title": "모양의 모양_02", "medium": "종이 위 혼합재료", "size": "25x20cm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-020.jpg"}, {"id": "ATP26-021", "artist": "김근예", "title": "Which One Do You Like?", "medium": "캔버스에 아크릴", "size": "90.9x65.1cm", "year": "2025", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-021.jpg"}, {"id": "ATP26-022", "artist": "김근예", "title": "Shining", "medium": "캔버스에 아크릴", "size": "90.9x65.1cm", "year": "2025", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-022.jpg"}, {"id": "ATP26-023", "artist": "김근예", "title": "가벼운 발걸음", "medium": "캔버스에 아크릴", "size": "29.7x42cm", "year": "2025", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-023.jpg"}, {"id": "ATP26-024", "artist": "김근예", "title": "비워진 자리", "medium": "캔버스에 아크릴", "size": "29.7x42cm", "year": "2025", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-024.jpg"}, {"id": "ATP26-025", "artist": "김근예", "title": "일정은 없고 기분은 좋음", "medium": "캔버스에 아크릴", "size": "29.7x42cm", "year": "2025", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-025.jpg"}, {"id": "ATP26-026", "artist": "김대홍", "title": "무서웠던 밤 Scary night_종이 위에 실크스크린+펜 드로잉_2025_N/30 ED", "medium": "무서웠던 밤 Scary night_종이 위에 실크스크린+펜 드로잉_2025_N", "size": "", "year": "2025", "price": 180000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-026.jpg"}, {"id": "ATP26-027", "artist": "김대홍", "title": "도망 Running away_31x25cm_종이 위에 실크스크린+펜_2025", "medium": "도망 Running away_31x25cm_종이 위에 실크스크린+펜_2025", "size": "31x25cm", "year": "2025", "price": 180000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-027.jpg"}, {"id": "ATP26-028", "artist": "김대홍", "title": "작은 오두막의 아침 Mornign in a little cabin__24.5x31.5cm_종이 위에 실크스크린+펜 드로잉_2025", "medium": "작은 오두막의 아침 Mornign in a little cabin__24.5x31.5cm_종이 위에 실크스크린+펜 드로잉_2025", "size": "24.5x31.5cm", "year": "2025", "price": 180000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-028.jpg"}, {"id": "ATP26-029", "artist": "김대홍", "title": "아무도 들어주지 않는 노래를 부르는 사람 4", "medium": "종이 위에 0.1-0.5mm 펜", "size": "23x30.5cm", "year": "2022", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-029.jpg"}, {"id": "ATP26-030", "artist": "김대홍", "title": "아무도 들어주지 않는 노래를 부르는 사람 14", "medium": "종이 위에 0.1-0.5mm 펜", "size": "23x30.5cm", "year": "2022", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-030.jpg"}, {"id": "ATP26-031", "artist": "김미래", "title": "따뜻한 그늘 _2023_종이에 흑연_1x2cm", "medium": "따뜻한 그늘 _2023_종이에 흑연_1x2cm", "size": "1x2cm", "year": "2023", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-031.jpg"}, {"id": "ATP26-032", "artist": "김미래", "title": "안녕", "medium": "잘 가 _2023_종이에 흑연_3x2cm", "size": "3x2cm", "year": "2023", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-032.jpg"}, {"id": "ATP26-033", "artist": "김미래", "title": "반가운 사건 _2023_종이에 흑연_4.5x3.5cm", "medium": "반가운 사건 _2023_종이에 흑연_4.5x3.5cm", "size": "4.5x3.5cm", "year": "2023", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-033.jpg"}, {"id": "ATP26-034", "artist": "김미래", "title": "구슬처럼 반짝이며 우리가 _2025_종이에 흑연", "medium": "구슬처럼 반짝이며 우리가 _2025_종이에 흑연", "size": "5x30x2.5cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-034.jpg"}, {"id": "ATP26-035", "artist": "김미래", "title": "너와 함께 이 모험을 시작하려해 _2024_종이에 흑연", "medium": "너와 함께 이 모험을 시작하려해 _2024_종이에 흑연", "size": "14x25x2.2cm", "year": "2024", "price": 400000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-035.jpg"}, {"id": "ATP26-036", "artist": "김민정", "title": "<아파트 풀꽃 그림자> Sang-lee Village", "medium": "종이에 수채", "size": "15x20cm", "year": "2026", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-036.jpg"}, {"id": "ATP26-037", "artist": "김민정", "title": "<조마이 섬으로 부터 > Sandbank", "medium": "종이에 수채", "size": "16.4x15cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-037.jpg"}, {"id": "ATP26-038", "artist": "김민정", "title": "<이어진 풍경> Continuous Scenery", "medium": "종이에 수채", "size": "34.5x24.8cm", "year": "2023", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-038.jpg"}, {"id": "ATP26-039", "artist": "김민정", "title": "<이어진 풍경> Continuous Scenery", "medium": "종이에 수채", "size": "34.5x24.8cm", "year": "2023", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-039.jpg"}, {"id": "ATP26-040", "artist": "김민정", "title": "<이어진 풍경> Continuous Scenery", "medium": "종이에 수채", "size": "34.5x24.8cm", "year": "2023", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-040.jpg"}, {"id": "ATP26-041", "artist": "김민정", "title": "<초량산책> Stroll", "medium": "종이에 수채", "size": "25x33cm", "year": "2022", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-041.jpg"}, {"id": "ATP26-042", "artist": "김민정", "title": "<초량산책> Stroll", "medium": "종이에 수채", "size": "25x33cm", "year": "2022", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-042.jpg"}, {"id": "ATP26-043", "artist": "김성진", "title": "비둘기", "medium": "장지 위에 수채", "size": "", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-043.jpg"}, {"id": "ATP26-044", "artist": "김성진", "title": "소리나는 귀", "medium": "장지 위에 수채", "size": "", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-044.jpg"}, {"id": "ATP26-045", "artist": "김성진", "title": "겨울경주", "medium": "종이 위에 목탄", "size": "", "year": "2018", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-045.jpg"}, {"id": "ATP26-046", "artist": "김성진", "title": "겨울경주", "medium": "종이 위에 목탄", "size": "", "year": "2018", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-046.jpg"}, {"id": "ATP26-047", "artist": "김성진", "title": "겨울경주", "medium": "종이 위에 목탄", "size": "", "year": "2018", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-047.jpg"}, {"id": "ATP26-048", "artist": "김성진", "title": "빛 한 모금", "medium": "종이 위에 콩테", "size": "", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-048.jpg"}, {"id": "ATP26-049", "artist": "김성진", "title": "빛 한 모금", "medium": "종이 위에 콩테", "size": "", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-049.jpg"}, {"id": "ATP26-050", "artist": "김유경", "title": "오래된 진지", "medium": "천에 혼합재료", "size": "33.4×24.2cm", "year": "2025", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-050.jpg"}, {"id": "ATP26-051", "artist": "김유경", "title": "오래된 진지", "medium": "천에 혼합재료", "size": "33.4×24.2cm", "year": "2025", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-051.jpg"}, {"id": "ATP26-052", "artist": "김유경", "title": "저마다 알고 있는 것들을 서로서로에게", "medium": "2025 천에 혼합재료", "size": "80.3×100cm", "year": "2025", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-052.jpg"}, {"id": "ATP26-053", "artist": "김유경", "title": "숲속 물냉이와 이끼", "medium": "천에 혼합재료", "size": "31.8×40.9cm", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-053.jpg"}, {"id": "ATP26-054", "artist": "김유경", "title": "피곤한 야자", "medium": "천에 혼합재료", "size": "31.8×40.9cm", "year": "2026", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-054.jpg"}, {"id": "ATP26-055", "artist": "김유경", "title": "피곤한 야자", "medium": "천에 혼합재료", "size": "31.8×40.9cm", "year": "2026", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-055.jpg"}, {"id": "ATP26-056", "artist": "김유경", "title": "피곤한 야자", "medium": "천에 혼합재료", "size": "31.8×40.9cm", "year": "2026", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-056.jpg"}, {"id": "ATP26-057", "artist": "김재민이", "title": "대한소인협회 -조언-", "medium": "조각", "size": "20x15cm", "year": "2024", "price": 1430000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-057.jpg"}, {"id": "ATP26-058", "artist": "김재민이", "title": "대한소인협회 -자리잡기-", "medium": "조각", "size": "20x15cm", "year": "2024", "price": 1430000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-058.jpg"}, {"id": "ATP26-059", "artist": "김진주", "title": "<구상나무의 수꽃> male cone of the Korean fir", "medium": "종이에 라이너펜", "size": "23x30.5cm", "year": "2023", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-059.jpg"}, {"id": "ATP26-060", "artist": "김진주", "title": "<구상나무의 암꽃> female cone of the Korean fir", "medium": "종이에 라이너펜", "size": "23x30.5cm", "year": "2023", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-060.jpg"}, {"id": "ATP26-061", "artist": "김진주", "title": "<백목련> Yulan magnolia", "medium": "종이에 라이너펜", "size": "30.5x23cm", "year": "2023", "price": 400000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-061.jpg"}, {"id": "ATP26-062", "artist": "김진주", "title": "<은행나무의 숨겨진 침엽수 잎> the hidden conifer-like leaves of the ginkgo tree", "medium": "<은행나무의 숨겨진 침엽수 잎> the hidden conifer-like leaves of the ginkgo tree", "size": "30.5x45cm", "year": "2023", "price": 1600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-062.jpg"}, {"id": "ATP26-063", "artist": "김진주", "title": "<2월에 본 은행나무의 겨울눈> the winter buds of the ginkgo tree seen in February", "medium": "<2월에 본 은행나무의 겨울눈> the winter buds of the ginkgo tree seen in February", "size": "35.5x51cm", "year": "2023", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-063.jpg"}, {"id": "ATP26-064", "artist": "김진주", "title": "<백목련", "medium": "종이에 라이너펜", "size": "30.5x23cm", "year": "2023", "price": 400000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-064.jpg"}, {"id": "ATP26-065", "artist": "김학수", "title": "<돌아오는 소리 악보> Returnning Sound 2026", "medium": "천연왁스 한지", "size": "22x1.5x1.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-065.jpg"}, {"id": "ATP26-066", "artist": "김학수", "title": "돌아오는 소리 음원 5점 출품", "medium": "", "size": "", "year": "", "price": 100000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-066.jpg"}, {"id": "ATP26-067", "artist": "김혜림", "title": "〈Concentration 3〉", "medium": "oil on canvas", "size": "", "year": "2023", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-067.jpg"}, {"id": "ATP26-068", "artist": "김혜림", "title": "〈Extension ４〉", "medium": "oil on canvas", "size": "", "year": "2025", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-068.jpg"}, {"id": "ATP26-069", "artist": "김혜림", "title": "〈응시의 시간들 2〉 Layers of Gaze", "medium": "oil on canvas", "size": "", "year": "2025", "price": 240000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-069.jpg"}, {"id": "ATP26-070", "artist": "김혜림", "title": "〈응시의 시간들 3〉 Layers of Gaze", "medium": "oil on canvas", "size": "", "year": "2025", "price": 100000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-070.jpg"}, {"id": "ATP26-071", "artist": "문지영", "title": "사탕이 녹는 동안 Sticky Wishes 2019 Gouache on paper 23×17.6㎝", "medium": "", "size": "23×17.6㎝", "year": "2019", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-071.jpg"}, {"id": "ATP26-072", "artist": "문지영", "title": "성찬식 Communion 2019 Gouache on paper 12.7×15.3㎝", "medium": "", "size": "12.7×15.3㎝", "year": "2019", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-072.jpg"}, {"id": "ATP26-073", "artist": "문지영", "title": "Light of St.Lucy 2025 Oil on canvas 지름 20㎝", "medium": "Light of St.Lucy 2025 Oil on canvas 지름 20㎝", "size": "", "year": "2025", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-073.jpg"}, {"id": "ATP26-074", "artist": "문지영", "title": "( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝", "medium": "( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝", "size": "53×80.3㎝", "year": "2025", "price": 2500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-074.jpg"}, {"id": "ATP26-075", "artist": "문지영", "title": "( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝", "medium": "( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝", "size": "53×80.3㎝", "year": "2025", "price": 2500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-075.jpg"}, {"id": "ATP26-076", "artist": "문지영", "title": "너와 나의 사랑 The way making ♡ 2025 Oil on canvas 33.4×24.2㎝", "medium": "너와 나의 사랑 The way making ♡ 2025 Oil on canvas 33.4×24.2㎝", "size": "33.4×24.2㎝", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-076.jpg"}, {"id": "ATP26-077", "artist": "문지영", "title": "보고싶었어 Miss you 2025 Oil on canvas 33.4×24.2㎝", "medium": "보고싶었어 Miss you 2025 Oil on canvas 33.4×24.2㎝", "size": "33.4×24.2㎝", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-077.jpg"}, {"id": "ATP26-078", "artist": "문지현", "title": "<다섯꼭지예언> Five-point prophecy", "medium": "캔버스에 아크릴", "size": "72.7x90.9cm", "year": "2024", "price": 2400000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-078.jpg"}, {"id": "ATP26-079", "artist": "문지현", "title": "<박새리본> Ribbon for the Little Bird", "medium": "캔버스에 아크릴", "size": "27.4x21.8cm", "year": "2024", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-079.jpg"}, {"id": "ATP26-080", "artist": "문지현", "title": "<새와 십자가> Flight and the Cross", "medium": "나무 위에 수채색연필", "size": "10x10cm", "year": "2025", "price": 150000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-080.jpg"}, {"id": "ATP26-081", "artist": "문지현", "title": "<새심장> A Bird’s Heart", "medium": "캔버스에 수채와 아크릴", "size": "40.9x31.8cm", "year": "2025", "price": 480000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-081.jpg"}, {"id": "ATP26-082", "artist": "문지현", "title": "<화살표돌> Arrow Stone", "medium": "판넬 위에 수채와 과슈", "size": "27.3x22cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-082.jpg"}, {"id": "ATP26-083", "artist": "문지현", "title": "<물고기> Swimming Woman-Fish", "medium": "나무판 위에 수채물감", "size": "10.7x12.5cm", "year": "2026", "price": 150000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-083.jpg"}, {"id": "ATP26-084", "artist": "박주호", "title": "그날의 눈물", "medium": "종이에 연필", "size": "30x40cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-084.jpg"}, {"id": "ATP26-085", "artist": "박주호", "title": "무제", "medium": "종이에 연필", "size": "30x40cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-085.jpg"}, {"id": "ATP26-086", "artist": "박주호", "title": "그 집/ 2026 / oil on canvas / 40.0x30.0cm", "medium": "oil on canvas", "size": "40.0x30.0cm", "year": "2026", "price": 1200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-086.jpg"}, {"id": "ATP26-087", "artist": "박주호", "title": "그 집/ 2026 / oil on canvas / 40.0x30.0cm", "medium": "oil on canvas", "size": "40.0x30.0cm", "year": "2026", "price": 1200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-087.jpg"}, {"id": "ATP26-088", "artist": "방정아", "title": "복숭아꽃", "medium": "acrylic on canvas 30x30cm", "size": "30x30cm", "year": "2026", "price": 1200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-088.jpg"}, {"id": "ATP26-089", "artist": "심성아", "title": "<여행하고 싶어서 사는 곳 1> Staying with traveling 1", "medium": "digital print", "size": "29.7×21cm", "year": "2017", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-089.jpg"}, {"id": "ATP26-090", "artist": "심성아", "title": "<여행하고 싶어서 사는 곳 2> Staying with traveling 2", "medium": "digital print", "size": "29.7×21cm", "year": "2018", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-090.jpg"}, {"id": "ATP26-091", "artist": "심성아", "title": "<여행하고 싶어서 사는 곳 3> Staying with traveling 3", "medium": "digital print", "size": "29.7×21cm", "year": "2019", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-091.jpg"}, {"id": "ATP26-092", "artist": "심성아", "title": "<여행하고 싶어서 사는 곳 4> Staying with traveling 4", "medium": "digital print", "size": "29.7×21cm", "year": "2019", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-092.jpg"}, {"id": "ATP26-093", "artist": "심성아", "title": "<사회의 풍경과 초상 2025> The landscape and portrait of the world 2025", "medium": "digital print", "size": "42×42cm", "year": "2025", "price": 400000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-093.jpg"}, {"id": "ATP26-094", "artist": "심성아", "title": "<사회의 풍경과 초상 2022> The landscape and portrait of the world 2022", "medium": "digital print", "size": "59.4×42cm", "year": "2022", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-094.jpg"}, {"id": "ATP26-095", "artist": "심성아", "title": "<사회의 풍경과 초상 2017> The landscape and portrait of the world 2017", "medium": "used paper on panel", "size": "90.9×65.1cm", "year": "2017", "price": 2300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-095.jpg"}, {"id": "ATP26-096", "artist": "유명희", "title": "새", "medium": "종이위에 수채물감", "size": "12×17cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-096.jpg"}, {"id": "ATP26-097", "artist": "유명희", "title": "새", "medium": "종이위에 수채물감", "size": "12×17cm", "year": "2026", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-097.jpg"}, {"id": "ATP26-098", "artist": "유명희", "title": "꽃 별", "medium": "종이위에 수채물감", "size": "17×12cm", "year": "2026", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-098.jpg"}, {"id": "ATP26-099", "artist": "유명희", "title": "꽃 별", "medium": "종이위에 수채물감", "size": "17×12cm", "year": "2026", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-099.jpg"}, {"id": "ATP26-100", "artist": "유명희", "title": "삼랑진 고양이", "medium": "종이위에 수채물감", "size": "20.2×25.2cm", "year": "2026", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-100.jpg"}, {"id": "ATP26-101", "artist": "이가영", "title": "2025", "medium": "", "size": "33x29x4cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-101.jpg"}, {"id": "ATP26-102", "artist": "이가영", "title": "없음", "medium": "2026 종이 위 펜 21x29.6cm", "size": "21x29.6cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-102.jpg"}, {"id": "ATP26-103", "artist": "이가영", "title": "2020", "medium": "종이 위에 먹", "size": "20x29cm", "year": "2020", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-103.jpg"}, {"id": "ATP26-104", "artist": "이가영", "title": "고양이", "medium": "2026 종이 위 먹 29x20cm", "size": "29x20cm", "year": "2026", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-104.jpg"}, {"id": "ATP26-105", "artist": "이가영", "title": "2010", "medium": "캔버스 위 유화", "size": "80x70cm", "year": "2010", "price": 2500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-105.jpg"}, {"id": "ATP26-106", "artist": "이수영", "title": "<샘물을 찾아서> In Search of the Wellspring2026", "medium": "한지에 채색", "size": "14.3x9.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-106.jpg"}, {"id": "ATP26-107", "artist": "이수영", "title": "<사다리 없이> Without the Ladder2026", "medium": "한지에 채색", "size": "14.3x9.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-107.jpg"}, {"id": "ATP26-108", "artist": "이수영", "title": "<리틀 심플우먼> Little Simple Women2026", "medium": "한지에 채색", "size": "14.3x9.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-108.jpg"}, {"id": "ATP26-109", "artist": "이수영", "title": "<숨> Breath2026", "medium": "한지에 채색", "size": "14.3x9.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-109.jpg"}, {"id": "ATP26-110", "artist": "이수영", "title": "<빛> A Light in the Deep2026", "medium": "한지에 채색", "size": "14.3x9.5cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-110.jpg"}, {"id": "ATP26-111", "artist": "임소영", "title": "<Untitled (Sea #1)>", "medium": "Pigment Print", "size": "148x210mm", "year": "2025", "price": 120000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-111.jpg"}, {"id": "ATP26-112", "artist": "임소영", "title": "<Untitled (Sea #2)>", "medium": "Pigment Print", "size": "148x210mm", "year": "2021", "price": 120000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-112.jpg"}, {"id": "ATP26-113", "artist": "임소영", "title": "<Untitled (Sea #3)>", "medium": "Pigment Print", "size": "148x210mm", "year": "2022", "price": 120000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-113.jpg"}, {"id": "ATP26-114", "artist": "임소영", "title": "<Untitled (horse)>", "medium": "Pigment Print", "size": "148x210mm", "year": "2023", "price": 150000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-114.jpg"}, {"id": "ATP26-115", "artist": "임소영", "title": "<거칠고 평온한#1 창밖풍경>", "medium": "PigmentPrint", "size": "353x233mm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-115.jpg"}, {"id": "ATP26-116", "artist": "임소영", "title": "<거칠고 평온한#2 창밖풍경", "medium": "Pigment Print", "size": "353x233mm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-116.jpg"}, {"id": "ATP26-117", "artist": "임소영", "title": "<거칠고평온한 #3 오늘>", "medium": "Pigment Print", "size": "132x174mm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-117.jpg"}, {"id": "ATP26-118", "artist": "임소영", "title": "<거칠고평온한 #4 얼굴>", "medium": "Pigment Print", "size": "132x174mm", "year": "2025", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-118.jpg"}, {"id": "ATP26-119", "artist": "전지", "title": "최소한의 새_초록 / minimal bird_ green bird / 2025 /나무 위에 석분점토 /12 x 11x 24 cm", "medium": "", "size": "12x11x24cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-119.jpg"}, {"id": "ATP26-120", "artist": "전지", "title": "최소한의 새_박새 / minimal bird_brown great tit /2026 / 15 x 11 x 25 cm", "medium": "", "size": "15x11x25cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-120.jpg"}, {"id": "ATP26-121", "artist": "전지", "title": "왜가리처럼 캄(calm)해지고 싶어 (2) / I want to look calm like a heron(2) / 2026 / 봉제인형 오토마타 /47 x 47 x 87 cm", "medium": "", "size": "47x47x87cm", "year": "2026", "price": 850000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-121.jpg"}, {"id": "ATP26-122", "artist": "전지", "title": "기댈자리 / a place to rely on /2025/나무위에 석분점토/ 27x35x6cm", "medium": "", "size": "27x35x6cm", "year": "2025", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-122.jpg"}, {"id": "ATP26-123", "artist": "전지", "title": "멀리까마귀(1) far away crow/ 2025/ 봉제인형 오토마타/ 73x40x150cm", "medium": "", "size": "73x40x150cm", "year": "2025", "price": 800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-123.jpg"}, {"id": "ATP26-124", "artist": "전지", "title": "최소한의 새_부조 드로잉/ minimal bird_high relief drawing/ 2025/ 나무위에 석분점토/ 38x47x6cm", "medium": "", "size": "38x47x6cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-124.jpg"}, {"id": "ATP26-125", "artist": "전지", "title": "새끼 왜가리입니다/i am a baby heron/2025/ 봉제인형 오토마타/ 28 x 19 x 50 cm", "medium": "", "size": "28x19x50cm", "year": "2025", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-125.jpg"}, {"id": "ATP26-126", "artist": "정시네", "title": "원도심의 기억#2 Memories of the Old Town#2 2025 백토에도자안료", "medium": "원도심의 기억#2 Memories of the Old Town#2 2025 백토에도자안료", "size": "39.5x40cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-126.jpg"}, {"id": "ATP26-127", "artist": "정시네", "title": "원도심의 기억#3 Memories of the Old Town#3 2025 백토에도자안료", "medium": "원도심의 기억#3 Memories of the Old Town#3 2025 백토에도자안료", "size": "32.2x36.5cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-127.jpg"}, {"id": "ATP26-128", "artist": "정시네", "title": "원도심의 기억#6 Memories of the Old Town#6 2025 백토에도자안료", "medium": "원도심의 기억#6 Memories of the Old Town#6 2025 백토에도자안료", "size": "33.5x38.2cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-128.jpg"}, {"id": "ATP26-129", "artist": "정시네", "title": "원도심의 기억#7 Memories of the Old Town#7 2025 백토에 도자안료", "medium": "원도심의 기억#7 Memories of the Old Town#7 2025 백토에 도자안료", "size": "29.5x36.3cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-129.jpg"}, {"id": "ATP26-130", "artist": "정시네", "title": "원도심의파편들8 Fragments of the Old Town8 2023 백토", "medium": "도자안료 31.7x28.8cm", "size": "31.7x28.8cm", "year": "2023", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-130.jpg"}, {"id": "ATP26-131", "artist": "정시네", "title": "원도심의파편들11 Fragments of the Old Town14 2023 백토", "medium": "도자안료31.7x28.8cm", "size": "31.7x28.8cm", "year": "2023", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-131.jpg"}, {"id": "ATP26-132", "artist": "정시네", "title": "원도심의파편들14 Fragments of the Old Town11 2023 백토", "medium": "도자안료 31.7x28.8cm", "size": "31.7x28.8cm", "year": "2023", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-132.jpg"}, {"id": "ATP26-133", "artist": "조정환", "title": "Waterfront", "medium": "", "size": "25.5×25㎝", "year": "2017", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-133.jpg"}, {"id": "ATP26-134", "artist": "조정환", "title": "Waterfront", "medium": "", "size": "36×27㎝", "year": "2017", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-134.jpg"}, {"id": "ATP26-135", "artist": "조정환", "title": "<콘크리트-연기>Concrete-Smoke", "medium": "캔버스에 유채", "size": "33.4×24.2㎝", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-135.jpg"}, {"id": "ATP26-136", "artist": "조정환", "title": "<유리-연기>Glass-Smoke", "medium": "캔버스에 유채", "size": "33.4×24.2㎝", "year": "2025", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-136.jpg"}, {"id": "ATP26-137", "artist": "조정환", "title": "<자루>Hanging-Units", "medium": "오일파스텔 53×45.5㎝", "size": "53×45.5㎝", "year": "2022", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-137.jpg"}, {"id": "ATP26-138", "artist": "조정환", "title": "<거주기계>Architectural Machine", "medium": "캔버스에 목탄", "size": "53×40.9㎝", "year": "2018", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-138.jpg"}, {"id": "ATP26-139", "artist": "조정환", "title": "<집단서식> Microhabitat", "medium": "캔버스에 유채", "size": "65×53㎝", "year": "2016", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-139.jpg"}, {"id": "ATP26-140", "artist": "최민경", "title": "수집된 광물 001~010 collected mineral 001~010", "medium": "", "size": "", "year": "2026", "price": 20000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-140.jpg"}, {"id": "ATP26-141", "artist": "최민경", "title": "수집된 광물 011~020 collected mineral 011~020", "medium": "", "size": "", "year": "2026", "price": 30000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-141.jpg"}, {"id": "ATP26-142", "artist": "최민경", "title": "수집된 광물 021~028", "medium": "", "size": "", "year": "2026", "price": 100000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-142.jpg"}, {"id": "ATP26-143", "artist": "최민경", "title": "수집된 광물 029~030", "medium": "", "size": "", "year": "2026", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-143.jpg"}, {"id": "ATP26-144", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-144.jpg"}, {"id": "ATP26-145", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-145.jpg"}, {"id": "ATP26-146", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-146.jpg"}, {"id": "ATP26-147", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-147.jpg"}, {"id": "ATP26-148", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-148.jpg"}, {"id": "ATP26-149", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "46x53cm", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-149.jpg"}, {"id": "ATP26-150", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-150.jpg"}, {"id": "ATP26-151", "artist": "홍석진", "title": "<구멍>", "medium": "종이에 믹스드 미디어", "size": "", "year": "2026", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-151.jpg"}, {"id": "ATP26-152", "artist": "심승보", "title": "생각에 잠긴 가마우지 영문 : :a thoughtful cormorant) mixed media 73cm x 64cm 2024", "medium": "생각에 잠긴 가마우지 영문 : :a thoughtful cormorant) mixed media 73cm x 64cm 2024", "size": "", "year": "2024", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-152.jpg"}, {"id": "ATP26-153", "artist": "심승보", "title": "자연으로 돌아가고 싶어요1 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "medium": "자연으로 돌아가고 싶어요1 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "size": "", "year": "2022", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-153.jpg"}, {"id": "ATP26-154", "artist": "심승보", "title": "자연으로 돌아가고 싶어요2 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "medium": "자연으로 돌아가고 싶어요2 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "size": "", "year": "2022", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-154.jpg"}, {"id": "ATP26-155", "artist": "심승보", "title": "자연으로 돌아가고 싶어요3 (영문 : I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "medium": "자연으로 돌아가고 싶어요3 (영문 : I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "size": "", "year": "2022", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-155.jpg"}, {"id": "ATP26-156", "artist": "심승보", "title": "자연으로 돌아가고 싶어요4 영문; I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "medium": "자연으로 돌아가고 싶어요4 영문; I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022", "size": "", "year": "2022", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-156.jpg"}, {"id": "ATP26-157", "artist": "심승보", "title": "펭귄 연인 영문:Penguin lovers acrylic on canvas 45cm x 54cm 2024", "medium": "펭귄 연인 영문:Penguin lovers acrylic on canvas 45cm x 54cm 2024", "size": "", "year": "2024", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-157.jpg"}, {"id": "ATP26-158", "artist": "신수빈", "title": "Soft gravityⅡ", "medium": "한지에 수간채색", "size": "60.7×72.5cm", "year": "2025", "price": 2500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-158.jpg"}, {"id": "ATP26-159", "artist": "신수빈", "title": "Soft gravityⅢ", "medium": "한지에 수간채색", "size": "60.7×72.5cm", "year": "2025", "price": 2500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-159.jpg"}, {"id": "ATP26-160", "artist": "신수빈", "title": "love-blending-into-faith", "medium": "한지에 수간채색", "size": "12×22.8cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-160.jpg"}, {"id": "ATP26-161", "artist": "신수빈", "title": "뼈다귀지키기", "medium": "한지에 수간채색", "size": "27.5×22.2cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-161.jpg"}, {"id": "ATP26-162", "artist": "신수빈", "title": "영원한 지속Ⅰ", "medium": "한지에 수간채색", "size": "25.3×18cm", "year": "2025", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-162.jpg"}, {"id": "ATP26-163", "artist": "신수빈", "title": "영원한 지속Ⅱ", "medium": "한지에 수간채색", "size": "34.8×27.4cm", "year": "2025", "price": 750000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-163.jpg"}, {"id": "ATP26-164", "artist": "신수빈", "title": "영원한 지속Ⅲ", "medium": "한지에 수간채색", "size": "27.5×22.2cm", "year": "2025", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-164.jpg"}, {"id": "ATP26-165", "artist": "안소영", "title": "<산맥> Mountain ranges", "medium": "", "size": "60.6×72.7cm", "year": "2025", "price": 3000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-165.jpg"}, {"id": "ATP26-166", "artist": "안소영", "title": "<산맥> Mountain ranges", "medium": "", "size": "45.5×53cm", "year": "2025", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-166.jpg"}, {"id": "ATP26-167", "artist": "안소영", "title": "<마음에 산맥을 일으켜> Raising mountain ranges in the heart 2022", "medium": "", "size": "58×20cm", "year": "2022", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-167.jpg"}, {"id": "ATP26-168", "artist": "안소영", "title": "<산맥> Mountain ranges", "medium": "", "size": "25×25cm", "year": "2026", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-168.jpg"}, {"id": "ATP26-169", "artist": "안소영", "title": "<산맥> Mountain ranges", "medium": "", "size": "14×22.5cm", "year": "2026", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-169.jpg"}, {"id": "ATP26-170", "artist": "조재임", "title": "<바람숲> Windforest", "medium": "장지", "size": "", "year": "2016", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-170.jpg"}, {"id": "ATP26-171", "artist": "조재임", "title": "<바람의 창> The Breath's Way", "medium": "장지", "size": "20.5x29cm", "year": "2025", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-171.jpg"}, {"id": "ATP26-172", "artist": "조재임", "title": "<바람의 창> The Breath's Way", "medium": "장지", "size": "20.5x29cm", "year": "2025", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-172.jpg"}, {"id": "ATP26-173", "artist": "조재임", "title": "<바람숲> Windforest", "medium": "장지에 채색한지", "size": "25x25cm", "year": "2020", "price": 2000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-173.jpg"}, {"id": "ATP26-174", "artist": "조재임", "title": "<바람숲> Windforest", "medium": "장지에 채색한지", "size": "26x34cm", "year": "2023", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-174.jpg"}, {"id": "ATP26-175", "artist": "황인지", "title": "<혼자가 되면 보이는 것들> 2020", "medium": "이태리타월에 채색", "size": "16x14cm", "year": "2020", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-175.jpg"}, {"id": "ATP26-176", "artist": "황인지", "title": "<따뜻한 환대> 2023", "medium": "한지에 채색", "size": "20x53cm", "year": "2023", "price": 1200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-176.jpg"}, {"id": "ATP26-177", "artist": "황인지", "title": "<여기서는 울어도 돼> 2023", "medium": "한지에 채색", "size": "27.5x22cm", "year": "2023", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-177.jpg"}, {"id": "ATP26-178", "artist": "황인지", "title": "<작지만 위대한 것들> 2023", "medium": "한지에 채색", "size": "25x64cm", "year": "2023", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-178.jpg"}, {"id": "ATP26-179", "artist": "황인지", "title": "<Love and Illness> 2025", "medium": "한지에 채색", "size": "25x65cm", "year": "2025", "price": 2200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-179.jpg"}, {"id": "ATP26-180", "artist": "이다슬", "title": "<종달새 날아오르면 나를 꼬옥 안아주세요", "medium": "Gelatin Silver Print", "size": "46x41cm", "year": "2022", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-180.jpg"}, {"id": "ATP26-181", "artist": "이다슬", "title": "<종달새 날아오르면 나를 꼬옥 안아주세요", "medium": "Archival Pigment Print", "size": "63x63cm", "year": "2021", "price": 650000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-181.jpg"}, {"id": "ATP26-182", "artist": "이다슬", "title": "<수리수리마하수리 수수리사바하> 2023", "medium": "종이에 격면주사와 기름을 혼합한 글씨", "size": "14.5x16.5cm", "year": "2023", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-182.jpg"}, {"id": "ATP26-183", "artist": "이다슬", "title": "<30여년만에 화분으로서 역할을 부여 받아 환삼덩굴을 키워냈던 화분이지만", "medium": "캔버스에 크레파스", "size": "25.5x18cm", "year": "2017", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-183.jpg"}, {"id": "ATP26-184", "artist": "이다슬", "title": "<완벽한 잡초 재배를 위한 토분>", "medium": "", "size": "12x12x25cm", "year": "2023", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-184.jpg"}, {"id": "ATP26-185", "artist": "이다슬", "title": "<127개의 잘린 아로니아 나무 밑동 중 하나>", "medium": "석고", "size": "30x40x20cm", "year": "2024", "price": 600000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-185.jpg"}, {"id": "ATP26-186", "artist": "서찬석", "title": "<영도구 신선동 2가> Sinseon-dong 2ga", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-186.jpg"}, {"id": "ATP26-187", "artist": "서찬석", "title": "<중구 광복동 1가> Gwangbok-dong 1ga", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-187.jpg"}, {"id": "ATP26-188", "artist": "서찬석", "title": "<중구 중앙동 4가> Jungang-dong 4ga", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-188.jpg"}, {"id": "ATP26-189", "artist": "서찬석", "title": "<중구 보수동 1가> Bosu-dong 1ga", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-189.jpg"}, {"id": "ATP26-190", "artist": "서찬석", "title": "<중구 대청동 2가> Daecheong-dong 2ga", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-190.jpg"}, {"id": "ATP26-191", "artist": "서찬석", "title": "<동구 좌천동> Jwacheon-dong", "medium": "Acrylic paint", "size": "", "year": "2025", "price": 1800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-191.jpg"}, {"id": "ATP26-192", "artist": "황현덕", "title": "<고양이 인간>", "medium": "acrylic on canvas", "size": "40x20cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-192.jpg"}, {"id": "ATP26-193", "artist": "황현덕", "title": "<구조와 사람>", "medium": "mix paiting on canvas", "size": "30x30cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-193.jpg"}, {"id": "ATP26-194", "artist": "황현덕", "title": "<문어와 점>", "medium": "acrylic on canvas", "size": "40x20cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-194.jpg"}, {"id": "ATP26-195", "artist": "황현덕", "title": "<손과 지구>", "medium": "acrylic on canvas", "size": "40x20cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-195.jpg"}, {"id": "ATP26-196", "artist": "황현덕", "title": "<음악과 노동자> 2025", "medium": "acrylic on canvas", "size": "40x20cm", "year": "2025", "price": 900000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-196.jpg"}, {"id": "ATP26-197", "artist": "방화선", "title": "태극선", "medium": "", "size": "", "year": "", "price": 1500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-197.jpg"}, {"id": "ATP26-198", "artist": "방화선", "title": "삼배원선", "medium": "", "size": "", "year": "", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-198.jpg"}, {"id": "ATP26-199", "artist": "방화선", "title": "연화선(흰색 대)", "medium": "", "size": "", "year": "", "price": 1000000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-199.jpg"}, {"id": "ATP26-200", "artist": "방화선", "title": "연화선", "medium": "", "size": "", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-200.jpg"}, {"id": "ATP26-201", "artist": "방화선", "title": "연화선(중)", "medium": "", "size": "", "year": "", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-201.jpg"}, {"id": "ATP26-202", "artist": "방화선", "title": "연화선(검은색)", "medium": "", "size": "", "year": "", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-202.jpg"}, {"id": "ATP26-203", "artist": "방화선", "title": "연화선(흰색 중)", "medium": "", "size": "", "year": "", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-203.jpg"}, {"id": "ATP26-204", "artist": "방화선", "title": "연화선(초록잎)", "medium": "", "size": "", "year": "", "price": 700000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-204.jpg"}, {"id": "ATP26-205", "artist": "방화선", "title": "분홍연화선", "medium": "", "size": "", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-205.jpg"}, {"id": "ATP26-206", "artist": "방화선", "title": "화폭선", "medium": "", "size": "", "year": "", "price": 800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-206.jpg"}, {"id": "ATP26-207", "artist": "방화선", "title": "파초선", "medium": "", "size": "", "year": "", "price": 800000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-207.jpg"}, {"id": "ATP26-208", "artist": "방화선", "title": "옻칠 연엽선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-208.jpg"}, {"id": "ATP26-209", "artist": "방화선", "title": "옻칠 연엽선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-209.jpg"}, {"id": "ATP26-210", "artist": "방화선", "title": "옻칠 선녀선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-210.jpg"}, {"id": "ATP26-211", "artist": "방화선", "title": "옻칠 선녀선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-211.jpg"}, {"id": "ATP26-212", "artist": "방화선", "title": "비녀 곡두선(검은색)", "medium": "", "size": "", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-212.jpg"}, {"id": "ATP26-213", "artist": "방화선", "title": "비녀 곡두선(붉은색)", "medium": "", "size": "", "year": "", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-213.jpg"}, {"id": "ATP26-214", "artist": "방화선", "title": "거북단선", "medium": "", "size": "", "year": "", "price": 450000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-214.jpg"}, {"id": "ATP26-215", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-215.jpg"}, {"id": "ATP26-216", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-216.jpg"}, {"id": "ATP26-217", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-217.jpg"}, {"id": "ATP26-218", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-218.jpg"}, {"id": "ATP26-219", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-219.jpg"}, {"id": "ATP26-220", "artist": "방화선", "title": "둥근 온선", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-220.jpg"}, {"id": "ATP26-221", "artist": "방화선", "title": "큰 미선(붉은색)", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-221.jpg"}, {"id": "ATP26-222", "artist": "방화선", "title": "큰 미선((갈색)", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-222.jpg"}, {"id": "ATP26-223", "artist": "방화선", "title": "큰 미선(푸른색)", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-223.jpg"}, {"id": "ATP26-224", "artist": "방화선", "title": "큰 미선(미색)", "medium": "", "size": "", "year": "", "price": 250000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-224.jpg"}, {"id": "ATP26-225", "artist": "방화선", "title": "반구선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-225.jpg"}, {"id": "ATP26-226", "artist": "방화선", "title": "반구선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-226.jpg"}, {"id": "ATP26-227", "artist": "방화선", "title": "연월선", "medium": "", "size": "", "year": "", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-227.jpg"}, {"id": "ATP26-228", "artist": "방화선", "title": "연월선", "medium": "", "size": "", "year": "", "price": 350000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-228.jpg"}, {"id": "ATP26-229", "artist": "방화선", "title": "옻칠 듸림선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-229.jpg"}, {"id": "ATP26-230", "artist": "방화선", "title": "옻칠 태극선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-230.jpg"}, {"id": "ATP26-231", "artist": "방화선", "title": "옻칠 태극선", "medium": "", "size": "", "year": "", "price": 200000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-231.jpg"}, {"id": "ATP26-232", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-232.jpg"}, {"id": "ATP26-233", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-233.jpg"}, {"id": "ATP26-234", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-234.jpg"}, {"id": "ATP26-235", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-235.jpg"}, {"id": "ATP26-236", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-236.jpg"}, {"id": "ATP26-237", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-237.jpg"}, {"id": "ATP26-238", "artist": "방화선", "title": "검은 옻칠 원선", "medium": "", "size": "", "year": "", "price": 300000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-238.jpg"}, {"id": "ATP26-239", "artist": "배무삼", "title": "기바리 눈쟁이연(액자) 45 X 65cm", "medium": "", "size": "45X65cm", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-239.jpg"}, {"id": "ATP26-240", "artist": "배무삼", "title": "중모리연(액자) 45 X 65cm", "medium": "", "size": "45X65cm", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-240.jpg"}, {"id": "ATP26-241", "artist": "배무삼", "title": "돌쪽바지기 눈쟁이 연(액자) 45 X 65cm", "medium": "", "size": "45X65cm", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-241.jpg"}, {"id": "ATP26-242", "artist": "배무삼", "title": "귀머리 홍치마 연(액자) 45 X 65cm", "medium": "", "size": "45X65cm", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-242.jpg"}, {"id": "ATP26-243", "artist": "배무삼", "title": "귀머리연(액자) 45 X 65cm", "medium": "", "size": "45X65cm", "year": "", "price": 500000, "status": "정박", "assignee": "미배정", "soldDate": "", "booth": "", "img": "atp26-243.jpg"}];
+let works=[{"id":"ATP26-001","artist":"강은경","title":"<손맛> son-mat : hand taste","medium":"종이에 리소 프린트","size":"297x420mm","year":"2025","price":30000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-001.jpg"},{"id":"ATP26-002","artist":"강은경","title":"이만큼","medium":"종이에 리소 프린트","size":"297x420mm","year":"2025","price":30000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-002.jpg"},{"id":"ATP26-003","artist":"강은경","title":"T for 2","medium":"흑토에 백유","size":"85x80x70mm","year":"2021","price":100000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-003.jpg"},{"id":"ATP26-004","artist":"강은경","title":"T for 2","medium":"흑토에 백유","size":"75x70x60mm","year":"2021","price":100000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-004.jpg"},{"id":"ATP26-005","artist":"구헌주","title":"<휴먼>Human","medium":"Acrylic on Canvas","size":"45.5x37.9cm","year":"2024","price":1200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-005.jpg"},{"id":"ATP26-006","artist":"구헌주","title":"<라이프> Life","medium":"Acrylic on Canvas","size":"45.5X37.9cm","year":"2024","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-006.jpg"},{"id":"ATP26-007","artist":"구헌주","title":"Make Some Nois","medium":"","size":"","year":"","price":85000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-007.jpg"},{"id":"ATP26-008","artist":"구헌주","title":"<화환>","medium":"포맥스 위 스프레이(Stencil)","size":"","year":"2025","price":2700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-008.jpg"},{"id":"ATP26-009","artist":"구헌주","title":"<경고> CREATED_ 2024","medium":"silk screen on losaspina 285g","size":"","year":"2024","price":800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-009.jpg"},{"id":"ATP26-010","artist":"구헌주","title":"<퇴장> CREATED_ 2024","medium":"silk screen on losaspina 285g","size":"","year":"2024","price":800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-010.jpg"},{"id":"ATP26-011","artist":"구헌주","title":"<기울어진 운동장>","medium":"Acrylic on wood panel","size":"105x74cm","year":"2025","price":1800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-011.jpg"},{"id":"ATP26-012","artist":"김경화","title":"밭대신 화분","medium":"혼합재료(mixed media)","size":"20×30×5cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-012.jpg"},{"id":"ATP26-013","artist":"김경화","title":"밭대신 화분","medium":"혼합재료(mixed media)","size":"20×30×5cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-013.jpg"},{"id":"ATP26-014","artist":"김경화","title":"도끼","medium":"혼합재료(mixed media)","size":"19×40cm","year":"2022","price":1500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-014.jpg"},{"id":"ATP26-015","artist":"김경화","title":"낫","medium":"혼합재료(mixed media)","size":"25×44cm","year":"2022","price":1500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-015.jpg"},{"id":"ATP26-016","artist":"김경화","title":"바이스","medium":"혼합재료(mixed media)","size":"37×29cm","year":"2022","price":1500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-016.jpg"},{"id":"ATP26-017","artist":"김경화","title":"스패너","medium":"혼합재료(mixed media)","size":"29×37cm","year":"2022","price":1500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-017.jpg"},{"id":"ATP26-018","artist":"김경화","title":"칼","medium":"혼합재료(mixed media)","size":"37×31cm","year":"2022","price":1500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-018.jpg"},{"id":"ATP26-019","artist":"김근예","title":"마음의 모양_01","medium":"종이 위 혼합재료","size":"25x20cm","year":"2025","price":250000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-019.jpg"},{"id":"ATP26-020","artist":"김근예","title":"모양의 모양_02","medium":"종이 위 혼합재료","size":"25x20cm","year":"2025","price":250000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-020.jpg"},{"id":"ATP26-021","artist":"김근예","title":"Which One Do You Like?","medium":"캔버스에 아크릴","size":"90.9x65.1cm","year":"2025","price":2000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-021.jpg"},{"id":"ATP26-022","artist":"김근예","title":"Shining","medium":"캔버스에 아크릴","size":"90.9x65.1cm","year":"2025","price":2000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-022.jpg"},{"id":"ATP26-023","artist":"김근예","title":"가벼운 발걸음","medium":"캔버스에 아크릴","size":"29.7x42cm","year":"2025","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-023.jpg"},{"id":"ATP26-024","artist":"김근예","title":"비워진 자리","medium":"캔버스에 아크릴","size":"29.7x42cm","year":"2025","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-024.jpg"},{"id":"ATP26-025","artist":"김근예","title":"일정은 없고 기분은 좋음","medium":"캔버스에 아크릴","size":"29.7x42cm","year":"2025","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-025.jpg"},{"id":"ATP26-026","artist":"김대홍","title":"무서웠던 밤 Scary night_종이 위에 실크스크린+펜 드로잉_2025_N/30 ED","medium":"무서웠던 밤 Scary night_종이 위에 실크스크린+펜 드로잉_2025_N","size":"","year":"2025","price":180000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-026.jpg"},{"id":"ATP26-027","artist":"김대홍","title":"도망 Running away_31x25cm_종이 위에 실크스크린+펜_2025","medium":"도망 Running away_31x25cm_종이 위에 실크스크린+펜_2025","size":"31x25cm","year":"2025","price":180000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-027.jpg"},{"id":"ATP26-028","artist":"김대홍","title":"작은 오두막의 아침 Mornign in a little cabin__24.5x31.5cm_종이 위에 실크스크린+펜 드로잉_2025","medium":"작은 오두막의 아침 Mornign in a little cabin__24.5x31.5cm_종이 위에 실크스크린+펜 드로잉_2025","size":"24.5x31.5cm","year":"2025","price":180000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-028.jpg"},{"id":"ATP26-029","artist":"김대홍","title":"아무도 들어주지 않는 노래를 부르는 사람 4","medium":"종이 위에 0.1-0.5mm 펜","size":"23x30.5cm","year":"2022","price":450000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-029.jpg"},{"id":"ATP26-030","artist":"김대홍","title":"아무도 들어주지 않는 노래를 부르는 사람 14","medium":"종이 위에 0.1-0.5mm 펜","size":"23x30.5cm","year":"2022","price":450000,"status":"정박","assignee":"미배정","soldDate":"","booth":"A","img":"atp26-030.jpg"},{"id":"ATP26-031","artist":"김미래","title":"따뜻한 그늘 _2023_종이에 흑연_1x2cm","medium":"따뜻한 그늘 _2023_종이에 흑연_1x2cm","size":"1x2cm","year":"2023","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-031.jpg"},{"id":"ATP26-032","artist":"김미래","title":"안녕","medium":"잘 가 _2023_종이에 흑연_3x2cm","size":"3x2cm","year":"2023","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-032.jpg"},{"id":"ATP26-033","artist":"김미래","title":"반가운 사건 _2023_종이에 흑연_4.5x3.5cm","medium":"반가운 사건 _2023_종이에 흑연_4.5x3.5cm","size":"4.5x3.5cm","year":"2023","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-033.jpg"},{"id":"ATP26-034","artist":"김미래","title":"구슬처럼 반짝이며 우리가 _2025_종이에 흑연","medium":"구슬처럼 반짝이며 우리가 _2025_종이에 흑연","size":"5x30x2.5cm","year":"2025","price":450000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-034.jpg"},{"id":"ATP26-035","artist":"김미래","title":"너와 함께 이 모험을 시작하려해 _2024_종이에 흑연","medium":"너와 함께 이 모험을 시작하려해 _2024_종이에 흑연","size":"14x25x2.2cm","year":"2024","price":400000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-035.jpg"},{"id":"ATP26-036","artist":"김민정","title":"<아파트 풀꽃 그림자> Sang-lee Village","medium":"종이에 수채","size":"15x20cm","year":"2026","price":350000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-036.jpg"},{"id":"ATP26-037","artist":"김민정","title":"<조마이 섬으로 부터 > Sandbank","medium":"종이에 수채","size":"16.4x15cm","year":"2025","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-037.jpg"},{"id":"ATP26-038","artist":"김민정","title":"<이어진 풍경> Continuous Scenery","medium":"종이에 수채","size":"34.5x24.8cm","year":"2023","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-038.jpg"},{"id":"ATP26-039","artist":"김민정","title":"<이어진 풍경> Continuous Scenery","medium":"종이에 수채","size":"34.5x24.8cm","year":"2023","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-039.jpg"},{"id":"ATP26-040","artist":"김민정","title":"<이어진 풍경> Continuous Scenery","medium":"종이에 수채","size":"34.5x24.8cm","year":"2023","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-040.jpg"},{"id":"ATP26-041","artist":"김민정","title":"<초량산책> Stroll","medium":"종이에 수채","size":"25x33cm","year":"2022","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-041.jpg"},{"id":"ATP26-042","artist":"김민정","title":"<초량산책> Stroll","medium":"종이에 수채","size":"25x33cm","year":"2022","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-042.jpg"},{"id":"ATP26-043","artist":"김성진","title":"비둘기","medium":"장지 위에 수채","size":"","year":"2025","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-043.jpg"},{"id":"ATP26-044","artist":"김성진","title":"소리나는 귀","medium":"장지 위에 수채","size":"","year":"2025","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-044.jpg"},{"id":"ATP26-045","artist":"김성진","title":"겨울경주","medium":"종이 위에 목탄","size":"","year":"2018","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-045.jpg"},{"id":"ATP26-046","artist":"김성진","title":"겨울경주","medium":"종이 위에 목탄","size":"","year":"2018","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-046.jpg"},{"id":"ATP26-047","artist":"김성진","title":"겨울경주","medium":"종이 위에 목탄","size":"","year":"2018","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-047.jpg"},{"id":"ATP26-048","artist":"김성진","title":"빛 한 모금","medium":"종이 위에 콩테","size":"","year":"2025","price":700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-048.jpg"},{"id":"ATP26-049","artist":"김성진","title":"빛 한 모금","medium":"종이 위에 콩테","size":"","year":"2025","price":700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-049.jpg"},{"id":"ATP26-050","artist":"김유경","title":"오래된 진지","medium":"천에 혼합재료","size":"33.4×24.2cm","year":"2025","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-050.jpg"},{"id":"ATP26-051","artist":"김유경","title":"오래된 진지","medium":"천에 혼합재료","size":"33.4×24.2cm","year":"2025","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-051.jpg"},{"id":"ATP26-052","artist":"김유경","title":"저마다 알고 있는 것들을 서로서로에게","medium":"2025 천에 혼합재료","size":"80.3×100cm","year":"2025","price":2000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-052.jpg"},{"id":"ATP26-053","artist":"김유경","title":"숲속 물냉이와 이끼","medium":"천에 혼합재료","size":"31.8×40.9cm","year":"2025","price":700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-053.jpg"},{"id":"ATP26-054","artist":"김유경","title":"피곤한 야자","medium":"천에 혼합재료","size":"31.8×40.9cm","year":"2026","price":700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-054.jpg"},{"id":"ATP26-055","artist":"김유경","title":"피곤한 야자","medium":"천에 혼합재료","size":"31.8×40.9cm","year":"2026","price":700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-055.jpg"},{"id":"ATP26-056","artist":"김유경","title":"피곤한 야자","medium":"천에 혼합재료","size":"31.8×40.9cm","year":"2026","price":700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-1","img":"atp26-056.jpg"},{"id":"ATP26-057","artist":"김재민이","title":"대한소인협회 -조언-","medium":"조각","size":"20x15cm","year":"2024","price":1430000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-057.jpg"},{"id":"ATP26-058","artist":"김재민이","title":"대한소인협회 -자리잡기-","medium":"조각","size":"20x15cm","year":"2024","price":1430000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-058.jpg"},{"id":"ATP26-059","artist":"김진주","title":"<구상나무의 수꽃> male cone of the Korean fir","medium":"종이에 라이너펜","size":"23x30.5cm","year":"2023","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-059.jpg"},{"id":"ATP26-060","artist":"김진주","title":"<구상나무의 암꽃> female cone of the Korean fir","medium":"종이에 라이너펜","size":"23x30.5cm","year":"2023","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-060.jpg"},{"id":"ATP26-061","artist":"김진주","title":"<백목련> Yulan magnolia","medium":"종이에 라이너펜","size":"30.5x23cm","year":"2023","price":400000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-061.jpg"},{"id":"ATP26-062","artist":"김진주","title":"<은행나무의 숨겨진 침엽수 잎> the hidden conifer-like leaves of the ginkgo tree","medium":"<은행나무의 숨겨진 침엽수 잎> the hidden conifer-like leaves of the ginkgo tree","size":"30.5x45cm","year":"2023","price":1600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-062.jpg"},{"id":"ATP26-063","artist":"김진주","title":"<2월에 본 은행나무의 겨울눈> the winter buds of the ginkgo tree seen in February","medium":"<2월에 본 은행나무의 겨울눈> the winter buds of the ginkgo tree seen in February","size":"35.5x51cm","year":"2023","price":2000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-063.jpg"},{"id":"ATP26-064","artist":"김진주","title":"<백목련","medium":"종이에 라이너펜","size":"30.5x23cm","year":"2023","price":400000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-064.jpg"},{"id":"ATP26-065","artist":"김학수","title":"<돌아오는 소리 악보> Returnning Sound 2026","medium":"천연왁스 한지","size":"22x1.5x1.5cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-065.jpg"},{"id":"ATP26-066","artist":"김학수","title":"돌아오는 소리 음원 5점 출품","medium":"","size":"","year":"","price":100000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-066.jpg"},{"id":"ATP26-067","artist":"김혜림","title":"〈Concentration 3〉","medium":"oil on canvas","size":"","year":"2023","price":1000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-067.jpg"},{"id":"ATP26-068","artist":"김혜림","title":"〈Extension ４〉","medium":"oil on canvas","size":"","year":"2025","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-068.jpg"},{"id":"ATP26-069","artist":"김혜림","title":"〈응시의 시간들 2〉 Layers of Gaze","medium":"oil on canvas","size":"","year":"2025","price":240000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-069.jpg"},{"id":"ATP26-070","artist":"김혜림","title":"〈응시의 시간들 3〉 Layers of Gaze","medium":"oil on canvas","size":"","year":"2025","price":100000,"status":"정박","assignee":"미배정","soldDate":"","booth":"B-2","img":"atp26-070.jpg"},{"id":"ATP26-071","artist":"문지영","title":"사탕이 녹는 동안 Sticky Wishes 2019 Gouache on paper 23×17.6㎝","medium":"","size":"23×17.6㎝","year":"2019","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-071.jpg"},{"id":"ATP26-072","artist":"문지영","title":"성찬식 Communion 2019 Gouache on paper 12.7×15.3㎝","medium":"","size":"12.7×15.3㎝","year":"2019","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-072.jpg"},{"id":"ATP26-073","artist":"문지영","title":"Light of St.Lucy 2025 Oil on canvas 지름 20㎝","medium":"Light of St.Lucy 2025 Oil on canvas 지름 20㎝","size":"","year":"2025","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-073.jpg"},{"id":"ATP26-074","artist":"문지영","title":"( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝","medium":"( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝","size":"53×80.3㎝","year":"2025","price":2500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-074.jpg"},{"id":"ATP26-075","artist":"문지영","title":"( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝","medium":"( )와 ( ) ( )and ( ) 2025 Oil on canvas 53×80.3㎝","size":"53×80.3㎝","year":"2025","price":2500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-075.jpg"},{"id":"ATP26-076","artist":"문지영","title":"너와 나의 사랑 The way making ♡ 2025 Oil on canvas 33.4×24.2㎝","medium":"너와 나의 사랑 The way making ♡ 2025 Oil on canvas 33.4×24.2㎝","size":"33.4×24.2㎝","year":"2025","price":700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-076.jpg"},{"id":"ATP26-077","artist":"문지영","title":"보고싶었어 Miss you 2025 Oil on canvas 33.4×24.2㎝","medium":"보고싶었어 Miss you 2025 Oil on canvas 33.4×24.2㎝","size":"33.4×24.2㎝","year":"2025","price":700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-077.jpg"},{"id":"ATP26-078","artist":"문지현","title":"<다섯꼭지예언> Five-point prophecy","medium":"캔버스에 아크릴","size":"72.7x90.9cm","year":"2024","price":2400000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-078.jpg"},{"id":"ATP26-079","artist":"문지현","title":"<박새리본> Ribbon for the Little Bird","medium":"캔버스에 아크릴","size":"27.4x21.8cm","year":"2024","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-079.jpg"},{"id":"ATP26-080","artist":"문지현","title":"<새와 십자가> Flight and the Cross","medium":"나무 위에 수채색연필","size":"10x10cm","year":"2025","price":150000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-080.jpg"},{"id":"ATP26-081","artist":"문지현","title":"<새심장> A Bird’s Heart","medium":"캔버스에 수채와 아크릴","size":"40.9x31.8cm","year":"2025","price":480000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-081.jpg"},{"id":"ATP26-082","artist":"문지현","title":"<화살표돌> Arrow Stone","medium":"판넬 위에 수채와 과슈","size":"27.3x22cm","year":"2025","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-082.jpg"},{"id":"ATP26-083","artist":"문지현","title":"<물고기> Swimming Woman-Fish","medium":"나무판 위에 수채물감","size":"10.7x12.5cm","year":"2026","price":150000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-083.jpg"},{"id":"ATP26-084","artist":"박주호","title":"그날의 눈물","medium":"종이에 연필","size":"30x40cm","year":"2025","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-084.jpg"},{"id":"ATP26-085","artist":"박주호","title":"무제","medium":"종이에 연필","size":"30x40cm","year":"2025","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-085.jpg"},{"id":"ATP26-086","artist":"박주호","title":"그 집/ 2026 / oil on canvas / 40.0x30.0cm","medium":"oil on canvas","size":"40.0x30.0cm","year":"2026","price":1200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-086.jpg"},{"id":"ATP26-087","artist":"박주호","title":"그 집/ 2026 / oil on canvas / 40.0x30.0cm","medium":"oil on canvas","size":"40.0x30.0cm","year":"2026","price":1200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-087.jpg"},{"id":"ATP26-088","artist":"방정아","title":"복숭아꽃","medium":"acrylic on canvas","size":"30x30cm","year":"2026","price":1300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-088.jpg"},{"id":"ATP26-089","artist":"심성아","title":"<여행하고 싶어서 사는 곳 1> Staying with traveling 1","medium":"digital print","size":"29.7×21cm","year":"2017","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-089.jpg"},{"id":"ATP26-090","artist":"심성아","title":"<여행하고 싶어서 사는 곳 2> Staying with traveling 2","medium":"digital print","size":"29.7×21cm","year":"2018","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-090.jpg"},{"id":"ATP26-091","artist":"심성아","title":"<여행하고 싶어서 사는 곳 3> Staying with traveling 3","medium":"digital print","size":"29.7×21cm","year":"2019","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-091.jpg"},{"id":"ATP26-092","artist":"심성아","title":"<여행하고 싶어서 사는 곳 4> Staying with traveling 4","medium":"digital print","size":"29.7×21cm","year":"2019","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-092.jpg"},{"id":"ATP26-093","artist":"심성아","title":"<사회의 풍경과 초상 2025> The landscape and portrait of the world 2025","medium":"digital print","size":"42×42cm","year":"2025","price":400000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-093.jpg"},{"id":"ATP26-094","artist":"심성아","title":"<사회의 풍경과 초상 2022> The landscape and portrait of the world 2022","medium":"digital print","size":"59.4×42cm","year":"2022","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-094.jpg"},{"id":"ATP26-095","artist":"심성아","title":"<사회의 풍경과 초상 2017> The landscape and portrait of the world 2017","medium":"used paper on panel","size":"90.9×65.1cm","year":"2017","price":2300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-095.jpg"},{"id":"ATP26-096","artist":"유명희","title":"새","medium":"종이위에 수채물감","size":"12×17cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-096.jpg"},{"id":"ATP26-097","artist":"유명희","title":"새","medium":"종이위에 수채물감","size":"12×17cm","year":"2026","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-097.jpg"},{"id":"ATP26-098","artist":"유명희","title":"꽃 별","medium":"종이위에 수채물감","size":"17×12cm","year":"2026","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-098.jpg"},{"id":"ATP26-099","artist":"유명희","title":"꽃 별","medium":"종이위에 수채물감","size":"17×12cm","year":"2026","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-099.jpg"},{"id":"ATP26-100","artist":"유명희","title":"삼랑진 고양이","medium":"종이위에 수채물감","size":"20.2×25.2cm","year":"2026","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-100.jpg"},{"id":"ATP26-101","artist":"이가영","title":"2025","medium":"","size":"33x29x4cm","year":"2025","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-101.jpg"},{"id":"ATP26-102","artist":"이가영","title":"없음","medium":"2026 종이 위 펜 21x29.6cm","size":"21x29.6cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-102.jpg"},{"id":"ATP26-103","artist":"이가영","title":"2020","medium":"종이 위에 먹","size":"20x29cm","year":"2020","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-103.jpg"},{"id":"ATP26-104","artist":"이가영","title":"고양이","medium":"2026 종이 위 먹 29x20cm","size":"29x20cm","year":"2026","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-104.jpg"},{"id":"ATP26-105","artist":"이가영","title":"2010","medium":"캔버스 위 유화","size":"80x70cm","year":"2010","price":2500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-1","img":"atp26-105.jpg"},{"id":"ATP26-106","artist":"이수영","title":"<샘물을 찾아서> In Search of the Wellspring2026","medium":"한지에 채색","size":"14.3x9.5cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-106.jpg"},{"id":"ATP26-107","artist":"이수영","title":"<사다리 없이> Without the Ladder2026","medium":"한지에 채색","size":"14.3x9.5cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-107.jpg"},{"id":"ATP26-108","artist":"이수영","title":"<리틀 심플우먼> Little Simple Women2026","medium":"한지에 채색","size":"14.3x9.5cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-108.jpg"},{"id":"ATP26-109","artist":"이수영","title":"<숨> Breath2026","medium":"한지에 채색","size":"14.3x9.5cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-109.jpg"},{"id":"ATP26-110","artist":"이수영","title":"<빛> A Light in the Deep2026","medium":"한지에 채색","size":"14.3x9.5cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-110.jpg"},{"id":"ATP26-111","artist":"임소영","title":"<Untitled (Sea #1)>","medium":"Pigment Print","size":"148x210mm","year":"2025","price":120000,"status":"정박","assignee":"미배정","soldDate":"","booth":"E","img":"atp26-111.jpg"},{"id":"ATP26-112","artist":"임소영","title":"<Untitled (Sea #2)>","medium":"Pigment Print","size":"148x210mm","year":"2021","price":120000,"status":"정박","assignee":"미배정","soldDate":"","booth":"E","img":"atp26-112.jpg"},{"id":"ATP26-113","artist":"임소영","title":"<Untitled (Sea #3)>","medium":"Pigment Print","size":"148x210mm","year":"2022","price":120000,"status":"정박","assignee":"미배정","soldDate":"","booth":"E","img":"atp26-113.jpg"},{"id":"ATP26-114","artist":"임소영","title":"<Untitled (horse)>","medium":"Pigment Print","size":"148x210mm","year":"2023","price":150000,"status":"정박","assignee":"미배정","soldDate":"","booth":"E","img":"atp26-114.jpg"},{"id":"ATP26-115","artist":"임소영","title":"<거칠고 평온한#1 창밖풍경>","medium":"PigmentPrint","size":"353x233mm","year":"2025","price":250000,"status":"정박","assignee":"미배정","soldDate":"","booth":"E","img":"atp26-115.jpg"},{"id":"ATP26-116","artist":"임소영","title":"<거칠고 평온한#2 창밖풍경","medium":"Pigment Print","size":"353x233mm","year":"2025","price":250000,"status":"정박","assignee":"미배정","soldDate":"","booth":"E","img":"atp26-116.jpg"},{"id":"ATP26-117","artist":"임소영","title":"<거칠고평온한 #3 오늘>","medium":"Pigment Print","size":"132x174mm","year":"2025","price":250000,"status":"정박","assignee":"미배정","soldDate":"","booth":"E","img":"atp26-117.jpg"},{"id":"ATP26-118","artist":"임소영","title":"<거칠고평온한 #4 얼굴>","medium":"Pigment Print","size":"132x174mm","year":"2025","price":250000,"status":"정박","assignee":"미배정","soldDate":"","booth":"E","img":"atp26-118.jpg"},{"id":"ATP26-119","artist":"전지","title":"최소한의 새_초록 / minimal bird_ green bird / 2025 /나무 위에 석분점토 /12 x 11x 24 cm","medium":"","size":"12x11x24cm","year":"2025","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-119.jpg"},{"id":"ATP26-120","artist":"전지","title":"최소한의 새_박새 / minimal bird_brown great tit /2026 / 15 x 11 x 25 cm","medium":"","size":"15x11x25cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-120.jpg"},{"id":"ATP26-121","artist":"전지","title":"왜가리처럼 캄(calm)해지고 싶어 (2) / I want to look calm like a heron(2) / 2026 / 봉제인형 오토마타 /47 x 47 x 87 cm","medium":"","size":"47x47x87cm","year":"2026","price":850000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-121.jpg"},{"id":"ATP26-122","artist":"전지","title":"기댈자리 / a place to rely on /2025/나무위에 석분점토/ 27x35x6cm","medium":"","size":"27x35x6cm","year":"2025","price":1000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-122.jpg"},{"id":"ATP26-123","artist":"전지","title":"멀리까마귀(1) far away crow/ 2025/ 봉제인형 오토마타/ 73x40x150cm","medium":"","size":"73x40x150cm","year":"2025","price":800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-123.jpg"},{"id":"ATP26-124","artist":"전지","title":"최소한의 새_부조 드로잉/ minimal bird_high relief drawing/ 2025/ 나무위에 석분점토/ 38x47x6cm","medium":"","size":"38x47x6cm","year":"2025","price":900000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-124.jpg"},{"id":"ATP26-125","artist":"전지","title":"새끼 왜가리입니다/i am a baby heron/2025/ 봉제인형 오토마타/ 28 x 19 x 50 cm","medium":"","size":"28x19x50cm","year":"2025","price":1000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-125.jpg"},{"id":"ATP26-126","artist":"정시네","title":"원도심의 기억#2 Memories of the Old Town#2 2025 백토에도자안료","medium":"원도심의 기억#2 Memories of the Old Town#2 2025 백토에도자안료","size":"39.5x40cm","year":"2025","price":450000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-126.jpg"},{"id":"ATP26-127","artist":"정시네","title":"원도심의 기억#3 Memories of the Old Town#3 2025 백토에도자안료","medium":"원도심의 기억#3 Memories of the Old Town#3 2025 백토에도자안료","size":"32.2x36.5cm","year":"2025","price":450000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-127.jpg"},{"id":"ATP26-128","artist":"정시네","title":"원도심의 기억#6 Memories of the Old Town#6 2025 백토에도자안료","medium":"원도심의 기억#6 Memories of the Old Town#6 2025 백토에도자안료","size":"33.5x38.2cm","year":"2025","price":450000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-128.jpg"},{"id":"ATP26-129","artist":"정시네","title":"원도심의 기억#7 Memories of the Old Town#7 2025 백토에 도자안료","medium":"원도심의 기억#7 Memories of the Old Town#7 2025 백토에 도자안료","size":"29.5x36.3cm","year":"2025","price":450000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-129.jpg"},{"id":"ATP26-130","artist":"정시네","title":"원도심의파편들8 Fragments of the Old Town8 2023 백토","medium":"도자안료 31.7x28.8cm","size":"31.7x28.8cm","year":"2023","price":350000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-130.jpg"},{"id":"ATP26-131","artist":"정시네","title":"원도심의파편들11 Fragments of the Old Town14 2023 백토","medium":"도자안료31.7x28.8cm","size":"31.7x28.8cm","year":"2023","price":350000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-131.jpg"},{"id":"ATP26-132","artist":"정시네","title":"원도심의파편들14 Fragments of the Old Town11 2023 백토","medium":"도자안료 31.7x28.8cm","size":"31.7x28.8cm","year":"2023","price":450000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-132.jpg"},{"id":"ATP26-133","artist":"조정환","title":"Waterfront","medium":"","size":"25.5×25㎝","year":"2017","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-133.jpg"},{"id":"ATP26-134","artist":"조정환","title":"Waterfront","medium":"","size":"36×27㎝","year":"2017","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-134.jpg"},{"id":"ATP26-135","artist":"조정환","title":"<콘크리트-연기>Concrete-Smoke","medium":"캔버스에 유채","size":"33.4×24.2㎝","year":"2025","price":700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-135.jpg"},{"id":"ATP26-136","artist":"조정환","title":"<유리-연기>Glass-Smoke","medium":"캔버스에 유채","size":"33.4×24.2㎝","year":"2025","price":700000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-136.jpg"},{"id":"ATP26-137","artist":"조정환","title":"<자루>Hanging-Units","medium":"오일파스텔 53×45.5㎝","size":"53×45.5㎝","year":"2022","price":1500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-137.jpg"},{"id":"ATP26-138","artist":"조정환","title":"<거주기계>Architectural Machine","medium":"캔버스에 목탄","size":"53×40.9㎝","year":"2018","price":1000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-138.jpg"},{"id":"ATP26-139","artist":"조정환","title":"<집단서식> Microhabitat","medium":"캔버스에 유채","size":"65×53㎝","year":"2016","price":1800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"D-2","img":"atp26-139.jpg"},{"id":"ATP26-140","artist":"최민경","title":"수집된 광물 001~010 collected mineral 001~010","medium":"","size":"","year":"2026","price":20000,"status":"정박","assignee":"미배정","soldDate":"","booth":"좌대","img":"atp26-140.jpg"},{"id":"ATP26-141","artist":"최민경","title":"수집된 광물 011~020 collected mineral 011~020","medium":"","size":"","year":"2026","price":30000,"status":"정박","assignee":"미배정","soldDate":"","booth":"좌대","img":"atp26-141.jpg"},{"id":"ATP26-142","artist":"최민경","title":"수집된 광물 021~028","medium":"","size":"","year":"2026","price":100000,"status":"정박","assignee":"미배정","soldDate":"","booth":"좌대","img":"atp26-142.jpg"},{"id":"ATP26-143","artist":"최민경","title":"수집된 광물 029~030","medium":"","size":"","year":"2026","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"좌대","img":"atp26-143.jpg"},{"id":"ATP26-144","artist":"홍석진","title":"<구멍>","medium":"종이에 믹스드 미디어","size":"46x53cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"I","img":"atp26-144.jpg"},{"id":"ATP26-145","artist":"홍석진","title":"<구멍>","medium":"종이에 믹스드 미디어","size":"46x53cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"I","img":"atp26-145.jpg"},{"id":"ATP26-146","artist":"홍석진","title":"<구멍>","medium":"종이에 믹스드 미디어","size":"46x53cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"I","img":"atp26-146.jpg"},{"id":"ATP26-147","artist":"홍석진","title":"<구멍>","medium":"종이에 믹스드 미디어","size":"46x53cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"I","img":"atp26-147.jpg"},{"id":"ATP26-148","artist":"홍석진","title":"<구멍>","medium":"종이에 믹스드 미디어","size":"46x53cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"I","img":"atp26-148.jpg"},{"id":"ATP26-149","artist":"홍석진","title":"<구멍>","medium":"종이에 믹스드 미디어","size":"46x53cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"I","img":"atp26-149.jpg"},{"id":"ATP26-150","artist":"홍석진","title":"<구멍>","medium":"종이에 믹스드 미디어","size":"","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"I","img":"atp26-150.jpg"},{"id":"ATP26-151","artist":"홍석진","title":"<구멍>","medium":"종이에 믹스드 미디어","size":"","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"I","img":"atp26-151.jpg"},{"id":"ATP26-152","artist":"심승보","title":"생각에 잠긴 가마우지 영문 : :a thoughtful cormorant) mixed media 73cm x 64cm 2024","medium":"생각에 잠긴 가마우지 영문 : :a thoughtful cormorant) mixed media 73cm x 64cm 2024","size":"","year":"2024","price":1000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-152.jpg"},{"id":"ATP26-153","artist":"심승보","title":"자연으로 돌아가고 싶어요1 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022","medium":"자연으로 돌아가고 싶어요1 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022","size":"","year":"2022","price":1000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-153.jpg"},{"id":"ATP26-154","artist":"심승보","title":"자연으로 돌아가고 싶어요2 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022","medium":"자연으로 돌아가고 싶어요2 (영문: I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022","size":"","year":"2022","price":1000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-154.jpg"},{"id":"ATP26-155","artist":"심승보","title":"자연으로 돌아가고 싶어요3 (영문 : I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022","medium":"자연으로 돌아가고 싶어요3 (영문 : I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022","size":"","year":"2022","price":1000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-155.jpg"},{"id":"ATP26-156","artist":"심승보","title":"자연으로 돌아가고 싶어요4 영문; I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022","medium":"자연으로 돌아가고 싶어요4 영문; I want to go back to nature)acrylic on canvas 40cm ☓ 57cm 2022","size":"","year":"2022","price":1000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-156.jpg"},{"id":"ATP26-157","artist":"심승보","title":"펭귄 연인 영문:Penguin lovers acrylic on canvas 45cm x 54cm 2024","medium":"펭귄 연인 영문:Penguin lovers acrylic on canvas 45cm x 54cm 2024","size":"","year":"2024","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-2","img":"atp26-157.jpg"},{"id":"ATP26-158","artist":"신수빈","title":"Soft gravityⅡ","medium":"한지에 수간채색","size":"60.7×72.5cm","year":"2025","price":2500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-158.jpg"},{"id":"ATP26-159","artist":"신수빈","title":"Soft gravityⅢ","medium":"한지에 수간채색","size":"60.7×72.5cm","year":"2025","price":2500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-159.jpg"},{"id":"ATP26-160","artist":"신수빈","title":"love-blending-into-faith","medium":"한지에 수간채색","size":"12×22.8cm","year":"2025","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-160.jpg"},{"id":"ATP26-161","artist":"신수빈","title":"뼈다귀지키기","medium":"한지에 수간채색","size":"27.5×22.2cm","year":"2025","price":450000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-161.jpg"},{"id":"ATP26-162","artist":"신수빈","title":"영원한 지속Ⅰ","medium":"한지에 수간채색","size":"25.3×18cm","year":"2025","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-162.jpg"},{"id":"ATP26-163","artist":"신수빈","title":"영원한 지속Ⅱ","medium":"한지에 수간채색","size":"34.8×27.4cm","year":"2025","price":750000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-163.jpg"},{"id":"ATP26-164","artist":"신수빈","title":"영원한 지속Ⅲ","medium":"한지에 수간채색","size":"27.5×22.2cm","year":"2025","price":450000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-164.jpg"},{"id":"ATP26-165","artist":"안소영","title":"<산맥> Mountain ranges","medium":"","size":"60.6×72.7cm","year":"2025","price":3000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-165.jpg"},{"id":"ATP26-166","artist":"안소영","title":"<산맥> Mountain ranges","medium":"","size":"45.5×53cm","year":"2025","price":2000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-166.jpg"},{"id":"ATP26-167","artist":"안소영","title":"<마음에 산맥을 일으켜> Raising mountain ranges in the heart 2022","medium":"","size":"58×20cm","year":"2022","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-167.jpg"},{"id":"ATP26-168","artist":"안소영","title":"<산맥> Mountain ranges","medium":"","size":"25×25cm","year":"2026","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-168.jpg"},{"id":"ATP26-169","artist":"안소영","title":"<산맥> Mountain ranges","medium":"","size":"14×22.5cm","year":"2026","price":200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-169.jpg"},{"id":"ATP26-170","artist":"조재임","title":"<바람숲> Windforest","medium":"장지","size":"","year":"2016","price":2000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-170.jpg"},{"id":"ATP26-171","artist":"조재임","title":"<바람의 창> The Breath's Way","medium":"장지","size":"20.5x29cm","year":"2025","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-171.jpg"},{"id":"ATP26-172","artist":"조재임","title":"<바람의 창> The Breath's Way","medium":"장지","size":"20.5x29cm","year":"2025","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-172.jpg"},{"id":"ATP26-173","artist":"조재임","title":"<바람숲> Windforest","medium":"장지에 채색한지","size":"25x25cm","year":"2020","price":2000000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-173.jpg"},{"id":"ATP26-174","artist":"조재임","title":"<바람숲> Windforest","medium":"장지에 채색한지","size":"26x34cm","year":"2023","price":1500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-174.jpg"},{"id":"ATP26-175","artist":"황인지","title":"<혼자가 되면 보이는 것들> 2020","medium":"이태리타월에 채색","size":"16x14cm","year":"2020","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-175.jpg"},{"id":"ATP26-176","artist":"황인지","title":"<따뜻한 환대> 2023","medium":"한지에 채색","size":"20x53cm","year":"2023","price":1200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-176.jpg"},{"id":"ATP26-177","artist":"황인지","title":"<여기서는 울어도 돼> 2023","medium":"한지에 채색","size":"27.5x22cm","year":"2023","price":900000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-177.jpg"},{"id":"ATP26-178","artist":"황인지","title":"<작지만 위대한 것들> 2023","medium":"한지에 채색","size":"25x64cm","year":"2023","price":1800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-178.jpg"},{"id":"ATP26-179","artist":"황인지","title":"<Love and Illness> 2025","medium":"한지에 채색","size":"25x65cm","year":"2025","price":2200000,"status":"정박","assignee":"미배정","soldDate":"","booth":"H·G-2","img":"atp26-179.jpg"},{"id":"ATP26-180","artist":"이다슬","title":"<종달새 날아오르면 나를 꼬옥 안아주세요","medium":"Gelatin Silver Print","size":"46x41cm","year":"2022","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-180.jpg"},{"id":"ATP26-181","artist":"이다슬","title":"<종달새 날아오르면 나를 꼬옥 안아주세요","medium":"Archival Pigment Print","size":"63x63cm","year":"2021","price":650000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-181.jpg"},{"id":"ATP26-182","artist":"이다슬","title":"<수리수리마하수리 수수리사바하> 2023","medium":"종이에 격면주사와 기름을 혼합한 글씨","size":"14.5x16.5cm","year":"2023","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-182.jpg"},{"id":"ATP26-183","artist":"이다슬","title":"<30여년만에 화분으로서 역할을 부여 받아 환삼덩굴을 키워냈던 화분이지만","medium":"캔버스에 크레파스","size":"25.5x18cm","year":"2017","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-183.jpg"},{"id":"ATP26-184","artist":"이다슬","title":"<완벽한 잡초 재배를 위한 토분>","medium":"","size":"12x12x25cm","year":"2023","price":1500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-184.jpg"},{"id":"ATP26-185","artist":"이다슬","title":"<127개의 잘린 아로니아 나무 밑동 중 하나>","medium":"석고","size":"30x40x20cm","year":"2024","price":600000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-185.jpg"},{"id":"ATP26-186","artist":"서찬석","title":"<영도구 신선동 2가> Sinseon-dong 2ga","medium":"Acrylic paint","size":"","year":"2025","price":1800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-186.jpg"},{"id":"ATP26-187","artist":"서찬석","title":"<중구 광복동 1가> Gwangbok-dong 1ga","medium":"Acrylic paint","size":"","year":"2025","price":1800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-187.jpg"},{"id":"ATP26-188","artist":"서찬석","title":"<중구 중앙동 4가> Jungang-dong 4ga","medium":"Acrylic paint","size":"","year":"2025","price":1800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-188.jpg"},{"id":"ATP26-189","artist":"서찬석","title":"<중구 보수동 1가> Bosu-dong 1ga","medium":"Acrylic paint","size":"","year":"2025","price":1800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-189.jpg"},{"id":"ATP26-190","artist":"서찬석","title":"<중구 대청동 2가> Daecheong-dong 2ga","medium":"Acrylic paint","size":"","year":"2025","price":1800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-190.jpg"},{"id":"ATP26-191","artist":"서찬석","title":"<동구 좌천동> Jwacheon-dong","medium":"Acrylic paint","size":"","year":"2025","price":1800000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-191.jpg"},{"id":"ATP26-192","artist":"황현덕","title":"<고양이 인간>","medium":"acrylic on canvas","size":"40x20cm","year":"2025","price":900000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-192.jpg"},{"id":"ATP26-193","artist":"황현덕","title":"<구조와 사람>","medium":"mix paiting on canvas","size":"30x30cm","year":"2025","price":900000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-193.jpg"},{"id":"ATP26-194","artist":"황현덕","title":"<문어와 점>","medium":"acrylic on canvas","size":"40x20cm","year":"2025","price":900000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-194.jpg"},{"id":"ATP26-195","artist":"황현덕","title":"<손과 지구>","medium":"acrylic on canvas","size":"40x20cm","year":"2025","price":900000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-195.jpg"},{"id":"ATP26-196","artist":"황현덕","title":"<음악과 노동자> 2025","medium":"acrylic on canvas","size":"40x20cm","year":"2025","price":900000,"status":"정박","assignee":"미배정","soldDate":"","booth":"F·G-1","img":"atp26-196.jpg"},{"id":"ATP26-197","artist":"방정아","title":"시그널","medium":"acrylic on styrofoam","size":"37x30cm","year":"2026","price":400000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-bja-01.jpg"},{"id":"ATP26-198","artist":"방정아","title":"튀어나오는 눈물","medium":"acrylic on styrofoam","size":"26x26cm","year":"2026","price":300000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-bja-02.jpg"},{"id":"ATP26-199","artist":"방정아","title":"일장춘몽","medium":"acrylic on styrofoam","size":"24x19cm","year":"2026","price":250000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-bja-03.jpg"},{"id":"ATP26-200","artist":"방정아","title":"봄의 울퉁불퉁 1-16","medium":"acrylic on canvas","size":"22.7x15.8cm","year":"2025","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-bja-04.jpg"},{"id":"ATP26-201","artist":"방정아","title":"봄의 울퉁불퉁 1-17","medium":"acrylic on canvas","size":"22.7x15.8cm","year":"2025","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-bja-05.jpg"},{"id":"ATP26-202","artist":"방정아","title":"봄의 울퉁불퉁 1-7","medium":"acrylic on canvas","size":"22.7x15.8cm","year":"2025","price":500000,"status":"정박","assignee":"미배정","soldDate":"","booth":"C-1","img":"atp26-bja-06.jpg"}];
 
 const won=n=>n.toLocaleString("ko-KR");
-const ARTIST_RATE=0.70,VAT=0.10;
-const tierOf=p=>p<=500000?"entry":p<=1500000?"mid":"high";
-const TIER_LABEL={entry:"엔트리",mid:"중가",high:"고가"};
-const NO_FEE_MAX=100000;
+const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const BUYER={}, ISSUE={}, COLLECTED={};
+function markCollected(id){ COLLECTED[id]=true; saveState(); const el=document.getElementById("cmsg-"+id); if(el){el.textContent="수집됨 ✓"; el.className="cmsg ok";} }
+function collectBuyer(id){
+  const w=works.find(x=>x.id===id); if(!w)return;
+  const b=BUYER[id]||{};
+  if(!(b.name||b.contact||b.address)){ alert("구매자 성명·연락처·주소 중 하나 이상을 입력해 주세요."); return; }
+  const data={"form-name":"purchase","bot-field":"",work:w.id,artist:w.artist,title:w.title,price:String(w.price),total:String(total(w.price)),issueDate:issueDate(w),buyer:b.name||"",contact:b.contact||"",address:b.address||""};
+  const body=Object.keys(data).map(k=>encodeURIComponent(k)+"="+encodeURIComponent(data[k])).join("&");
+  const el=document.getElementById("cmsg-"+id); if(el){el.textContent="전송 중…"; el.className="cmsg";}
+  fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body})
+    .then(r=>{ if(r.ok) markCollected(id); else if(el){el.textContent="수집 실패 · 배포된 사이트에서만 작동합니다"; el.className="cmsg err";} })
+    .catch(()=>{ if(el){el.textContent="수집 실패 · 네트워크를 확인해 주세요"; el.className="cmsg err";} });
+}
+function setBuyer(id,f,v){ (BUYER[id]=BUYER[id]||{})[f]=v; saveState(); }
+function setIssue(id,v){ ISSUE[id]=v; saveState(); }
+function issueDate(w){ return ISSUE[w.id]||w.soldDate||""; }
+function dateSelect(w){
+  const cur=issueDate(w), days=["2026-06-25","2026-06-26","2026-06-27","2026-06-28"];
+  const opts=['<option value="">발행일 선택</option>'].concat(days.map(d=>`<option value="${d}" ${d===cur?"selected":""}>${d.replace(/-/g," . ")}</option>`)).join("");
+  return `<select class="date-sel" onchange="setIssue('${w.id}',this.value)">${opts}</select>`;
+}
+function saveState(){ try{ const st={}; works.forEach(w=>st[w.id]={status:w.status,soldDate:w.soldDate}); localStorage.setItem("atp26_state",JSON.stringify({works:st,buyers:BUYER,issue:ISSUE,collected:COLLECTED})); }catch(e){} }
+function loadState(){ try{ const raw=localStorage.getItem("atp26_state"); if(!raw)return; const d=JSON.parse(raw); if(d.works)works.forEach(w=>{const r=d.works[w.id]; if(r){w.status=r.status||w.status; w.soldDate=r.soldDate||"";}}); if(d.buyers)Object.assign(BUYER,d.buyers); if(d.issue)Object.assign(ISSUE,d.issue); if(d.collected)Object.assign(COLLECTED,d.collected); }catch(e){} }
+function exportCSV(){
+  const head=["관리번호","위치","작가","작품명","재료","크기","연도","판매가","부가세","합계","작가수령70","운영수수료30","상태","판매일","발행일","구매자","연락처","주소"];
+  const rows=works.map(w=>{const b=BUYER[w.id]||{};
+    return [w.id,boothLabel(w.booth),w.artist,w.title,w.medium,w.size,w.year,w.price,vat(w.price),total(w.price),artistCut(w.price),hasFee(w.price)?orgCut(w.price):0,w.status,w.soldDate||"",issueDate(w),b.name||"",b.contact||"",b.address||""];});
+  const csv=[head,...rows].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n");
+  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="예술무역항_판매기록.csv"; a.click();
+}
+const ACCOUNTS={
+ "구헌주":"카카오뱅크 3333-06-425228",
+ "최민경":"기업은행 196-068193-01-016",
+ "강은경":"기업은행 092-099328-04-013",
+ "김학수":"신한은행 110-497-698382",
+};
+const VAT=0.10, ARTIST_RATE=0.70, NO_FEE_MAX=100000;
 const hasFee=p=>p>NO_FEE_MAX;
 const vat=p=>Math.round(p*VAT);
 const total=p=>p+vat(p);
 const artistCut=p=>hasFee(p)?Math.round(p*ARTIST_RATE):p;
 const orgCut=p=>p-artistCut(p);
+const tierOf=p=>p<=500000?"entry":p<=1500000?"mid":"high";
+const TIER_LABEL={entry:"엔트리",mid:"중가",high:"고가"};
+const EN={정박:"ANCHORED",통관:"CLEARANCE",출항:"DEPARTED"};
+function boothLabel(b){ if(!b) return "미정"; if(b==="좌대") return "좌대"; return b+"구역"; }
 
 let view="dash";
-function setTheme(t){
-  document.documentElement.setAttribute("data-theme",t==="blue"?"blue":"red");
-  document.getElementById("th-red").classList.toggle("on",t!=="blue");
-  document.getElementById("th-blue").classList.toggle("on",t==="blue");
-}
 function switchView(v){
   view=v;
   document.getElementById("view-dash").classList.toggle("hide",v!=="dash");
   document.getElementById("view-label").classList.toggle("hide",v!=="label");
+  document.getElementById("view-cert").classList.toggle("hide",v!=="cert");
+  document.getElementById("view-invoice").classList.toggle("hide",v!=="invoice");
   document.getElementById("tab-dash").classList.toggle("on",v==="dash");
   document.getElementById("tab-label").classList.toggle("on",v==="label");
+  document.getElementById("tab-cert").classList.toggle("on",v==="cert");
+  document.getElementById("tab-inv").classList.toggle("on",v==="invoice");
   render();
 }
+
 function filtered(){
   const a=document.getElementById("fArtist").value,t=document.getElementById("fTier").value,
         s=document.getElementById("fStatus").value,q=document.getElementById("fSearch").value.trim();
@@ -2624,37 +2740,41 @@ function buildArtistFilter(){
 function renderStats(){
   const sold=works.filter(w=>w.status==="출항");
   const soldSum=sold.reduce((s,w)=>s+w.price,0),
-        artistSum=sold.reduce((s,w)=>s+artistCut(w.price),0),
-        orgSum=sold.reduce((s,w)=>s+orgCut(w.price),0),
+        aSum=sold.reduce((s,w)=>s+artistCut(w.price),0),
+        oSum=sold.reduce((s,w)=>s+orgCut(w.price),0),
         c=st=>works.filter(w=>w.status===st).length;
   document.getElementById("statGrid").innerHTML=`
-    <div class="stat"><div class="k">출품 작품 / WORKS</div><div class="v">${works.length}<small> 점</small></div></div>
-    <div class="stat"><div class="k">정박 / ANCHORED</div><div class="v">${c("정박")}<small> 점</small></div></div>
-    <div class="stat"><div class="k">통관 / CLEARANCE</div><div class="v">${c("통관")}<small> 점</small></div></div>
-    <div class="stat accent"><div class="k">출항 / DEPARTED</div><div class="v">${c("출항")}<small> 점</small></div></div>
-    <div class="stat accent"><div class="k">총 판매액</div><div class="v">${won(soldSum)}<small> 원</small></div></div>
-    <div class="stat"><div class="k">작가 정산 70%</div><div class="v">${won(artistSum)}<small> 원</small></div></div>
-    <div class="stat"><div class="k">운영 수수료 30%</div><div class="v">${won(orgSum)}<small> 원</small></div></div>
-    <div class="stat"><div class="k">참여 작가</div><div class="v">${new Set(works.map(w=>w.artist)).size}<small> 명</small></div></div>`;
+    <div class="stat"><div class="k">출품 작품</div><div class="v tnum">${works.length}<small> 점</small></div></div>
+    <div class="stat"><div class="k">정박 · 전시중</div><div class="v tnum">${c("정박")}<small> 점</small></div></div>
+    <div class="stat"><div class="k">통관 · 상담중</div><div class="v tnum">${c("통관")}<small> 점</small></div></div>
+    <div class="stat accent"><div class="k">출항 · 판매</div><div class="v tnum">${c("출항")}<small> 점</small></div></div>
+    <div class="stat accent"><div class="k">총 판매액</div><div class="v tnum">${won(soldSum)}<small> 원</small></div></div>
+    <div class="stat"><div class="k">작가 정산 70%</div><div class="v tnum">${won(aSum)}<small> 원</small></div></div>
+    <div class="stat"><div class="k">운영 수수료 30%</div><div class="v tnum">${won(oSum)}<small> 원</small></div></div>
+    <div class="stat"><div class="k">참여 작가</div><div class="v tnum">${new Set(works.map(w=>w.artist)).size}<small> 명</small></div></div>`;
   const ranges={entry:"50,000–500,000원",mid:"500,000–1,500,000원",high:"1,500,000–3,000,000원"};
-  const total=works.length||1;
+  const total2=works.length||1;
   document.getElementById("tierRow").innerHTML=["entry","mid","high"].map(t=>{
-    const n=works.filter(w=>tierOf(w.price)===t).length,pct=Math.round(n/total*100);
-    return `<div class="tier"><div class="label"><span>${TIER_LABEL[t]} 가격대</span><span>${n}점 · ${pct}%</span></div>
+    const n=works.filter(w=>tierOf(w.price)===t).length,pct=Math.round(n/total2*100);
+    return `<div class="tier"><div class="label"><span>${TIER_LABEL[t]} 가격대</span><span class="tnum">${n}점 · ${pct}%</span></div>
       <div class="bar"><i style="width:${pct}%"></i></div><div class="note">${ranges[t]}</div></div>`;
   }).join("");
 }
 function renderTable(){
   const rows=filtered();
   document.getElementById("rowCount").textContent=`${rows.length} / ${works.length} 점`;
-  document.getElementById("tbody").innerHTML=rows.map(w=>{
+  document.getElementById("tbody").innerHTML=rows.map((w,i)=>{
     const opts=["정박","통관","출항"].map(s=>`<option ${s===w.status?"selected":""}>${s}</option>`).join("");
     return `<tr>
-      <td class="num">${w.booth||"—"}</td><td><b>${w.artist}</b></td><td>${w.title}</td>
-      <td style="font-size:14px;color:var(--gray-text)">${w.medium} · ${w.size}</td>
-      <td class="price red">${won(w.price)}</td><td class="price">${won(artistCut(w.price))}</td><td class="price">${hasFee(w.price)?won(orgCut(w.price)):"—"}</td>
+      <td class="seq tnum">${i+1}</td>
+      <td class="loc">${boothLabel(w.booth)}</td>
+      <td class="artist">${esc(w.artist)}</td>
+      <td>${esc(w.title)}<div class="msz">${esc(w.medium)} · ${esc(w.size)}</div></td>
+      <td class="price red tnum">${won(w.price)}</td>
+      <td class="price tnum">${won(artistCut(w.price))}</td>
+      <td class="price sub tnum">${hasFee(w.price)?won(orgCut(w.price)):"—"}</td>
       <td><select class="row-sel" onchange="setField('${w.id}','status',this.value)">${opts}</select></td>
-      <td><button class="open-label" onclick="openLabel('${w.id}')">보기</button></td></tr>`;
+      <td style="white-space:nowrap"><button class="open-label" onclick="openLabel('${w.id}')">라벨</button> <button class="open-label" onclick="openCert('${w.id}')">보증서</button> <button class="open-label" onclick="openInvoice('${w.id}')">인보이스</button></td></tr>`;
   }).join("");
 }
 function setField(id,field,val){
@@ -2662,67 +2782,62 @@ function setField(id,field,val){
   w[field]=val;
   if(field==="status"&&val==="출항"&&!w.soldDate)w.soldDate=new Date().toISOString().slice(0,10);
   if(field==="status"&&val!=="출항")w.soldDate="";
+  saveState();
   render();
 }
-function labelHTML(w){
-  const stMap={정박:"s-jeongbak",통관:"s-tonggwan",출항:"s-chulhang"},
-        stEn={정박:"ANCHORED",통관:"CLEARANCE",출항:"DEPARTED"},t=tierOf(w.price);
-  const qrImg=makeWorkQR(w);
-  const settleHTML = hasFee(w.price)
-    ? `<div class="stitle">SETTLEMENT · 판매가 분배</div>
-      <div class="sbar"><div class="sa" style="width:70%">작가 70%</div><div class="so" style="width:30%">운영 30%</div></div>
-      <div class="samt"><span>작가 수령 <b>${won(artistCut(w.price))}원</b></span><span>운영 수수료 ${won(orgCut(w.price))}원</span></div>
-      <div class="sfee">운영 수수료에는 카드 운영 수수료, 판매자 수수료, 포장 및 운송 수수료가 포함됩니다.</div>`
-    : `<div class="stitle">SETTLEMENT · 수수료 없음</div>
-      <div class="sbar"><div class="sa" style="width:100%">작가 100%</div></div>
-      <div class="samt"><span>작가 수령 <b>${won(w.price)}원</b></span><span>수수료 없음</span></div>
-      <div class="sfee">10만 원 이하 작품에는 수수료를 적용하지 않습니다. 작가가 판매가 전액을 수령합니다.</div>`;
-  return `<div class="label" id="lbl-${w.id}">
-    <div class="lhead">
-      <div class="lid"><b>예술무역항 2026 · 전시 위치</b>${w.booth||"위치 미정"}</div>
-      <div class="stamp ${stMap[w.status]}"><div class="st-kr">${w.status}</div><div class="st-en">${stEn[w.status]}</div></div>
-    </div>
-    ${w.img?`<div class="photo"><img src="${w.img}" alt="${w.title}" loading="lazy" onerror="this.parentNode.classList.add('empty');this.parentNode.textContent='IMAGE';"></div>`:`<div class="photo empty">IMAGE</div>`}
-    <div class="lbody"><div class="artist">${w.artist}</div><div class="title"><em>${w.title}</em></div>
-      <div class="meta">${w.medium} · ${w.size} · ${w.year}</div></div>
-    <div class="price-block"><span class="pk">판매가 (부가세 별도)</span><span class="pv">₩ ${won(w.price)}</span></div>
-    <div class="price-sub"><span>부가세 10% ${won(vat(w.price))}원</span><span>결제 금액 ${won(total(w.price))}원</span></div>
-    <div class="settle">${settleHTML}</div>
-    <div class="ledger"><div class="lg-title">SALES LEDGER · 운영 기록란</div>
-      <div class="lg-grid">
-        <div class="lc"><span>판매 담당</span><span>${w.assignee==="미배정"?"________":w.assignee}</span></div>
-        <div class="lc"><span>판매일</span><span>${w.soldDate||"____ . __ . __"}</span></div>
-        <div class="lc"><span>결제</span><span>카드 / ________</span></div>
-        <div class="lc"><span>정산 상태</span><span>${w.status==="출항"?"정산 대기":"—"}</span></div>
-      </div></div>
-    <div class="lfoot-row">
-      <div class="lfoot">정산은 판매일로부터 14일 이내 완료합니다. 결제는 카드만 가능합니다.</div>
-      ${qrImg?`<div class="qr"><img src="${qrImg}" alt="QR ${w.id}"><small>SCAN</small></div>`:""}
-    </div>
-  </div>`;
-}
+
+/* ---------- QR : 작가별 1개 ---------- */
 const _params=new URLSearchParams(location.search);
 const LOCK_WORK=_params.get("work"), LOCK_ARTIST=_params.get("artist");
 function makeQR(text){
-  try{
-    if(typeof qrcode==="undefined") return "";
-    const qr=qrcode(0,"M"); qr.addData(text); qr.make();
-    return qr.createDataURL(4,8);
+  try{ if(typeof qrcode==="undefined") return "";
+    const qr=qrcode(0,"M"); qr.addData(text); qr.make(); return qr.createDataURL(4,8);
   }catch(e){ return ""; }
 }
 const _qrCache={};
-function makeWorkQR(w){
+function artistQR(artist){
   const el=document.getElementById("pubBase");
   let base=(el&&el.value.trim())||(location.origin+location.pathname);
-  const url=base+(base.includes("?")?"&":"?")+"work="+encodeURIComponent(w.id);
+  const url=base+(base.includes("?")?"&":"?")+"artist="+encodeURIComponent(artist);
   if(_qrCache[url]!==undefined) return _qrCache[url];
   const d=makeQR(url); _qrCache[url]=d; return d;
+}
+
+function labelHTML(w){
+  const qrImg=artistQR(w.artist);
+  const settle = hasFee(w.price)
+    ? `<div class="stitle">정산 · 판매가 분배</div>
+       <div class="sbar"><div class="sa" style="width:70%">작가 70%</div><div class="so" style="width:30%">운영 30%</div></div>
+       <div class="samt"><span>작가 수령 <b>${won(artistCut(w.price))}원</b></span><span>운영 수수료 ${won(orgCut(w.price))}원</span></div>
+       <div class="sfee">운영 수수료에는 카드 운영 수수료, 판매자 수수료, 포장 및 운송 수수료가 포함됩니다.</div>`
+    : `<div class="stitle">정산 · 수수료 없음</div>
+       <div class="sbar"><div class="sa" style="width:100%">작가 100%</div></div>
+       <div class="samt"><span>작가 수령 <b>${won(w.price)}원</b></span><span>수수료 없음</span></div>
+       <div class="sacct">작가 입금 계좌 · ${ACCOUNTS[w.artist]||"계좌 미등록"}</div>
+       <div class="sfee">10만 원 이하 작품에는 수수료를 적용하지 않습니다. 작가가 판매가 전액을 수령합니다.</div>`;
+  const LCLS={정박:"l-anchor",통관:"l-clear",출항:"l-depart"};
+  const signal=["정박","통관","출항"].map(st=>
+    `<div class="lamp ${LCLS[st]} ${st===w.status?'on':''}"><span class="dot"></span><b>${st}</b><em>${EN[st]}</em></div>`).join("");
+  return `<div class="label" id="lbl-${w.id}">
+    <div class="lhead"><span><span class="loc-k">전시 위치</span><span class="loc-v">${boothLabel(w.booth)}</span></span><span class="ph">ART TRADE PORT 2026</span></div>
+    ${w.img?`<div class="photo"><img src="${w.img}" alt="${esc(w.title)}" loading="lazy" onerror="this.parentNode.classList.add('empty');this.parentNode.textContent='IMAGE';"></div>`:`<div class="photo empty">IMAGE</div>`}
+    <div class="lbody"><div class="artist">${esc(w.artist)}</div><div class="title"><em>${esc(w.title)}</em></div>
+      <div class="meta">${esc(w.medium)} · ${esc(w.size)} · ${esc(w.year)}</div></div>
+    <div class="price-block"><span class="pk">판매가 (부가세 별도)</span><span class="pv tnum">₩ ${won(w.price)}</span></div>
+    <div class="price-sub tnum"><span>부가세 10% ${won(vat(w.price))}원</span><span>결제 금액 ${won(total(w.price))}원</span></div>
+    <div class="settle">${settle}</div>
+    <div class="signal">${signal}</div>
+    <div class="lfoot">
+      <div class="note">정산은 판매일로부터 14일 이내 완료합니다.<br>결제는 카드만 가능합니다.</div>
+      ${qrImg?`<div class="qr"><img src="${qrImg}" alt="QR ${esc(w.artist)}"><small>${esc(w.artist)} 작가</small></div>`:""}
+    </div>
+  </div>`;
 }
 function labelFilter(){
   if(LOCK_WORK) return works.filter(w=>w.id===LOCK_WORK);
   if(LOCK_ARTIST) return works.filter(w=>w.artist===LOCK_ARTIST);
   const q=(document.getElementById("labelSearch").value||"").trim(),s=document.getElementById("labelStatus").value;
-  return works.filter(w=>(!q||w.artist.includes(q)||w.title.includes(q)||w.id.toLowerCase().includes(q.toLowerCase()))&&(!s||w.status===s));
+  return works.filter(w=>(!q||w.artist.includes(q)||w.title.includes(q))&&(!s||w.status===s));
 }
 function renderLabels(){
   const rows=labelFilter();
@@ -2733,10 +2848,93 @@ function openLabel(id){
   document.getElementById("labelSearch").value="";document.getElementById("labelStatus").value="";
   switchView("label");
   setTimeout(()=>{const el=document.getElementById("lbl-"+id);
-    if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.style.outline="3px solid var(--brand)";setTimeout(()=>el.style.outline="",1400);}},60);
+    if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.style.outline="3px solid var(--main)";setTimeout(()=>el.style.outline="",1400);}},60);
 }
-function render(){ if(view==="dash"){renderStats();renderTable();}else renderLabels(); }
+function certHTML(w){
+  return `<div class="cert" id="cert-${w.id}">
+    <div class="ctop"></div>
+    <div class="chead"><div class="brand">예술무역항 2026 · ART TRADE PORT</div>
+      <h2>작품 보증서</h2><div class="en">CERTIFICATE OF AUTHENTICITY</div></div>
+    <div class="cno"><span>발행번호 ${w.id}</span><span>발행일 ${dateSelect(w)}</span></div>
+    ${w.img?`<div class="cphoto"><img src="${w.img}" alt="${esc(w.title)}" loading="lazy" onerror="this.parentNode.classList.add('empty');this.parentNode.textContent='IMAGE';"></div>`:`<div class="cphoto empty">IMAGE</div>`}
+    <div class="cinfo">
+      <div class="row"><span class="k">작가</span><span class="v">${esc(w.artist)}</span></div>
+      <div class="row"><span class="k">작품명</span><span class="v">${esc(w.title)}</span></div>
+      <div class="row"><span class="k">재료</span><span class="v">${w.medium||"—"}</span></div>
+      <div class="row"><span class="k">규격</span><span class="v">${w.size||"—"}</span></div>
+      <div class="row"><span class="k">제작연도</span><span class="v">${w.year||"—"}</span></div>
+    </div>
+    <div class="cstmt">위 작품은 아트페어 《예술무역항 2026》을 통해 거래된 ${esc(w.artist)}의 진작(眞作)임을 보증합니다. 본 보증서는 작품의 진위와 출처를 확인하는 공식 문서입니다.</div>
+    <div class="cissue">
+      <div class="cissuer"><div class="ititle">아트페어 예술무역항 2026</div>
+        <div class="iaddr">부산시 중구 40계단길 10, 4층 501호</div></div>
+      <div class="sign"><div class="line"></div>예술무역항 2026 · 심도시각 최민영</div>
+    </div>
+  </div>`;
+}
+function renderCerts(){
+  const q=(document.getElementById("certSearch").value||"").trim(),s=document.getElementById("certStatus").value;
+  const rows=works.filter(w=>(!q||w.artist.includes(q)||w.title.includes(q))&&(!s||w.status===s));
+  document.getElementById("certCount").textContent=`${rows.length} / ${works.length}점`;
+  document.getElementById("certSheet").innerHTML=rows.map(certHTML).join("");
+}
+function openCert(id){
+  document.getElementById("certSearch").value="";document.getElementById("certStatus").value="";
+  switchView("cert");
+  setTimeout(()=>{const el=document.getElementById("cert-"+id);
+    if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.style.outline="3px solid var(--main)";setTimeout(()=>el.style.outline="",1400);}},60);
+}
+function invoiceHTML(w){
+  return `<div class="inv" id="inv-${w.id}">
+    <div class="ihead">
+      <div class="from"><div class="nm">아트페어 예술무역항 2026</div>
+        <div class="li">심도시각 · 최민영<br>부산시 중구 40계단길 10, 4층 501호<br>사업자등록번호 779-39-00692</div></div>
+      <div class="ttl"><h2>거래명세서</h2><div class="en">INVOICE</div>
+        <div class="no">No. INV-${w.id}<br>발행일 ${dateSelect(w)}</div></div>
+    </div>
+    <div class="ibuyer">
+      <div><span class="bk">구매자</span><input class="ibuy-in" value="${esc((BUYER[w.id]||{}).name||'')}" oninput="setBuyer('${w.id}','name',this.value)" placeholder="성명 입력"></div>
+      <div><span class="bk">연락처</span><input class="ibuy-in" value="${esc((BUYER[w.id]||{}).contact||'')}" oninput="setBuyer('${w.id}','contact',this.value)" placeholder="연락처 입력"></div>
+      <div class="iaddr-row"><span class="bk">주소</span><input class="ibuy-in wide" value="${esc((BUYER[w.id]||{}).address||'')}" oninput="setBuyer('${w.id}','address',this.value)" placeholder="주소 입력"></div>
+    </div>
+    <div class="icollect"><button class="btn solid" onclick="collectBuyer('${w.id}')">구매자 정보 수집</button><span class="cmsg ${COLLECTED[w.id]?'ok':''}" id="cmsg-${w.id}">${COLLECTED[w.id]?'수집됨 ✓':''}</span></div>
+    <table class="iitems">
+      <thead><tr><th>품목</th><th class="r">공급가액</th><th class="r">부가세(10%)</th><th class="r">합계</th></tr></thead>
+      <tbody><tr>
+        <td><b>${esc(w.artist)}</b> · ${esc(w.title)}<div class="sub">${esc(w.medium)} · ${esc(w.size)} · ${w.year} · 관리번호 ${w.id}</div></td>
+        <td class="r tnum">${won(w.price)}원</td>
+        <td class="r tnum">${won(vat(w.price))}원</td>
+        <td class="r tnum">${won(total(w.price))}원</td>
+      </tr></tbody>
+    </table>
+    <div class="itotal">
+      <div class="tr"><span>공급가액</span><span class="tnum">${won(w.price)}원</span></div>
+      <div class="tr"><span>부가세 (10%)</span><span class="tnum">${won(vat(w.price))}원</span></div>
+      <div class="tr sum"><span>합계 금액</span><span class="v tnum">${won(total(w.price))}원</span></div>
+    </div>
+    <div class="ipay">결제수단 · 카드</div>
+    <div class="ifoot">
+      <div class="note">본 거래명세서는 위 작품의 판매 내역을 증빙합니다.<br>아트페어 《예술무역항 2026》 · 심도시각</div>
+      <div class="seal"><div class="line"></div>발행처 직인</div>
+    </div>
+  </div>`;
+}
+function renderInvoices(){
+  const q=(document.getElementById("invSearch").value||"").trim(),s=document.getElementById("invStatus").value;
+  const rows=works.filter(w=>(!q||w.artist.includes(q)||w.title.includes(q))&&(!s||w.status===s));
+  document.getElementById("invCount").textContent=`${rows.length} / ${works.length}점`;
+  document.getElementById("invSheet").innerHTML=rows.map(invoiceHTML).join("");
+}
+function openInvoice(id){
+  document.getElementById("invSearch").value="";document.getElementById("invStatus").value="";
+  switchView("invoice");
+  setTimeout(()=>{const el=document.getElementById("inv-"+id);
+    if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.style.outline="3px solid var(--main)";setTimeout(()=>el.style.outline="",1400);}},60);
+}
+function render(){ if(view==="dash"){renderStats();renderTable();}else if(view==="label"){renderLabels();}else if(view==="cert"){renderCerts();}else{renderInvoices();} }
+
 buildArtistFilter();
+loadState();
 if(LOCK_WORK||LOCK_ARTIST){ document.body.classList.add("kiosk"); switchView("label"); }
 else render();
 </script>
