@@ -2695,7 +2695,7 @@ let works=[{"id":"ATP26-001","artist":"강은경","title":"<손맛> son-mat : ha
 const won=n=>n.toLocaleString("ko-KR");
 const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 const BUYER={}, ISSUE={}, COLLECTED={};
-function markCollected(id){ COLLECTED[id]=true; saveState(); const el=document.getElementById("cmsg-"+id); if(el){el.textContent="수집됨 ✓"; el.className="cmsg ok";} }
+function markCollected(id){ COLLECTED[id]=true; saveState(); queuePush({collected:{[id]:true}}); const el=document.getElementById("cmsg-"+id); if(el){el.textContent="수집됨 ✓"; el.className="cmsg ok";} }
 function collectBuyer(id){
   const w=works.find(x=>x.id===id); if(!w)return;
   const b=BUYER[id]||{};
@@ -2707,15 +2707,54 @@ function collectBuyer(id){
     .then(r=>{ if(r.ok) markCollected(id); else if(el){el.textContent="수집 실패 · 배포된 사이트에서만 작동합니다"; el.className="cmsg err";} })
     .catch(()=>{ if(el){el.textContent="수집 실패 · 네트워크를 확인해 주세요"; el.className="cmsg err";} });
 }
-function setBuyer(id,f,v){ (BUYER[id]=BUYER[id]||{})[f]=v; saveState(); }
-function setIssue(id,v){ ISSUE[id]=v; saveState(); }
+function setBuyer(id,f,v){ (BUYER[id]=BUYER[id]||{})[f]=v; saveState(); queuePush({buyers:{[id]:BUYER[id]}}); }
+function setIssue(id,v){ ISSUE[id]=v; saveState(); queuePush({issue:{[id]:v}}); }
 function issueDate(w){ return ISSUE[w.id]||w.soldDate||""; }
 function dateSelect(w){
   const cur=issueDate(w), days=["2026-06-25","2026-06-26","2026-06-27","2026-06-28"];
   const opts=['<option value="">발행일 선택</option>'].concat(days.map(d=>`<option value="${d}" ${d===cur?"selected":""}>${d.replace(/-/g," . ")}</option>`)).join("");
   return `<select class="date-sel" onchange="setIssue('${w.id}',this.value)">${opts}</select>`;
 }
-function saveState(){ try{ const st={}; works.forEach(w=>st[w.id]={status:w.status,soldDate:w.soldDate,editionSold:w.editionSold}); localStorage.setItem("atp26_state",JSON.stringify({works:st,buyers:BUYER,issue:ISSUE,collected:COLLECTED})); }catch(e){} }
+function saveLocal(){ try{ const st={}; works.forEach(w=>st[w.id]={status:w.status,soldDate:w.soldDate,editionSold:w.editionSold}); localStorage.setItem("atp26_state",JSON.stringify({works:st,buyers:BUYER,issue:ISSUE,collected:COLLECTED})); }catch(e){} }
+function saveState(){ saveLocal(); }
+
+/* ---------- 공용 저장소 동기화 (3대 공유 · 새로고침 유지) ----------
+   /api/state 함수에 연결되면 판매 현황이 모든 기기에서 공유되고 껐다 켜도 유지됩니다.
+   연결이 안 되면(함수 미배포·오류) 자동으로 이 기기 저장(localStorage)으로만 동작합니다. */
+const API="/api/state";
+let _pushQueue={works:{},buyers:{},issue:{},collected:{}}, _pushTimer=null;
+function setSyncDot(ok){ let d=document.getElementById("syncdot"); if(!d){ d=document.createElement("div"); d.id="syncdot"; d.style.cssText="position:fixed;top:8px;right:10px;width:11px;height:11px;border-radius:50%;z-index:99999;box-shadow:0 0 0 2px #fff;"; document.body.appendChild(d);} d.style.background=ok?"#00D80B":"#c9c9c9"; d.title=ok?"공용 저장소 연결됨 · 모든 기기 공유 중":"오프라인 · 이 기기에만 저장됩니다"; }
+async function pullState(initial){
+  try{
+    const r=await fetch(API,{cache:"no-store"}); if(!r.ok) throw 0;
+    const d=await r.json(); setSyncDot(true);
+    let changed=false;
+    if(d.works) works.forEach(w=>{const s=d.works[w.id]; if(s){
+      if(w.status!==(s.status||w.status) || w.soldDate!==(s.soldDate||"") || (s.editionSold!=null&&w.editionSold!==s.editionSold)) changed=true;
+      w.status=s.status||w.status; w.soldDate=s.soldDate||""; if(s.editionSold!=null)w.editionSold=s.editionSold;
+    }});
+    if(d.collected) Object.assign(COLLECTED,d.collected);
+    if(initial){ if(d.buyers)Object.assign(BUYER,d.buyers); if(d.issue)Object.assign(ISSUE,d.issue); }
+    saveLocal();
+    const typing=document.activeElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
+    if((changed||initial)&&!typing) render();
+  }catch(e){ setSyncDot(false); }
+}
+function queuePush(patch){
+  if(patch.works)Object.assign(_pushQueue.works,patch.works);
+  if(patch.buyers)Object.assign(_pushQueue.buyers,patch.buyers);
+  if(patch.issue)Object.assign(_pushQueue.issue,patch.issue);
+  if(patch.collected)Object.assign(_pushQueue.collected,patch.collected);
+  if(_pushTimer)clearTimeout(_pushTimer);
+  _pushTimer=setTimeout(flushPush,500);
+}
+async function flushPush(){
+  const body=_pushQueue; _pushQueue={works:{},buyers:{},issue:{},collected:{}};
+  if(!Object.keys(body.works).length&&!Object.keys(body.buyers).length&&!Object.keys(body.issue).length&&!Object.keys(body.collected).length) return;
+  try{ const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}); if(!r.ok)throw 0; setSyncDot(true); }
+  catch(e){ setSyncDot(false); queuePush(body); }
+}
+function pushWork(id){ const w=works.find(x=>x.id===id); if(w)queuePush({works:{[id]:{status:w.status,soldDate:w.soldDate,editionSold:w.editionSold}}}); }
 function loadState(){ try{ const raw=localStorage.getItem("atp26_state"); if(!raw)return; const d=JSON.parse(raw); if(d.works)works.forEach(w=>{const r=d.works[w.id]; if(r){w.status=r.status||w.status; w.soldDate=r.soldDate||""; if(r.editionSold!=null)w.editionSold=r.editionSold;}}); if(d.buyers)Object.assign(BUYER,d.buyers); if(d.issue)Object.assign(ISSUE,d.issue); if(d.collected)Object.assign(COLLECTED,d.collected); }catch(e){} }
 function exportCSV(){
   const head=["관리번호","위치","작가","작품명","재료","크기","연도","판매가","부가세","합계","작가수령70","운영수수료30","에디션","판매부수","상태","판매일","발행일","구매자","연락처","주소","판매자"];
@@ -2814,6 +2853,7 @@ function setField(id,field,val){
   if(field==="status"&&val==="출항"&&!w.soldDate)w.soldDate=new Date().toISOString().slice(0,10);
   if(field==="status"&&val!=="출항")w.soldDate="";
   saveState();
+  pushWork(id);
   render();
 }
 function sellEdition(id,delta){
@@ -2823,6 +2863,7 @@ function sellEdition(id,delta){
   if(w.status==="출항"&&!w.soldDate) w.soldDate=new Date().toISOString().slice(0,10);
   if(w.status!=="출항") w.soldDate="";
   saveState();
+  pushWork(id);
   render();
 }
 const _params=new URLSearchParams(location.search);
@@ -2982,6 +3023,9 @@ buildArtistFilter();
 loadState();
 if(LOCK_WORK||LOCK_ARTIST||LOCK_NUM){ document.body.classList.add("kiosk"); switchView("label"); }
 else switchView("dash");
+/* 공용 저장소에서 최신 판매 현황을 불러오고, 이후 4초마다 동기화 */
+pullState(true);
+setInterval(()=>pullState(false), 4000);
 </script>
 </body>
 </html>
