@@ -313,7 +313,7 @@
     <table class="grid">
       <thead><tr>
         <th>연번</th><th>위치</th><th>작가</th><th>작품명</th>
-        <th>판매가</th><th>작가 70%</th><th>운영 30%</th><th>상태</th><th>출력</th>
+        <th>구매가</th><th>작가 70%</th><th>운영 30%</th><th>상태</th><th>출력</th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
@@ -381,7 +381,7 @@
       <h3>인보이스 안내</h3>
       <ul>
         <li>인보이스는 작품별로 발급됩니다. 기본은 <b>판매된 작품(출항)</b>만 표시됩니다. 구매자에게 드리는 거래명세서입니다.</li>
-        <li>판매가(부가세 포함) 기준으로 공급가액·부가세(10%)가 분리 표기됩니다. 10만 원 이하 작품은 부가세를 분리 표기하지 않습니다. 결제는 카드입니다.</li>
+        <li>구매가(부가세 포함) 기준으로 공급가액·부가세(10%)가 분리 표기됩니다. 10만 원 이하 작품은 부가세를 분리 표기하지 않습니다. 결제는 카드입니다.</li>
         <li>구매자 성명·연락처·주소를 입력한 뒤 <b>'구매자 정보 수집'</b>을 누르면, 배포된 사이트에서 그 내역이 Netlify에 모입니다. 어느 기기에서 입력해도 한곳에 쌓입니다.</li>
       </ul>
     </div>
@@ -2757,7 +2757,7 @@ async function flushPush(){
 function pushWork(id){ const w=works.find(x=>x.id===id); if(w)queuePush({works:{[id]:{status:w.status,soldDate:w.soldDate,editionSold:w.editionSold}}}); }
 function loadState(){ try{ const raw=localStorage.getItem("atp26_state"); if(!raw)return; const d=JSON.parse(raw); if(d.works)works.forEach(w=>{const r=d.works[w.id]; if(r){w.status=r.status||w.status; w.soldDate=r.soldDate||""; if(r.editionSold!=null)w.editionSold=r.editionSold;}}); if(d.buyers)Object.assign(BUYER,d.buyers); if(d.issue)Object.assign(ISSUE,d.issue); if(d.collected)Object.assign(COLLECTED,d.collected); }catch(e){} }
 function exportCSV(){
-  const head=["관리번호","위치","작가","작품명","재료","크기","연도","판매가(부가세포함)","부가세","공급가액","작가수령70","운영수수료30","에디션","판매부수","상태","판매일","발행일","구매자","연락처","주소","판매자"];
+  const head=["관리번호","위치","작가","작품명","재료","크기","연도","구매가(부가세포함)","부가세","공급가액","작가수령70","운영수수료30","에디션","판매부수","상태","판매일","발행일","구매자","연락처","주소","판매자"];
   const rows=works.map(w=>{const b=BUYER[w.id]||{};
     return [w.id,boothLabel(w.booth),w.artist,w.title,w.medium,w.size,w.year,grossOf(w),vatOf(w),w.price,artistCut(w),isFee(w)?orgCut(w):0,w.edition||"",w.edition?(w.editionSold||0):"",w.status,w.soldDate||"",issueDate(w),b.name||"",b.contact||"",b.address||"",b.seller||""];});
   const csv=[head,...rows].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n");
@@ -2810,7 +2810,7 @@ function buildArtistFilter(){
 function renderStats(){
   const unitsSold=w=>w.edition?(w.editionSold||0):(w.status==="출항"?1:0);
   const soldQty=works.reduce((s,w)=>s+unitsSold(w),0),
-        soldSum=works.reduce((s,w)=>s+unitsSold(w)*grossOf(w),0),
+        soldSum=works.reduce((s,w)=>s+unitsSold(w)*w.price,0),
         aSum=works.reduce((s,w)=>s+unitsSold(w)*artistCut(w),0),
         oSum=works.reduce((s,w)=>s+unitsSold(w)*orgCut(w),0),
         c=st=>works.filter(w=>w.status===st).length;
@@ -2819,7 +2819,7 @@ function renderStats(){
     <div class="stat"><div class="k">정박 · 전시중</div><div class="v tnum">${c("정박")}<small> 점</small></div></div>
     <div class="stat"><div class="k">통관 · 상담중</div><div class="v tnum">${c("통관")}<small> 점</small></div></div>
     <div class="stat accent"><div class="k">출항 · 판매</div><div class="v tnum">${soldQty}<small> 점</small></div></div>
-    <div class="stat accent"><div class="k">총 판매액</div><div class="v tnum">${won(soldSum)}<small> 원</small></div></div>
+    <div class="stat accent"><div class="k">총 판매액 (공급가액)</div><div class="v tnum">${won(soldSum)}<small> 원</small></div></div>
     <div class="stat"><div class="k">작가 정산 70%</div><div class="v tnum">${won(aSum)}<small> 원</small></div></div>
     <div class="stat"><div class="k">운영 수수료 30%</div><div class="v tnum">${won(oSum)}<small> 원</small></div></div>
     <div class="stat"><div class="k">참여 작가</div><div class="v tnum">${new Set(works.map(w=>w.artist)).size}<small> 명</small></div></div>`;
@@ -2892,7 +2892,7 @@ function artistQR(artist){
 function labelHTML(w){
   const qrImg=artistQR(w.artist);
   const settle = isFee(w)
-    ? `<div class="stitle">정산 · 판매가 분배</div>
+    ? `<div class="stitle">정산 · 작품가 분배</div>
        <div class="sbar"><div class="sa" style="width:70%">작가 70%</div><div class="so" style="width:30%">운영 30%</div></div>
        <div class="samt"><span>작가 수령 <b>${won(artistCut(w))}원</b></span><span>운영 수수료 ${won(orgCut(w))}원</span></div>
        <div class="sfee">운영 수수료에는 카드 운영 수수료, 판매자 수수료, 포장 및 운송 수수료가 포함됩니다.</div>`
@@ -2905,7 +2905,7 @@ function labelHTML(w){
        <div class="sbar"><div class="sa" style="width:100%">작가 100%</div></div>
        <div class="samt"><span>작가 수령 <b>${won(w.price)}원</b></span><span>수수료 없음</span></div>
        <div class="sacct">작가 입금 계좌 · ${ACCOUNTS[w.artist]||"계좌 미등록"}</div>
-       <div class="sfee">10만 원 이하 작품에는 수수료를 적용하지 않습니다. 작가가 판매가 전액을 수령합니다.</div>`;
+       <div class="sfee">10만 원 이하 작품에는 수수료를 적용하지 않습니다. 작가가 작품가 전액을 수령합니다.</div>`;
   const LCLS={정박:"l-anchor",통관:"l-clear",출항:"l-depart"};
   const signal=["정박","통관","출항"].map(st=>
     `<div class="lamp ${LCLS[st]} ${st===w.status?'on':''}"><span class="dot"></span><b>${st}</b><em>${EN[st]}</em></div>`).join("");
@@ -2914,7 +2914,7 @@ function labelHTML(w){
     ${w.img?`<div class="photo"><img src="${w.img}" alt="${esc(w.title)}" loading="lazy" onerror="this.parentNode.classList.add('empty');this.parentNode.textContent='IMAGE';"></div>`:`<div class="photo empty">IMAGE</div>`}
     <div class="lbody"><div class="artist">${esc(w.artist)}</div><div class="title"><em>${esc(w.title)}</em></div>
       <div class="meta">${esc(w.medium)} · ${esc(w.size)} · ${esc(w.year)}</div>${w.edition?`<div class="ledition">Edition · 총 ${w.edition}부 <span>(잔여 ${w.edition-(w.editionSold||0)}부)</span></div>`:""}</div>
-    <div class="price-block"><span class="pk">판매가${w.price>NO_FEE_MAX?" (부가세 포함)":""}</span><span class="pv tnum">₩ ${won(grossOf(w))}</span></div>
+    <div class="price-block"><span class="pk">구매가${w.price>NO_FEE_MAX?" (부가세 포함)":""}</span><span class="pv tnum">₩ ${won(grossOf(w))}</span></div>
     ${w.price>NO_FEE_MAX?`<div class="price-sub tnum"><span>부가세 ${won(vatOf(w))}원 포함</span><span>공급가액 ${won(w.price)}원</span></div>`:""}
     <div class="settle">${settle}</div>
     <div class="signal">${signal}</div>
