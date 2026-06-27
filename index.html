@@ -381,7 +381,7 @@
       <h3>인보이스 안내</h3>
       <ul>
         <li>인보이스는 작품별로 발급됩니다. 기본은 <b>판매된 작품(출항)</b>만 표시됩니다. 구매자에게 드리는 거래명세서입니다.</li>
-        <li>판매가 기준으로 공급가액·부가세(10%)·합계가 자동 계산됩니다. 결제는 카드입니다.</li>
+        <li>판매가(부가세 포함) 기준으로 공급가액·부가세(10%)가 분리 표기됩니다. 10만 원 이하 작품은 부가세를 분리 표기하지 않습니다. 결제는 카드입니다.</li>
         <li>구매자 성명·연락처·주소를 입력한 뒤 <b>'구매자 정보 수집'</b>을 누르면, 배포된 사이트에서 그 내역이 Netlify에 모입니다. 어느 기기에서 입력해도 한곳에 쌓입니다.</li>
       </ul>
     </div>
@@ -2700,7 +2700,7 @@ function collectBuyer(id){
   const w=works.find(x=>x.id===id); if(!w)return;
   const b=BUYER[id]||{};
   if(!(b.name||b.contact||b.address)){ alert("구매자 성명·연락처·주소 중 하나 이상을 입력해 주세요."); return; }
-  const data={"form-name":"purchase","bot-field":"",work:w.id,artist:w.artist,title:w.title,price:String(w.price),total:String(total(w.price)),issueDate:issueDate(w),buyer:b.name||"",contact:b.contact||"",address:b.address||"",seller:b.seller||""};
+  const data={"form-name":"purchase","bot-field":"",work:w.id,artist:w.artist,title:w.title,price:String(w.price),total:String(grossOf(w)),issueDate:issueDate(w),buyer:b.name||"",contact:b.contact||"",address:b.address||"",seller:b.seller||""};
   const body=Object.keys(data).map(k=>encodeURIComponent(k)+"="+encodeURIComponent(data[k])).join("&");
   const el=document.getElementById("cmsg-"+id); if(el){el.textContent="전송 중…"; el.className="cmsg";}
   fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body})
@@ -2757,9 +2757,9 @@ async function flushPush(){
 function pushWork(id){ const w=works.find(x=>x.id===id); if(w)queuePush({works:{[id]:{status:w.status,soldDate:w.soldDate,editionSold:w.editionSold}}}); }
 function loadState(){ try{ const raw=localStorage.getItem("atp26_state"); if(!raw)return; const d=JSON.parse(raw); if(d.works)works.forEach(w=>{const r=d.works[w.id]; if(r){w.status=r.status||w.status; w.soldDate=r.soldDate||""; if(r.editionSold!=null)w.editionSold=r.editionSold;}}); if(d.buyers)Object.assign(BUYER,d.buyers); if(d.issue)Object.assign(ISSUE,d.issue); if(d.collected)Object.assign(COLLECTED,d.collected); }catch(e){} }
 function exportCSV(){
-  const head=["관리번호","위치","작가","작품명","재료","크기","연도","판매가","부가세","합계","작가수령70","운영수수료30","에디션","판매부수","상태","판매일","발행일","구매자","연락처","주소","판매자"];
+  const head=["관리번호","위치","작가","작품명","재료","크기","연도","판매가(부가세포함)","부가세","공급가액","작가수령70","운영수수료30","에디션","판매부수","상태","판매일","발행일","구매자","연락처","주소","판매자"];
   const rows=works.map(w=>{const b=BUYER[w.id]||{};
-    return [w.id,boothLabel(w.booth),w.artist,w.title,w.medium,w.size,w.year,w.price,vat(w.price),total(w.price),artistCut(w),isFee(w)?orgCut(w):0,w.edition||"",w.edition?(w.editionSold||0):"",w.status,w.soldDate||"",issueDate(w),b.name||"",b.contact||"",b.address||"",b.seller||""];});
+    return [w.id,boothLabel(w.booth),w.artist,w.title,w.medium,w.size,w.year,grossOf(w),vatOf(w),w.price,artistCut(w),isFee(w)?orgCut(w):0,w.edition||"",w.edition?(w.editionSold||0):"",w.status,w.soldDate||"",issueDate(w),b.name||"",b.contact||"",b.address||"",b.seller||""];});
   const csv=[head,...rows].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n");
   const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="예술무역항_판매기록.csv"; a.click();
@@ -2774,6 +2774,8 @@ const VAT=0.10, ARTIST_RATE=0.70, NO_FEE_MAX=100000;
 const isFee=w=>!w.nofee && w.price>NO_FEE_MAX;
 const vat=p=>Math.round(p*VAT);
 const total=p=>p+vat(p);
+const grossOf=w=>w.price>NO_FEE_MAX?total(w.price):w.price;
+const vatOf=w=>w.price>NO_FEE_MAX?vat(w.price):0;
 const artistCut=w=>isFee(w)?Math.round(w.price*ARTIST_RATE):w.price;
 const orgCut=w=>w.price-artistCut(w);
 const tierOf=p=>p<=500000?"entry":p<=1500000?"mid":"high";
@@ -2808,7 +2810,7 @@ function buildArtistFilter(){
 function renderStats(){
   const unitsSold=w=>w.edition?(w.editionSold||0):(w.status==="출항"?1:0);
   const soldQty=works.reduce((s,w)=>s+unitsSold(w),0),
-        soldSum=works.reduce((s,w)=>s+unitsSold(w)*w.price,0),
+        soldSum=works.reduce((s,w)=>s+unitsSold(w)*grossOf(w),0),
         aSum=works.reduce((s,w)=>s+unitsSold(w)*artistCut(w),0),
         oSum=works.reduce((s,w)=>s+unitsSold(w)*orgCut(w),0),
         c=st=>works.filter(w=>w.status===st).length;
@@ -2839,26 +2841,29 @@ function renderTable(){
       <td class="loc">${boothLabel(w.booth)}</td>
       <td class="artist">${esc(w.artist)}</td>
       <td>${esc(w.title)}<div class="msz">${esc(w.medium)} · ${esc(w.size)}${w.edition?` · <b class="edtag">Edition ${w.edition}부</b>`:""}</div></td>
-      <td class="price red tnum">${won(w.price)}</td>
+      <td class="price red tnum">${won(grossOf(w))}</td>
       <td class="price tnum">${won(artistCut(w))}</td>
       <td class="price sub tnum">${isFee(w)?won(orgCut(w)):"—"}</td>
       <td>${w.edition
         ? `<div class="edctl"><button onclick="sellEdition('${w.id}',-1)">−</button><span>판매 <b>${w.editionSold||0}</b>/${w.edition}</span><button onclick="sellEdition('${w.id}',1)">+</button></div><div class="edst">${w.status}</div>`
         : `<select class="row-sel" onchange="setField('${w.id}','status',this.value)">${opts}</select>`}</td>
-      <td style="white-space:nowrap"><button class="open-label" onclick="openLabel('${w.id}')">라벨</button> <button class="open-label" onclick="openCert('${w.id}')">보증서</button> <button class="open-label" onclick="openInvoice('${w.id}')">인보이스</button></td></tr>`;
+      <td style="white-space:nowrap"><button class="open-label" onclick="openLabel('${w.id}')">라벨</button> <button class="open-label" onclick="openCert('${w.id}')">보증서</button> <button class="open-label" onclick="openInvoice('${w.id}')">인보이스</button> <button class="open-label docs" onclick="openDocs('${w.id}')">출항서류</button></td></tr>`;
   }).join("");
 }
 function setField(id,field,val){
   const w=works.find(x=>x.id===id); if(!w)return;
+  const was=w.status;
   w[field]=val;
   if(field==="status"&&val==="출항"&&!w.soldDate)w.soldDate=new Date().toISOString().slice(0,10);
   if(field==="status"&&val!=="출항")w.soldDate="";
   saveState();
   pushWork(id);
   render();
+  if(field==="status"&&val==="출항"&&was!=="출항")openDocs(id);
 }
 function sellEdition(id,delta){
   const w=works.find(x=>x.id===id); if(!w||!w.edition)return;
+  const was=w.status;
   w.editionSold=Math.max(0,Math.min(w.edition,(w.editionSold||0)+delta));
   w.status = w.editionSold>=w.edition ? "출항" : w.editionSold>0 ? "통관" : "정박";
   if(w.status==="출항"&&!w.soldDate) w.soldDate=new Date().toISOString().slice(0,10);
@@ -2866,6 +2871,7 @@ function sellEdition(id,delta){
   saveState();
   pushWork(id);
   render();
+  if(w.status==="출항"&&was!=="출항")openDocs(id);
 }
 const _params=new URLSearchParams(location.search);
 const LOCK_WORK=_params.get("work"), LOCK_ARTIST=_params.get("artist"), LOCK_NUM=_params.get("a");
@@ -2908,8 +2914,8 @@ function labelHTML(w){
     ${w.img?`<div class="photo"><img src="${w.img}" alt="${esc(w.title)}" loading="lazy" onerror="this.parentNode.classList.add('empty');this.parentNode.textContent='IMAGE';"></div>`:`<div class="photo empty">IMAGE</div>`}
     <div class="lbody"><div class="artist">${esc(w.artist)}</div><div class="title"><em>${esc(w.title)}</em></div>
       <div class="meta">${esc(w.medium)} · ${esc(w.size)} · ${esc(w.year)}</div>${w.edition?`<div class="ledition">Edition · 총 ${w.edition}부 <span>(잔여 ${w.edition-(w.editionSold||0)}부)</span></div>`:""}</div>
-    <div class="price-block"><span class="pk">판매가 (부가세 별도)</span><span class="pv tnum">₩ ${won(w.price)}</span></div>
-    <div class="price-sub tnum"><span>부가세 10% ${won(vat(w.price))}원</span><span>결제 금액 ${won(total(w.price))}원</span></div>
+    <div class="price-block"><span class="pk">판매가${w.price>NO_FEE_MAX?" (부가세 포함)":""}</span><span class="pv tnum">₩ ${won(grossOf(w))}</span></div>
+    ${w.price>NO_FEE_MAX?`<div class="price-sub tnum"><span>부가세 ${won(vatOf(w))}원 포함</span><span>공급가액 ${won(w.price)}원</span></div>`:""}
     <div class="settle">${settle}</div>
     <div class="signal">${signal}</div>
     <div class="lfoot">
@@ -2990,14 +2996,14 @@ function invoiceHTML(w){
       <tbody><tr>
         <td><b>${esc(w.artist)}</b> · ${esc(w.title)}<div class="sub">${esc(w.medium)} · ${esc(w.size)} · ${w.year} · 관리번호 ${w.id}</div></td>
         <td class="r tnum">${won(w.price)}원</td>
-        <td class="r tnum">${won(vat(w.price))}원</td>
-        <td class="r tnum">${won(total(w.price))}원</td>
+        <td class="r tnum">${w.price>NO_FEE_MAX?won(vatOf(w))+"원":"—"}</td>
+        <td class="r tnum">${won(grossOf(w))}원</td>
       </tr></tbody>
     </table>
     <div class="itotal">
       <div class="tr"><span>공급가액</span><span class="tnum">${won(w.price)}원</span></div>
-      <div class="tr"><span>부가세 (10%)</span><span class="tnum">${won(vat(w.price))}원</span></div>
-      <div class="tr sum"><span>합계 금액</span><span class="v tnum">${won(total(w.price))}원</span></div>
+      ${w.price>NO_FEE_MAX?`<div class="tr"><span>부가세 (10%)</span><span class="tnum">${won(vatOf(w))}원</span></div>`:""}
+      <div class="tr sum"><span>합계 금액</span><span class="v tnum">${won(grossOf(w))}원</span></div>
     </div>
     <div class="ipay">결제수단 · 카드</div>
     <div class="ifoot">
@@ -3018,6 +3024,26 @@ function openInvoice(id){
   setTimeout(()=>{const el=document.getElementById("inv-"+id);
     if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.style.outline="3px solid var(--main)";setTimeout(()=>el.style.outline="",1400);}},60);
 }
+function openDocs(id){
+  const w=works.find(x=>x.id===id); if(!w)return;
+  let m=document.getElementById("docModal");
+  if(!m){ m=document.createElement("div"); m.id="docModal"; document.body.appendChild(m); }
+  m.innerHTML=`<div class="dm-back" onclick="closeDocs()"></div>
+    <div class="dm-box">
+      <div class="dm-bar">
+        <div class="dm-ttl">출항 서류 · ${esc(w.artist)} · <em>${esc(w.title)}</em></div>
+        <div class="dm-act"><button class="btn solid" onclick="printDocs()">인쇄</button><button class="btn" onclick="closeDocs()">닫기</button></div>
+      </div>
+      <div class="dm-scroll">
+        <div class="dm-sec"><div class="dm-lab">작품 보증서 · CERTIFICATE</div>${certHTML(w)}</div>
+        <div class="dm-sec"><div class="dm-lab">거래명세서 · INVOICE</div>${invoiceHTML(w)}</div>
+      </div>
+    </div>`;
+  m.classList.add("show");
+  document.body.classList.add("dm-open");
+}
+function closeDocs(){ const m=document.getElementById("docModal"); if(m){m.classList.remove("show");m.innerHTML="";} document.body.classList.remove("dm-open"); }
+function printDocs(){ const m=document.getElementById("docModal"); if(!m)return; document.body.classList.add("printing-docs"); window.print(); setTimeout(()=>document.body.classList.remove("printing-docs"),300); }
 function render(){ if(view==="dash"){renderStats();renderTable();}else if(view==="label"){renderLabels();}else if(view==="cert"){renderCerts();}else{renderInvoices();} }
 
 buildArtistFilter();
@@ -3027,6 +3053,40 @@ else switchView("dash");
 /* 공용 저장소에서 최신 판매 현황을 불러오고, 이후 4초마다 동기화 */
 pullState(true);
 setInterval(()=>pullState(false), 4000);
+</script>
+<button id="toTop" type="button" aria-label="맨 위로" title="맨 위로" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<style>
+#toTop{position:fixed;right:16px;bottom:18px;width:46px;height:46px;padding:0;border:2px solid var(--ink,#141414);border-radius:50%;background:var(--orange,#F5391A);color:#fff;font-size:22px;font-weight:700;line-height:1;cursor:pointer;z-index:9999;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .2s ease,transform .2s ease;box-shadow:0 2px 8px rgba(0,0,0,.25);}
+#toTop.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+#toTop:hover{filter:brightness(.92);}
+#toTop:active{transform:translateY(1px);}
+#docModal{position:fixed;inset:0;z-index:10000;display:none;}
+#docModal.show{display:block;}
+#docModal .dm-back{position:absolute;inset:0;background:rgba(20,20,20,.55);}
+#docModal .dm-box{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(820px,94vw);max-height:92vh;background:#fff;border:2px solid var(--ink,#141414);box-shadow:0 10px 40px rgba(0,0,0,.35);display:flex;flex-direction:column;}
+#docModal .dm-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-bottom:2px solid var(--ink,#141414);background:var(--orange,#F5391A);color:#fff;}
+#docModal .dm-ttl{font-weight:700;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#docModal .dm-ttl em{font-style:italic;font-weight:400;}
+#docModal .dm-act{display:flex;gap:8px;flex:none;}
+#docModal .dm-act .btn{border:2px solid #fff;background:transparent;color:#fff;padding:5px 12px;cursor:pointer;font-weight:700;}
+#docModal .dm-act .btn.solid{background:#fff;color:var(--orange,#F5391A);}
+#docModal .dm-scroll{overflow:auto;padding:16px;background:#f4f4f4;}
+#docModal .dm-sec{margin:0 0 18px;}
+#docModal .dm-sec:last-child{margin-bottom:0;}
+#docModal .dm-lab{font-size:11px;letter-spacing:.08em;font-weight:700;color:#666;margin:0 0 6px;}
+.open-label.docs{background:var(--orange,#F5391A);color:#fff;border-color:var(--orange,#F5391A);}
+@media print{
+  body.printing-docs>*{display:none !important;}
+  body.printing-docs #docModal{display:block !important;position:static;}
+  body.printing-docs #docModal .dm-back,body.printing-docs #docModal .dm-bar{display:none !important;}
+  body.printing-docs #docModal .dm-box{position:static;transform:none;width:auto;max-height:none;border:0;box-shadow:none;}
+  body.printing-docs #docModal .dm-scroll{overflow:visible;padding:0;background:#fff;}
+  body.printing-docs #docModal .dm-lab{display:none;}
+  body.printing-docs #docModal .dm-sec{page-break-after:always;margin:0;}
+}
+</style>
+<script>
+(function(){var b=document.getElementById("toTop");if(!b)return;function t(){if(window.scrollY>300)b.classList.add("show");else b.classList.remove("show");}window.addEventListener("scroll",t,{passive:true});t();})();
 </script>
 </body>
 </html>
